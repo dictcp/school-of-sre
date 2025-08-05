@@ -2,7 +2,7 @@
 
 ## 先決條件
 
-- [School of SRE - 系統設計 - 第一階段](https://linkedin.github.io/school-of-sre/level101/systems_design/intro/)
+- [School of SRE - 系統設計 - 第一階段](https://dictcp.github.io/school-of-sre/level101/systems_design/intro/)
 
 ## 這門課程的預期目標
 
@@ -20,12 +20,12 @@
 
 ## 課程內容
 
-- [介紹](https://linkedin.github.io/school-of-sre/level102/system_design/intro/)
-- [大型系統設計](https://linkedin.github.io/school-of-sre/level102/system_design/large-system-design/)
-- [擴展](https://linkedin.github.io/school-of-sre/level102/system_design/scaling/)
-- [資料中心外的擴展](https://linkedin.github.io/school-of-sre/level102/system_design/scaling-beyond-the-datacenter/)
-- [彈性的設計模式](https://linkedin.github.io/school-of-sre/level102/system_design/resiliency/)
-- [結語](https://linkedin.github.io/school-of-sre/level102/system_design/conclusion/)
+- [介紹](https://dictcp.github.io/school-of-sre/level102/system_design/intro/)
+- [大型系統設計](https://dictcp.github.io/school-of-sre/level102/system_design/large-system-design/)
+- [擴展](https://dictcp.github.io/school-of-sre/level102/system_design/scaling/)
+- [資料中心外的擴展](https://dictcp.github.io/school-of-sre/level102/system_design/scaling-beyond-the-datacenter/)
+- [彈性的設計模式](https://dictcp.github.io/school-of-sre/level102/system_design/resiliency/)
+- [結語](https://dictcp.github.io/school-of-sre/level102/system_design/conclusion/)
 
 ## 介紹
 

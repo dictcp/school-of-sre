@@ -2,9 +2,9 @@
 
 ## 先決條件
 
-1. [Linux 基礎](https://linkedin.github.io/school-of-sre/level101/linux_basics/intro/)
+1. [Linux 基礎](https://dictcp.github.io/school-of-sre/level101/linux_basics/intro/)
 
-2. [Linux 網路](https://linkedin.github.io/school-of-sre/level101/linux_networking/intro/)
+2. [Linux 網路](https://dictcp.github.io/school-of-sre/level101/linux_networking/intro/)
 
 
 ## 本課程預期學習內容
@@ -19,8 +19,8 @@
 
 ## 課程內容
 
-1. [基礎知識](https://linkedin.github.io/school-of-sre/level101/security/fundamentals/)
-2. [網路安全](https://linkedin.github.io/school-of-sre/level101/security/network_security/)
-3. [威脅、攻擊與防禦](https://linkedin.github.io/school-of-sre/level101/security/threats_attacks_defences/)
-4. [安全程式碼撰寫與更多](https://linkedin.github.io/school-of-sre/level101/security/writing_secure_code/)
-5. [結論](https://linkedin.github.io/school-of-sre/level101/security/conclusion/)
+1. [基礎知識](https://dictcp.github.io/school-of-sre/level101/security/fundamentals/)
+2. [網路安全](https://dictcp.github.io/school-of-sre/level101/security/network_security/)
+3. [威脅、攻擊與防禦](https://dictcp.github.io/school-of-sre/level101/security/threats_attacks_defences/)
+4. [安全程式碼撰寫與更多](https://dictcp.github.io/school-of-sre/level101/security/writing_secure_code/)
+5. [結論](https://dictcp.github.io/school-of-sre/level101/security/conclusion/)

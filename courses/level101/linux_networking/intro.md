@@ -3,7 +3,7 @@
 ## 先備知識
 
 - 對 TCP/IP 協議堆疊中常用術語如 DNS、TCP、UDP 和 HTTP 有高階認識
-- [Linux 指令行基礎](https://linkedin.github.io/school-of-sre/level101/linux_basics/command_line_basics/)
+- [Linux 指令行基礎](https://dictcp.github.io/school-of-sre/level101/linux_basics/command_line_basics/)
 
 ## 本課程的學習期待
 
@@ -19,8 +19,8 @@
 
 ## 課程內容
 
-1. [DNS](https://linkedin.github.io/school-of-sre/level101/linux_networking/dns/)
-2. [UDP](https://linkedin.github.io/school-of-sre/level101/linux_networking/udp/)
-3. [HTTP](https://linkedin.github.io/school-of-sre/level101/linux_networking/http/)
-4. [TCP](https://linkedin.github.io/school-of-sre/level101/linux_networking/tcp/)
-5. [IP 路由](https://linkedin.github.io/school-of-sre/level101/linux_networking/ipr/)
+1. [DNS](https://dictcp.github.io/school-of-sre/level101/linux_networking/dns/)
+2. [UDP](https://dictcp.github.io/school-of-sre/level101/linux_networking/udp/)
+3. [HTTP](https://dictcp.github.io/school-of-sre/level101/linux_networking/http/)
+4. [TCP](https://dictcp.github.io/school-of-sre/level101/linux_networking/tcp/)
+5. [IP 路由](https://dictcp.github.io/school-of-sre/level101/linux_networking/ipr/)

@@ -197,4 +197,4 @@ Cgroups 對每個資源控制器採樹狀分層結構，即各控制器有個別
 
 市面上有多種容器引擎，如 Docker、RKT、LXC（最早期之一），不同引擎使用不同映像格式（Docker 與 LXD）。OCI（Open Container Initiative）是 Docker 發起的合作專案，旨在標準化容器運行規範與映像格式。關心該項目者可參考 OCI 的[常見問題](https://opencontainers.org/faq/)。
 
-我們將在[下一節](https://linkedin.github.io/school-of-sre/level102/containerization_and_orchestration/containerization_with_docker/)專注介紹 Docker。
+我們將在[下一節](https://dictcp.github.io/school-of-sre/level102/containerization_and_orchestration/containerization_with_docker/)專注介紹 Docker。

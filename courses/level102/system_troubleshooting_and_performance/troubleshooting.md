@@ -15,7 +15,7 @@
 **收集資訊**
 
 * 查看應用程式日誌中的錯誤/異常，例如「無法分配記憶體」或 OutOfMemoryError，亦或是「磁碟 I/O 錯誤」、DNS 解析失敗等。
-* 檢視應用與主機指標，觀察服務和主機的異常圖表，注意 CPU 使用率何時上升、記憶體何時增加、磁碟空間何時減少或磁碟 I/O 上升、負載平均值何時飆升等。欲了解更多指標與監控細節，請參考 School of SRE 連結：[metrics and monitoring](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/introduction)。
+* 檢視應用與主機指標，觀察服務和主機的異常圖表，注意 CPU 使用率何時上升、記憶體何時增加、磁碟空間何時減少或磁碟 I/O 上升、負載平均值何時飆升等。欲了解更多指標與監控細節，請參考 School of SRE 連結：[metrics and monitoring](https://dictcp.github.io/school-of-sre/level101/metrics_and_monitoring/introduction)。
 * 檢查最近的程式碼或設定變更，可能導致系統破損。
 
 **理解問題**

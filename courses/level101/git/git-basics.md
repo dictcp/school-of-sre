@@ -18,10 +18,10 @@ Git 的進階使用與內部實作細節。
 
 ## 課程內容
 
- 1. [Git 基礎](https://linkedin.github.io/school-of-sre/level101/git/git-basics/#git-basics)
- 2. [使用分支](https://linkedin.github.io/school-of-sre/level101/git/branches/)
- 3. [Git 與 Github](https://linkedin.github.io/school-of-sre/level101/git/github-hooks/#git-with-github)
- 4. [Hooks](https://linkedin.github.io/school-of-sre/level101/git/github-hooks/#hooks)
+ 1. [Git 基礎](https://dictcp.github.io/school-of-sre/level101/git/git-basics/#git-basics)
+ 2. [使用分支](https://dictcp.github.io/school-of-sre/level101/git/branches/)
+ 3. [Git 與 Github](https://dictcp.github.io/school-of-sre/level101/git/github-hooks/#git-with-github)
+ 4. [Hooks](https://dictcp.github.io/school-of-sre/level101/git/github-hooks/#hooks)
 
 ## Git 基礎
 

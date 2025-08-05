@@ -4,10 +4,10 @@
 
 常見軟體系統元件的基礎知識：
 
-- [Linux 基礎](https://linkedin.github.io/school-of-sre/level101/linux_basics/intro/)
-- [Linux 網路](https://linkedin.github.io/school-of-sre/level101/linux_networking/intro/)
+- [Linux 基礎](https://dictcp.github.io/school-of-sre/level101/linux_basics/intro/)
+- [Linux 網路](https://dictcp.github.io/school-of-sre/level101/linux_networking/intro/)
 - 資料庫關聯式資料庫管理系統 (RDBMS)
-- [NoSQL 概念](https://linkedin.github.io/school-of-sre/level101/databases_nosql/intro/)
+- [NoSQL 概念](https://dictcp.github.io/school-of-sre/level101/databases_nosql/intro/)
 
 ## 本課程的學習重點
 
@@ -21,10 +21,10 @@
 
 ## 課程內容
 
-- [介紹](https://linkedin.github.io/school-of-sre/level101/systems_design/intro/#backstory)
-- [可擴展性](https://linkedin.github.io/school-of-sre/level101/systems_design/scalability/)
-- [高可用性](https://linkedin.github.io/school-of-sre/level101/systems_design/availability/)
-- [容錯能力](https://linkedin.github.io/school-of-sre/level101/systems_design/fault-tolerance/)
+- [介紹](https://dictcp.github.io/school-of-sre/level101/systems_design/intro/#backstory)
+- [可擴展性](https://dictcp.github.io/school-of-sre/level101/systems_design/scalability/)
+- [高可用性](https://dictcp.github.io/school-of-sre/level101/systems_design/availability/)
+- [容錯能力](https://dictcp.github.io/school-of-sre/level101/systems_design/fault-tolerance/)
 
 ## 介紹
 

@@ -36,7 +36,7 @@
 
         insert, create, drop, delete, update, commit, rollback, truncate, alter, grant, revoke
 
-    你可以在[實驗室區域](https://linkedin.github.io/school-of-sre/level101/databases_sql/lab/)練習這些語句。
+    你可以在[實驗室區域](https://dictcp.github.io/school-of-sre/level101/databases_sql/lab/)練習這些語句。
 
 * 約束條件（Constraints）
 

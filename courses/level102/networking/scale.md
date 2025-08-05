@@ -12,7 +12,7 @@
 
 #### ToR（Top of Rack）故障
 
-這是常見的情況之一，指將伺服器連接到葉層交換機（leaf switch）的 ToR 發生故障，導致整個機櫃也無法運作。可能有多台同服務的伺服器因此停擺。需要規劃能承受多少伺服器損失而不會使其他伺服器過載。根據此規劃，服務可以分布在多個機櫃中。這些評估會依 ToR 設計的韌性而異，相關內容參見 [ToR 連接](https://linkedin.github.io/school-of-sre/level102/networking/infrastructure-features/#dual-tor) 章節。
+這是常見的情況之一，指將伺服器連接到葉層交換機（leaf switch）的 ToR 發生故障，導致整個機櫃也無法運作。可能有多台同服務的伺服器因此停擺。需要規劃能承受多少伺服器損失而不會使其他伺服器過載。根據此規劃，服務可以分布在多個機櫃中。這些評估會依 ToR 設計的韌性而異，相關內容參見 [ToR 連接](https://dictcp.github.io/school-of-sre/level102/networking/infrastructure-features/#dual-tor) 章節。
 
 #### 站點故障
 

@@ -66,7 +66,7 @@
 
 與 Anycast 類似，另一種在伺服器間實現負載平衡（承載特定應用）的方式是使用負載平衡器。可採多種方式實現：
 
-1. 硬體負載平衡器：負載平衡裝置位於流量路徑中，檢視封包的第 3 層和第 4 層資訊，決定要將連線導向哪些真實主機。正如在[擴展規模](https://linkedin.github.io/school-of-sre/level102/networking/scale/#load-balancer)一節介紹，可設置為兩種模式：
+1. 硬體負載平衡器：負載平衡裝置位於流量路徑中，檢視封包的第 3 層和第 4 層資訊，決定要將連線導向哪些真實主機。正如在[擴展規模](https://dictcp.github.io/school-of-sre/level102/networking/scale/#load-balancer)一節介紹，可設置為兩種模式：
 
     - 單臂模式：負載平衡器僅處理對 VIP 的進入請求。伺服器回應直接發送給客戶端。可用兩種實作方式：
 
@@ -76,7 +76,7 @@
 
     - 雙臂模式：負載平衡器處理進出流量。
 
-2. DNS 負載平衡器：透過 DNS 伺服器監控真實伺服器健康狀態，並以適當方式解析網域，讓客戶端能連接該集群中不同伺服器。此部分詳見[擴展規模](https://linkedin.github.io/school-of-sre/level102/networking/scale/#dns-based-load-balancing)章節。
+2. DNS 負載平衡器：透過 DNS 伺服器監控真實伺服器健康狀態，並以適當方式解析網域，讓客戶端能連接該集群中不同伺服器。此部分詳見[擴展規模](https://dictcp.github.io/school-of-sre/level102/networking/scale/#dns-based-load-balancing)章節。
 
 3. IPVS 負載平衡：IPVS 伺服器作為服務端點對外，接收請求後導向真實伺服器，並可設定健康檢查。
 

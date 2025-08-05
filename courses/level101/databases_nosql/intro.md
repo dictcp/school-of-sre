@@ -1,7 +1,7 @@
 # NoSQL 概念
 
 ## 預備知識
-- [關聯式資料庫](https://linkedin.github.io/school-of-sre/level101/databases_sql/intro/)
+- [關聯式資料庫](https://dictcp.github.io/school-of-sre/level101/databases_sql/intro/)
 
 ## 課程預期
 
@@ -13,12 +13,12 @@
 
 ## 課程內容
 
-*   [NoSQL 簡介](https://linkedin.github.io/school-of-sre/level101/databases_nosql/intro/#introduction)
-*   [CAP 理論](https://linkedin.github.io/school-of-sre/level101/databases_nosql/key_concepts/#cap-theorem)
-*   [資料版本控制](https://linkedin.github.io/school-of-sre/level101/databases_nosql/key_concepts/#versioning-of-data-in-distributed-systems)
-*   [分區 (Partitioning)](https://linkedin.github.io/school-of-sre/level101/databases_nosql/key_concepts/#partitioning)
-*   [雜湊 (Hashing)](https://linkedin.github.io/school-of-sre/level101/databases_nosql/key_concepts/#hashing)
-*   [法定人數 (Quorum)](https://linkedin.github.io/school-of-sre/level101/databases_nosql/key_concepts/#quorum)
+*   [NoSQL 簡介](https://dictcp.github.io/school-of-sre/level101/databases_nosql/intro/#introduction)
+*   [CAP 理論](https://dictcp.github.io/school-of-sre/level101/databases_nosql/key_concepts/#cap-theorem)
+*   [資料版本控制](https://dictcp.github.io/school-of-sre/level101/databases_nosql/key_concepts/#versioning-of-data-in-distributed-systems)
+*   [分區 (Partitioning)](https://dictcp.github.io/school-of-sre/level101/databases_nosql/key_concepts/#partitioning)
+*   [雜湊 (Hashing)](https://dictcp.github.io/school-of-sre/level101/databases_nosql/key_concepts/#hashing)
+*   [法定人數 (Quorum)](https://dictcp.github.io/school-of-sre/level101/databases_nosql/key_concepts/#quorum)
 
 ## 介紹
 

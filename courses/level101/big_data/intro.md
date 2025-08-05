@@ -15,19 +15,19 @@
 
 ## 課程內容
 
-1. [大數據概覽](https://linkedin.github.io/school-of-sre/level101/big_data/intro/#overview-of-big-data)
-2. [大數據技術的應用](https://linkedin.github.io/school-of-sre/level101/big_data/intro/#usage-of-big-data-techniques)
-3. [Hadoop 的演進](https://linkedin.github.io/school-of-sre/level101/big_data/evolution/)
-4. [Hadoop 架構](https://linkedin.github.io/school-of-sre/level101/big_data/evolution/#architecture-of-hadoop)
+1. [大數據概覽](https://dictcp.github.io/school-of-sre/level101/big_data/intro/#overview-of-big-data)
+2. [大數據技術的應用](https://dictcp.github.io/school-of-sre/level101/big_data/intro/#usage-of-big-data-techniques)
+3. [Hadoop 的演進](https://dictcp.github.io/school-of-sre/level101/big_data/evolution/)
+4. [Hadoop 架構](https://dictcp.github.io/school-of-sre/level101/big_data/evolution/#architecture-of-hadoop)
     1. HDFS
     2. Yarn
-5. [MapReduce 框架](https://linkedin.github.io/school-of-sre/level101/big_data/evolution/#mapreduce-framework)
-6. [Hadoop 相關工具](https://linkedin.github.io/school-of-sre/level101/big_data/evolution/#other-tooling-around-hadoop)
+5. [MapReduce 框架](https://dictcp.github.io/school-of-sre/level101/big_data/evolution/#mapreduce-framework)
+6. [Hadoop 相關工具](https://dictcp.github.io/school-of-sre/level101/big_data/evolution/#other-tooling-around-hadoop)
     1. Hive
     2. Pig
     3. Spark
     4. Presto
-7. [資料序列化與儲存](https://linkedin.github.io/school-of-sre/level101/big_data/evolution/#data-serialisation-and-storage)
+7. [資料序列化與儲存](https://dictcp.github.io/school-of-sre/level101/big_data/evolution/#data-serialisation-and-storage)
 
 
 # 大數據概覽

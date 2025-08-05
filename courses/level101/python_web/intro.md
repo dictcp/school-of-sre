@@ -23,16 +23,16 @@ Python 內部機制的深入知識及進階 Python。
 
 ## 課程內容
 
-1. [Python 語言](https://linkedin.github.io/school-of-sre/level101/python_web/intro/#the-python-language)
-      1. [一些 Python 概念](https://linkedin.github.io/school-of-sre/level101/python_web/python-concepts/)
-      2. [Python 的陷阱](https://linkedin.github.io/school-of-sre/level101/python_web/python-concepts/#some-gotchas)
-2. [Python 與網路](https://linkedin.github.io/school-of-sre/level101/python_web/python-web-flask/)
-      1. [Socket](https://linkedin.github.io/school-of-sre/level101/python_web/python-web-flask/#sockets)
-      2. [Flask](https://linkedin.github.io/school-of-sre/level101/python_web/python-web-flask/#flask)
-3. [URL 縮短應用](https://linkedin.github.io/school-of-sre/level101/python_web/url-shorten-app/)
-      1. [設計](https://linkedin.github.io/school-of-sre/level101/python_web/url-shorten-app/#design)
-      2. [應用擴展](https://linkedin.github.io/school-of-sre/level101/python_web/sre-conclusion/#scaling-the-app)
-      3. [應用監控](https://linkedin.github.io/school-of-sre/level101/python_web/sre-conclusion/#monitoring-strategy)
+1. [Python 語言](https://dictcp.github.io/school-of-sre/level101/python_web/intro/#the-python-language)
+      1. [一些 Python 概念](https://dictcp.github.io/school-of-sre/level101/python_web/python-concepts/)
+      2. [Python 的陷阱](https://dictcp.github.io/school-of-sre/level101/python_web/python-concepts/#some-gotchas)
+2. [Python 與網路](https://dictcp.github.io/school-of-sre/level101/python_web/python-web-flask/)
+      1. [Socket](https://dictcp.github.io/school-of-sre/level101/python_web/python-web-flask/#sockets)
+      2. [Flask](https://dictcp.github.io/school-of-sre/level101/python_web/python-web-flask/#flask)
+3. [URL 縮短應用](https://dictcp.github.io/school-of-sre/level101/python_web/url-shorten-app/)
+      1. [設計](https://dictcp.github.io/school-of-sre/level101/python_web/url-shorten-app/#design)
+      2. [應用擴展](https://dictcp.github.io/school-of-sre/level101/python_web/sre-conclusion/#scaling-the-app)
+      3. [應用監控](https://dictcp.github.io/school-of-sre/level101/python_web/sre-conclusion/#monitoring-strategy)
 
 ## Python 語言
 

@@ -8,13 +8,13 @@
 
 	觀看這個效能調校的 [教學影片](https://www.youtube.com/watch?v=pjRTLPeUOug)。
 
-	查看 [實作練習區](https://linkedin.github.io/school-of-sre/level101/databases_sql/lab/) 以進行索引相關的實作。
+	查看 [實作練習區](https://dictcp.github.io/school-of-sre/level101/databases_sql/lab/) 以進行索引相關的實作。
 
 *   [慢查詢日誌](https://dev.mysql.com/doc/refman/5.7/en/slow-query-log.html)
 
 	用於識別慢查詢（閾值可配置），可在配置文件中啟用，也能透過查詢動態啟用。
 
-	查看關於辨識慢查詢的 [實作練習區](https://linkedin.github.io/school-of-sre/level101/databases_sql/lab/)。
+	查看關於辨識慢查詢的 [實作練習區](https://dictcp.github.io/school-of-sre/level101/databases_sql/lab/)。
 
 *   使用者管理
 

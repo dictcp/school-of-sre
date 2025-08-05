@@ -2,10 +2,10 @@
 
 ## 預備知識
 
-* [Linux 基礎](https://linkedin.github.io/school-of-sre/level101/linux_basics/intro/)
-* [系統設計](https://linkedin.github.io/school-of-sre/level101/systems_design/intro/)
-* [基礎網路](https://linkedin.github.io/school-of-sre/level101/linux_networking/intro/)
-* [指標與監控](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/introduction/)
+* [Linux 基礎](https://dictcp.github.io/school-of-sre/level101/linux_basics/intro/)
+* [系統設計](https://dictcp.github.io/school-of-sre/level101/systems_design/intro/)
+* [基礎網路](https://dictcp.github.io/school-of-sre/level101/linux_networking/intro/)
+* [指標與監控](https://dictcp.github.io/school-of-sre/level101/metrics_and_monitoring/introduction/)
 
 ## 課程期望
 
@@ -21,22 +21,22 @@
 * 作業系統基礎。
 
 ## 課程內容
-- [介紹](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/introduction)
-- [故障排除](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/troubleshooting)
-    - [故障排除流程圖](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/troubleshooting/#troubleshooting-flowchart)
-    - [一般實務](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/troubleshooting/#general-practices)
-    - [一般主機問題](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/troubleshooting/#general-host-issues)
-- [重要工具介紹](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/important-tools)
-    - [重要的 Linux 指令](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/important-tools/#important-linux-commands)
-    - [日誌分析工具](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/important-tools/#log-analysis-tools)
-- [效能提升](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/performance-improvements)
-    - [效能分析指令](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/performance-improvements/#performance-analysis-commands)
-    - [剖析工具](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/performance-improvements/#profiling-tools)
-    - [基準測試](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/performance-improvements/#benchmarking)
-    - [擴充](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/performance-improvements/#scaling)
-- [故障排除範例](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/troubleshooting-example)
-- [結論](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/conclusion)
-    - [延伸閱讀](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/conclusion/#further-readings)
+- [介紹](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/introduction)
+- [故障排除](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/troubleshooting)
+    - [故障排除流程圖](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/troubleshooting/#troubleshooting-flowchart)
+    - [一般實務](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/troubleshooting/#general-practices)
+    - [一般主機問題](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/troubleshooting/#general-host-issues)
+- [重要工具介紹](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/important-tools)
+    - [重要的 Linux 指令](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/important-tools/#important-linux-commands)
+    - [日誌分析工具](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/important-tools/#log-analysis-tools)
+- [效能提升](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/performance-improvements)
+    - [效能分析指令](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/performance-improvements/#performance-analysis-commands)
+    - [剖析工具](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/performance-improvements/#profiling-tools)
+    - [基準測試](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/performance-improvements/#benchmarking)
+    - [擴充](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/performance-improvements/#scaling)
+- [故障排除範例](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/troubleshooting-example)
+- [結論](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/conclusion)
+    - [延伸閱讀](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/conclusion/#further-readings)
 
 ## 介紹
 故障排除是營運與開發中非常重要的一環。它不是只靠閱讀一篇文章或完成線上課程就能學會的，

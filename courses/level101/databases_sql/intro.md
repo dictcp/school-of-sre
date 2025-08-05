@@ -1,7 +1,7 @@
 # 關聯式資料庫
 
 ### 先備知識
-*   完成 [Linux 課程](https://linkedin.github.io/school-of-sre/level101/linux_basics/intro/)
+*   完成 [Linux 課程](https://dictcp.github.io/school-of-sre/level101/linux_basics/intro/)
 *   安裝 Docker（用於實驗部分）
 
 ### 這門課程的期望
@@ -21,13 +21,13 @@
 [RDBMS 概念](https://beginnersbook.com/2015/04/rdbms-concepts/)
 
 ### 課程內容
-- [關鍵概念](https://linkedin.github.io/school-of-sre/level101/databases_sql/concepts/)
-- [MySQL 架構](https://linkedin.github.io/school-of-sre/level101/databases_sql/mysql/#mysql-architecture)
-- [InnoDB](https://linkedin.github.io/school-of-sre/level101/databases_sql/innodb/)
-- [備份與還原](https://linkedin.github.io/school-of-sre/level101/databases_sql/backup_recovery/)
-- [MySQL 複寫](https://linkedin.github.io/school-of-sre/level101/databases_sql/replication/)
+- [關鍵概念](https://dictcp.github.io/school-of-sre/level101/databases_sql/concepts/)
+- [MySQL 架構](https://dictcp.github.io/school-of-sre/level101/databases_sql/mysql/#mysql-architecture)
+- [InnoDB](https://dictcp.github.io/school-of-sre/level101/databases_sql/innodb/)
+- [備份與還原](https://dictcp.github.io/school-of-sre/level101/databases_sql/backup_recovery/)
+- [MySQL 複寫](https://dictcp.github.io/school-of-sre/level101/databases_sql/replication/)
 - 運作概念
-    - [SELECT 查詢](https://linkedin.github.io/school-of-sre/level101/databases_sql/select_query/)
-    - [查詢效能](https://linkedin.github.io/school-of-sre/level101/databases_sql/query_performance/)
-- [實驗](https://linkedin.github.io/school-of-sre/level101/databases_sql/lab/)
-- [進一步閱讀](https://linkedin.github.io/school-of-sre/level101/databases_sql/conclusion/#further-reading)
+    - [SELECT 查詢](https://dictcp.github.io/school-of-sre/level101/databases_sql/select_query/)
+    - [查詢效能](https://dictcp.github.io/school-of-sre/level101/databases_sql/query_performance/)
+- [實驗](https://dictcp.github.io/school-of-sre/level101/databases_sql/lab/)
+- [進一步閱讀](https://dictcp.github.io/school-of-sre/level101/databases_sql/conclusion/#further-reading)

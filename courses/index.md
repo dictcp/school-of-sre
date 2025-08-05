@@ -16,27 +16,27 @@ SREs 引入工程實踐以維持網站運作。每個分散式系統都由許多
 
 - 段階 101
     - 基礎系列
-        - [Linux 基礎](https://linkedin.github.io/school-of-sre/level101/linux_basics/intro/)
-        - [Git](https://linkedin.github.io/school-of-sre/level101/git/git-basics/)
-        - [Linux 網路](https://linkedin.github.io/school-of-sre/level101/linux_networking/intro/)
-    - [Python 與網頁](https://linkedin.github.io/school-of-sre/level101/python_web/intro/)
+        - [Linux 基礎](https://dictcp.github.io/school-of-sre/level101/linux_basics/intro/)
+        - [Git](https://dictcp.github.io/school-of-sre/level101/git/git-basics/)
+        - [Linux 網路](https://dictcp.github.io/school-of-sre/level101/linux_networking/intro/)
+    - [Python 與網頁](https://dictcp.github.io/school-of-sre/level101/python_web/intro/)
     - 資料
-        - [關聯式資料庫（MySQL）](https://linkedin.github.io/school-of-sre/level101/databases_sql/intro/)
-        - [NoSQL 概念](https://linkedin.github.io/school-of-sre/level101/databases_nosql/intro/)
-        - [大數據](https://linkedin.github.io/school-of-sre/level101/big_data/intro/)
-    - [系統設計](https://linkedin.github.io/school-of-sre/level101/systems_design/intro/)
-    - [指標與監控](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/introduction/)
-    - [安全](https://linkedin.github.io/school-of-sre/level101/security/intro/)
+        - [關聯式資料庫（MySQL）](https://dictcp.github.io/school-of-sre/level101/databases_sql/intro/)
+        - [NoSQL 概念](https://dictcp.github.io/school-of-sre/level101/databases_nosql/intro/)
+        - [大數據](https://dictcp.github.io/school-of-sre/level101/big_data/intro/)
+    - [系統設計](https://dictcp.github.io/school-of-sre/level101/systems_design/intro/)
+    - [指標與監控](https://dictcp.github.io/school-of-sre/level101/metrics_and_monitoring/introduction/)
+    - [安全](https://dictcp.github.io/school-of-sre/level101/security/intro/)
 
 - 段階 102
-    - [Linux 進階](https://linkedin.github.io/school-of-sre/level102/linux_intermediate/introduction/)
+    - [Linux 進階](https://dictcp.github.io/school-of-sre/level102/linux_intermediate/introduction/)
     - Linux 高階
-        - [容器與編排](https://linkedin.github.io/school-of-sre/level102/containerization_and_orchestration/intro/)
-        - [系統呼叫與訊號](https://linkedin.github.io/school-of-sre/level102/system_calls_and_signals/intro/)
-    - [網路](https://linkedin.github.io/school-of-sre/level102/networking/introduction/)
-    - [系統設計](https://linkedin.github.io/school-of-sre/level102/system_design/intro/)
-    - [系統故障排除與效能優化](https://linkedin.github.io/school-of-sre/level102/system_troubleshooting_and_performance/introduction/)
-    - [持續整合與持續部署](https://linkedin.github.io/school-of-sre/level102/continuous_integration_and_continuous_delivery/introduction/)
+        - [容器與編排](https://dictcp.github.io/school-of-sre/level102/containerization_and_orchestration/intro/)
+        - [系統呼叫與訊號](https://dictcp.github.io/school-of-sre/level102/system_calls_and_signals/intro/)
+    - [網路](https://dictcp.github.io/school-of-sre/level102/networking/introduction/)
+    - [系統設計](https://dictcp.github.io/school-of-sre/level102/system_design/intro/)
+    - [系統故障排除與效能優化](https://dictcp.github.io/school-of-sre/level102/system_troubleshooting_and_performance/introduction/)
+    - [持續整合與持續部署](https://dictcp.github.io/school-of-sre/level102/continuous_integration_and_continuous_delivery/introduction/)
 
 我們相信持續學習有助於深入知識與技能擴充。每個單元附有參考資料，供更深入的學習指引。我們期望透過這些單元，能構築站點可靠性工程師所需的核心技能。
 

@@ -10,11 +10,11 @@
 
 ## 課程內容
 
-* [訊息服務介紹](https://linkedin.github.io/school-of-sre/level101/messagequeue/intro/#introduction)
-* [傳遞保證](https://linkedin.github.io/school-of-sre/level101/messagequeue/key_concepts/#delivery-guarantees)
-* [訊息排序與並行處理](https://linkedin.github.io/school-of-sre/level101/messagequeue/key_concepts/#messages-ordering-and-parallelism)
-* [Fan Out / In](https://linkedin.github.io/school-of-sre/level101/messagequeue/key_concepts/#fan-out--in)
-* [毒丸訊息與死信](https://linkedin.github.io/school-of-sre/level101/messagequeue/key_concepts/#poison-pills-and-dead-letters)
+* [訊息服務介紹](https://dictcp.github.io/school-of-sre/level101/messagequeue/intro/#introduction)
+* [傳遞保證](https://dictcp.github.io/school-of-sre/level101/messagequeue/key_concepts/#delivery-guarantees)
+* [訊息排序與並行處理](https://dictcp.github.io/school-of-sre/level101/messagequeue/key_concepts/#messages-ordering-and-parallelism)
+* [Fan Out / In](https://dictcp.github.io/school-of-sre/level101/messagequeue/key_concepts/#fan-out--in)
+* [毒丸訊息與死信](https://dictcp.github.io/school-of-sre/level101/messagequeue/key_concepts/#poison-pills-and-dead-letters)
 
 ## 介紹
 

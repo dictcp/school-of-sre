@@ -2,13 +2,13 @@
 
 # 先決條件
 
--   [Linux 基礎](https://linkedin.github.io/school-of-sre/level101/linux_basics/intro/)
+-   [Linux 基礎](https://dictcp.github.io/school-of-sre/level101/linux_basics/intro/)
 
--   [Python 與網路](https://linkedin.github.io/school-of-sre/level101/python_web/intro/)
+-   [Python 與網路](https://dictcp.github.io/school-of-sre/level101/python_web/intro/)
 
--   [系統設計](https://linkedin.github.io/school-of-sre/level101/systems_design/intro/)
+-   [系統設計](https://dictcp.github.io/school-of-sre/level101/systems_design/intro/)
 
--   [Linux 網路基礎](https://linkedin.github.io/school-of-sre/level101/linux_networking/intro/)
+-   [Linux 網路基礎](https://dictcp.github.io/school-of-sre/level101/linux_networking/intro/)
 
 
 ## 本課程預期學習成果
@@ -44,26 +44,26 @@
 
 ## 課程內容
 
--   [介紹](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/introduction/#introduction)
+-   [介紹](https://dictcp.github.io/school-of-sre/level101/metrics_and_monitoring/introduction/#introduction)
 
-    -   [監控的四大黃金訊號](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/introduction/#four-golden-signals-of-monitoring)
+    -   [監控的四大黃金訊號](https://dictcp.github.io/school-of-sre/level101/metrics_and_monitoring/introduction/#four-golden-signals-of-monitoring)
 
-    -   [監控為何重要？](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/introduction/#why-is-monitoring-important)
+    -   [監控為何重要？](https://dictcp.github.io/school-of-sre/level101/metrics_and_monitoring/introduction/#why-is-monitoring-important)
 
--   [指令列工具](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/command-line_tools/)
+-   [指令列工具](https://dictcp.github.io/school-of-sre/level101/metrics_and_monitoring/command-line_tools/)
 
--   [第三方監控](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/third-party_monitoring/)
+-   [第三方監控](https://dictcp.github.io/school-of-sre/level101/metrics_and_monitoring/third-party_monitoring/)
 
--   [利用警報進行主動監控](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/alerts/)
+-   [利用警報進行主動監控](https://dictcp.github.io/school-of-sre/level101/metrics_and_monitoring/alerts/)
 
--   [監控最佳實踐](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/best_practices/)
+-   [監控最佳實踐](https://dictcp.github.io/school-of-sre/level101/metrics_and_monitoring/best_practices/)
 
--   [可觀察性](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/observability/)
+-   [可觀察性](https://dictcp.github.io/school-of-sre/level101/metrics_and_monitoring/observability/)
 
-    -   [日誌](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/observability/#logs)
-    -   [追蹤](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/bservability/#tracing)
+    -   [日誌](https://dictcp.github.io/school-of-sre/level101/metrics_and_monitoring/observability/#logs)
+    -   [追蹤](https://dictcp.github.io/school-of-sre/level101/metrics_and_monitoring/bservability/#tracing)
 
-[結論](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/conclusion/)
+[結論](https://dictcp.github.io/school-of-sre/level101/metrics_and_monitoring/conclusion/)
 
 
 ##
@@ -178,5 +178,5 @@
      一旦偵測出異常就會通知相關人員。
      每個警報都有一組規則用以識別異常狀況。
      今天許多指標伺服器如 [Grafana](https://github.com/grafana/grafana) 皆支持警報管理。
-     我們將在[後文詳細討論警報](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/alerts/)。
+     我們將在[後文詳細討論警報](https://dictcp.github.io/school-of-sre/level101/metrics_and_monitoring/alerts/)。
      例子有 [Grafana](https://github.com/grafana/grafana) 和 [Icinga](https://icinga.com/)。

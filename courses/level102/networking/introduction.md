@@ -3,11 +3,11 @@
 
 建議具備網路安全、TCP 以及數據中心設置的基本知識，並熟悉相關常用術語。此外，讀者應該先閱讀 School of SRE 的內容 - 
 
-- [Linux 網路](http://linkedin.github.io/school-of-sre/level101/linux_networking/intro/)
+- [Linux 網路](https://dictcp.github.io/school-of-sre/level101/linux_networking/intro/)
 
-- [系統設計](http://linkedin.github.io/school-of-sre/level101/systems_design/intro/)
+- [系統設計](https://dictcp.github.io/school-of-sre/level101/systems_design/intro/)
 
-- [安全性](http://linkedin.github.io/school-of-sre/level101/security/intro/)
+- [安全性](https://dictcp.github.io/school-of-sre/level101/security/intro/)
 
 # 課程預期內容
 
@@ -28,11 +28,11 @@ RTT（延遲） - 延遲在判斷分散式服務/應用整體效能中扮演關�
 雖然這些參數對應用設計有一定影響，我們將不深入探討設計細節。這些主題範圍廣泛，課程目標是介紹各參數術語及其相關性，而非提供每項技術的完整詳解。
 
 # 課程內容
-1. [安全性](http://linkedin.github.io/school-of-sre/level102/networking/security/)
-2. [規模](https://linkedin.github.io/school-of-sre/level102/networking/scale/)
-3. [RTT](http://linkedin.github.io/school-of-sre/level102/networking/rtt/)
-4. [基礎設施特性](http://linkedin.github.io/school-of-sre/level102/networking/Infrastructure-features/)
-5. [總結](http://linkedin.github.io/school-of-sre/level102/networking/Conclusion/)
+1. [安全性](https://dictcp.github.io/school-of-sre/level102/networking/security/)
+2. [規模](https://dictcp.github.io/school-of-sre/level102/networking/scale/)
+3. [RTT](https://dictcp.github.io/school-of-sre/level102/networking/rtt/)
+4. [基礎設施特性](https://dictcp.github.io/school-of-sre/level102/networking/Infrastructure-features/)
+5. [總結](https://dictcp.github.io/school-of-sre/level102/networking/Conclusion/)
 
 
 # 術語說明
