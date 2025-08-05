@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#application-requirements" class="md-skip">
+        <a href="#_1" class="md-skip">
           Skip to content
         </a>
       
@@ -5021,45 +5021,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#application-requirements" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Application requirements
+      應用需求
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#slis-and-slos" class="md-nav__link">
+  <a href="#sli-slo" class="md-nav__link">
     <span class="md-ellipsis">
-      SLIs and SLOs
+      SLI 與 SLO
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#defining-application-requirements-in-terms-of-slis-and-slos" class="md-nav__link">
+  <a href="#sli-slo_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Defining application requirements in terms of SLIs and SLOs
+      以 SLI 與 SLO 定義應用需求
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#estimating-resource-requirements" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Estimating resource requirements
+      資源需求估算
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      References:
+      參考資料
     </span>
   </a>
   
@@ -5977,45 +5977,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#application-requirements" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Application requirements
+      應用需求
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#slis-and-slos" class="md-nav__link">
+  <a href="#sli-slo" class="md-nav__link">
     <span class="md-ellipsis">
-      SLIs and SLOs
+      SLI 與 SLO
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#defining-application-requirements-in-terms-of-slis-and-slos" class="md-nav__link">
+  <a href="#sli-slo_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Defining application requirements in terms of SLIs and SLOs
+      以 SLI 與 SLO 定義應用需求
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#estimating-resource-requirements" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Estimating resource requirements
+      資源需求估算
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      References:
+      參考資料
     </span>
   </a>
   
@@ -6038,153 +6038,97 @@
 
   <h1>Large System Design</h1>
 
-<p>Designing a system usually starts out to be abstract - we have large functional blocks that need to work together and are abstracted away into frontend, backend and database layers. However, when it is time to implement the system, especially as an SRE we have no other choice but to think in specific terms. Servers have a fixed amount of memory, storage capacity and processing power. So we need to think about the realistic expectations from our system, assess the requirements, translate them into specific requirements from each component of the system like network, storage and compute. This is typically how almost
-all large scale systems are built. The folks over at Google have formalized this approach to designing systems as ‘Non abstract large system design’ (NALSD). According to the Google site reliability workbook,</p>
+<p>設計系統通常一開始會比較抽象——我們會有大型的功能區塊需要彼此合作，並被抽象化為前端、後端及資料庫層。然而，當真正要實作系統時，尤其是身為 SRE，我們別無選擇只能以具體的尺度來思考。伺服器擁有固定的記憶體、儲存空間和運算能力。因此，我們需要思考系統的實際期望，評估需求，並將其轉換為系統中每個組件（例如網路、儲存與運算）的具體需求。這基本上是幾乎所有大型系統建構的方式。Google 的同事們將此設計系統的方式正式化為「非抽象大型系統設計」（Non abstract large system design，簡稱 NALSD）。根據 Google Site Reliability Workbook 的說法，</p>
 <blockquote>
-<p>“Practically, NALSD combines elements of capacity planning, component isolation, and graceful system degradation that are crucial to highly available production systems.” </p>
+<p>「實際上，NALSD 結合了容量規劃、組件隔離以及優雅系統降級等元素，而這些對於高可用的生產系統至關重要。」</p>
 </blockquote>
-<p>We will be using an approach similar to this to build our system.</p>
-<h2 id="application-requirements">Application requirements</h2>
-<p>Let us define our application requirements in more concrete terms i.e.,
-specific functions:</p>
-<p>Our photo sharing application must let the user</p>
+<p>我們將採用類似的方法來建立我們的系統。</p>
+<h2 id="_1">應用需求</h2>
+<p>讓我們以更具體的方式定義應用需求，也就是具體的功能：</p>
+<p>我們的照片分享應用必須讓使用者能夠</p>
 <ul>
 <li>
-<p>Sign up to become a member, and login to the application</p>
+<p>註冊成為會員並登入應用程式</p>
 </li>
 <li>
-<p>Upload photographs, and optionally add a description and tag location and/or people</p>
+<p>上傳照片，並可選擇新增描述、標註地點及/或人物</p>
 </li>
 <li>
-<p>Follow other users on the platform</p>
+<p>追蹤平台上的其他使用者</p>
 </li>
 <li>
-<p>See a feed comprising of photos from other users that they follow</p>
+<p>查看包含所追蹤使用者照片的動態訊息（feed）</p>
 </li>
 <li>
-<p>View their own profile page, and manage who they follow</p>
+<p>查看個人頁面，並管理追蹤清單</p>
 </li>
 </ul>
-<p>Let us define expectations for the application’s performance for a
-better user experience. We also need to define the health of the system.
-SLIs and SLOs help us do just that.</p>
-<h2 id="slis-and-slos">SLIs and SLOs</h2>
-<p>The Google SRE book defines service level indicator(SLI) as “a carefully
-defined quantitative measure of some aspect of the level of service that
-is provided.” For our application, we can define multiple SLIs. One
-indicator can be the response time for loading the feed for our photo
-sharing application. Picking the right set of SLIs is very important
-since they essentially help us define the health of the system as a
-whole using concrete data. SLIs for an application are defined by the
-owners of the service, in consultation with the SREs.</p>
-<p>Service level objective (SLO) is defined as “a target value or range of
-values for a service level that is measured by an SLI”. SLO is a way for
-us to anchor ourselves to an optimal user experience by defining SLI
-boundaries. If our application takes a long time to load the feed, users
-might not open it very often. As a result, an example of SLO can be that
-at least 99% of the users should see their feed loaded within 1 second.</p>
-<p>Now that we have defined SLIs and SLOs, let us define the application’s
-scalability, reliability and performance characteristics in terms of
-specific SLI and SLO levels.</p>
-<h2 id="defining-application-requirements-in-terms-of-slis-and-slos">Defining application requirements in terms of SLIs and SLOs</h2>
-<p>The following can be some of the expectations for our application:</p>
+<p>接著我們要定義應用在效能上的期望，以提升使用者體驗；同時也要定義系統的健康狀態。SLI 和 SLO 就能達成此目的。</p>
+<h2 id="sli-slo">SLI 與 SLO</h2>
+<p>Google SRE 書中定義服務等級指標（Service Level Indicator，SLI）為「一個經過仔細定義的量化衡量，衡量某個服務等級層面的某些方面」。對我們的應用，可以定義多個 SLI。舉例來說，一個指標可以是照片分享應用中載入動態訊息的回應時間。選擇合適的一組 SLI 非常重要，因為它們本質上可以透過具體數據定義系統整體的健康。應用的 SLI 由服務擁有者與 SRE 共同協商制定。</p>
+<p>服務等級目標（Service Level Objective，SLO）定義為「由一個 SLI 衡量的服務水準目標值或目標範圍」。SLO 是我們用來藉由定義 SLI 的界線，將自己錨定在最佳使用者體驗上的方法。如果應用載入動態訊息反應很慢，使用者可能會不常打開，舉例來說，一個 SLO 可能是：至少 99% 的使用者的動態訊息需在 1 秒內完成載入。</p>
+<p>現在我們已定義了 SLI 和 SLO，讓我們用具體的 SLI 與 SLO 水準來定義應用的可擴充性、可靠度與效能特性。</p>
+<h2 id="sli-slo_1">以 SLI 與 SLO 定義應用需求</h2>
+<p>以下是我們應用的一些期望：</p>
 <ul>
 <li>
-<p>Once the user successfully uploads the image, it should be accessible to the user and their followers 100% of the time, barring user elected deletion.</p>
+<p>使用者成功上傳圖片後，除非使用者自行刪除，圖片必須 100% 隨時可供使用者及其追蹤者觀看。</p>
 </li>
 <li>
-<p>At least 50000 unique visitors should be able to visit the site at any given time and view their feed.</p>
+<p>任一時刻應能容納至少 50,000 名獨立訪客造訪網站並瀏覽其動態訊息。</p>
 </li>
 <li>
-<p>99% of the users should be able to view their feeds in less than 1 second.</p>
+<p>99% 的使用者瀏覽動態訊息時，頁面載入時間應少於 1 秒。</p>
 </li>
 <li>
-<p>Upon uploading a new image, it should show up in the feed of the user’s followers within 15 minutes.</p>
+<p>新圖片上傳後，必須在 15 分鐘內出現在上傳者追蹤者的動態訊息中。</p>
 </li>
 <li>
-<p>Users should be able to upload potentially thousands of images. (as long as they are not abusing the service)</p>
+<p>使用者應能上傳數千張圖片（前提是未濫用服務）。</p>
 </li>
 </ul>
-<p>Since our ultimate aim is to learn system design, we will arbitrarily limit the functionalities of the system. This will help us keep sight of our aim, and keep us focussed.</p>
-<p>Having defined the functionalities and expectations for our system, let us quickly sketch an initial design.</p>
-<p><img alt="Initial Application Sketch" src="../images/initial_application_sketch.jpeg" /></p>
-<p>As of now, all the functionalities are residing on a single server,
-which has endpoints for all of these functions. We will attempt to build
-a system that satisfies our SLOs, is able to serve 50k concurrent users,
-and about a million total users. In the course of this attempt, we will
-discuss a string of concepts, some of which we have already seen in
-Phase 1 of this course.</p>
+<p>由於我們最終目標是學習系統設計，將會任意限制系統功能，以便專注目標與核心學習內容。</p>
+<p>既然已定義系統功能與期望，讓我們快速繪製初步設計圖。</p>
+<p><img alt="初步應用架構示意圖" src="../images/initial_application_sketch.jpeg" /></p>
+<p>目前，所有功能都在單一伺服器內，該伺服器包含所有相應的 API 端點。我們將嘗試建構一套符合我們 SLO、能服務 5 萬名並發用戶以及約百萬名總用戶的系統。在過程中，我們會討論一連串概念，其中一些已於本課程第一階段見過。</p>
 <div class="callout callout-danger">
-<h4>Caution</h4>
-Note that the numbers we have picked in the following sections are completely arbitrary. They have been chosen to demonstrate thinking about system design in a non-abstract manner. They have not been benchmarked, and bear no real world resemblance. Do not use them in any real world systems that you may be designing. You should come up with your own numbers, using the guiding principles we have relied upon here.
+<h4>注意</h4>
+請注意，本節所採用的所有數字均為任意選擇。這些數字被用來示範以非抽象方式思考系統設計，並未經過效能基準測試，且與現實世界無實際相符。請勿直接用於任何真實系統設計。您應依據此處所述的指導原則，自行制訂適合的數字。
 </div>
 
-<h2 id="estimating-resource-requirements">Estimating resource requirements</h2>
-<p><strong>Single Computer</strong></p>
-<p>If we wished to run the application on a single server, we would need to
-perform all the above functionalities from the diagram on this server
-itself. Let us perform some calculations to figure out what kind of
-resources we will need.</p>
-<p>Before anything else, we need to store the data about users, their
-uploads, follower information and any other metadata. We will choose a
-relational DB to store this information, like MySQL. Do note that we can also choose to use a NOSQL solution here. That would require a similar approach to calculate the requirements. Let us represent the users like so:</p>
+<h2 id="_2">資源需求估算</h2>
+<p><strong>單台電腦</strong></p>
+<p>若希望在單台伺服器上執行該應用，需在此伺服器上執行圖中所有功能。我們先估算需用到哪些資源。</p>
+<p>首先，要儲存使用者資料、上傳照片資料、追蹤者資訊及其他相關的中繼資料。我們將選擇關聯式資料庫來儲存這些資訊，例如 MySQL。當然也可以選用 NoSQL 解決方案，算資源需求方式相當；以下以關聯式資料庫示範設計表結構：</p>
+<p>使用者資料：</p>
 <pre><code>UserID(int)
 UserName(varchar)
 DisplayName(varchar)
 YearOfBirth(year)
 Email(varchar)
 </code></pre>
-<p>Photos can be represented like this:</p>
+<p>照片資料：</p>
 <pre><code>PhotoID(int)
 PhotoHash(varchar)
 Uploadtime(datetime)
 Location(varchar)
 OptionalFlag(varchar)
 </code></pre>
-<p>Followers can be represented like this:</p>
+<p>關注關係：</p>
 <pre><code>Follower(int)
 Followee(int)
 </code></pre>
-<p>Let us quickly estimate the storage needed for a hundred million total
-users. A single user would need 4B + 32B + 32B + 4B + 32B = 104 bytes. A
-hundred million users would need 10.4 GB storage. A single photo would
-need about 4B + 20B + 4B + 32B + 4B = 64 bytes of storage to store the metadata related to the photo. Assuming a
-million photos uploaded in one day, we would need about 64 MB of storage
-per day, just for the metadata. For the photo storage itself, we will need about 300GB per day,
-assuming 300KB average photo size.</p>
-<p>A single visitor opening our application simply hits our /get_feed
-endpoint upon logging in to the application. Let us quickly calculate
-the resources needed to serve this request. Assuming the initial feed
-loads 5 images (of 300 KB size on an average) and then does lazy loading
-to infinitely scroll, we will need to send about 1.5 megabytes of images
-to the user for his initial call. With a 1000 Mbps* network link to the
-server, we can send only about (1000/8)/1.5 or about 83 users all
-loading the feed at the same time, before we saturate the network link.
-If we needed to serve 50k concurrent users every second, we would need
-1.5*50000*8 = 600000 Mbps network throughput needed for every 5 images
-sent, assuming we send out all 5 images in a single second. If we are
-reading all of it from disk, we would likely hit disk throughput limits
-far before approaching anywhere near this amount of traffic.</p>
-<p>So in order to meet our application requirements, we would need a server
-that has ~310GB storage for the database and the images of one day, and
-about 600 Gbps link to serve 50k users concurrently, along with CPU
-required to perform all this. Clearly not the task for a single server.</p>
-<p>And do note that we have severely limited the information we are storing
-in the database. We would likely need an order of magnitude more
-information to be stored.</p>
-<p>While we clearly do not have any real world server that has the
-resources we calculated above, this exercise provides us some valuable
-data points about what the resource cost is. Armed with this
-information, let us work on scaling our system through system design to
-get us as close as possible to our goals for the application.</p>
-<p>* Modern servers even have multi-gigabit links, but it is highly
-unlikely that such a huge server will be serving our application alone.
-Modern cloud providers have VMs that also boast several gigabits of
-bandwidth, but they usually end up being throttled after certain limits.</p>
-<h2 id="references">References:</h2>
+<p>快速估算存放 1 億名使用者所需的儲存空間。每位使用者約需 4B + 32B + 32B + 4B + 32B = 104 bytes，1 億用戶約需 10.4 GB 儲存空間。每張照片約需 4B + 20B + 4B + 32B + 4B = 64 bytes 來存放其中繼資料。假設每天上傳 100 萬張照片，光是中繼資料也需要約 64MB 的儲存空間。若以 300KB 來計算平均照片大小，照片檔案本身一天約需 300GB 儲存空間。</p>
+<p>單一訪客登入應用時會呼叫 /get_feed 端點。我們來估算處理該請求所需的資源。假設動態訊息最初載入 5 張照片（每張約 300KB），並以惰性載入方式無限滾動，初始載入約需傳送 1.5 MB 的圖像資料給使用者。若伺服器網路以 1000 Mbps*計算，
+最多容納約 (1000/8)/1.5 = 約 83 位使用者同時同一時間載入動態訊息，否則網路頻寬會飽和。若我們要一次性處理 5 萬名並發用戶的動態訊息流量，每秒需處理 1.5 * 50,000 * 8 = 600,000 Mbps（600 Gbps）的網路吞吐量（假設 5 張圖一次性在 1 秒內送出）。而且如果全部從磁碟讀取，我們幾乎會先遇到磁碟效能瓶頸。</p>
+<p>因此，要滿足應用需求，我們需要一台約 310GB（儲存一天資料庫與照片）的伺服器，還要有約 600 Gbps 網路頻寬來服務 5 萬並發用戶，此外還要足夠的 CPU 來處理作業。顯然，單台伺服器無法負荷。</p>
+<p>且需注意，我們在設計資料庫時，已經大幅限制資料儲存內容，實際情況通常需要儲存規模更大數量級的資訊。</p>
+<p>雖然現實中沒有這麼強的單一伺服器，但此估算幫助我們了解資源成本。掌握這些資訊後，我們可以透過系統設計來擴充並努力達成應用目標。</p>
+<p>* 現代伺服器甚至有多 Gigabit 網速，但這麼高階的伺服器不太可能只服務我們的應用。現代雲端提供商的 VM 也具備多 Gigabit 頻寬，但通常在達到一定限制後就會被限速。</p>
+<h2 id="_3">參考資料</h2>
 <ol>
-<li><a href="https://www.mongodb.com/nosql-explained/nosql-vs-sql">SQL vs NoSQL databases</a> </li>
-<li><a href="https://sre.google/workbook/non-abstract-design/">Introducing Non-Abstract Large System Design</a></li>
+<li><a href="https://www.mongodb.com/nosql-explained/nosql-vs-sql">SQL 與 NoSQL 資料庫比較</a>  </li>
+<li><a href="https://sre.google/workbook/non-abstract-design/">介紹非抽象大型系統設計</a></li>
 </ol>
 
 

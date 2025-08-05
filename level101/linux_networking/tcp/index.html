@@ -1168,9 +1168,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#applications-in-sre-role" class="md-nav__link">
+  <a href="#sre" class="md-nav__link">
     <span class="md-ellipsis">
-      Applications in SRE role
+      SRE 角色中的應用
     </span>
   </a>
   
@@ -5949,9 +5949,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#applications-in-sre-role" class="md-nav__link">
+  <a href="#sre" class="md-nav__link">
     <span class="md-ellipsis">
-      Applications in SRE role
+      SRE 角色中的應用
     </span>
   </a>
   
@@ -5973,28 +5973,28 @@
 
 
 <h1 id="tcp">TCP</h1>
-<p>TCP is a transport layer protocol like UDP but it guarantees reliability, flow control and congestion control.
-TCP guarantees reliable delivery by using sequence numbers. A TCP connection is established by a three-way handshake. In our case, the client sends a <code>SYN</code> packet along with the starting sequence number it plans to use, the server acknowledges the <code>SYN</code> packet and sends a <code>SYN</code> with its sequence number. Once the client acknowledges the <code>SYN</code> packet, the connection is established. Each data transferred from here on is considered delivered reliably once acknowledgement for that sequence is received by the concerned party.</p>
-<p><img alt="3-way handshake" src="../images/established.png" /></p>
-<pre><code class="language-bash"># To understand handshake run packet capture on one bash session
+<p>TCP 是一種與 UDP 類似的傳輸層協議，但它保證可靠性、流量控制及擁塞控制。<br />
+TCP 透過使用序列號來保證可靠傳送。TCP 連線是由三次握手建立的。在這個過程中，客戶端會送出帶有初始序列號的 <code>SYN</code> 封包，伺服器收到後回傳一個帶有確認訊號的 <code>SYN</code> 封包與伺服器自己的序列號。當客戶端確認收到伺服器的 <code>SYN</code> 封包時，連線即建立。從此以後，每筆資料都被視為已被可靠成功傳送，一旦相關一方接收到該序列號的確認回應。</p>
+<p><img alt="三次握手" src="../images/established.png" /></p>
+<pre><code class="language-bash"># 若要了解握手過程，請在一個 bash 視窗執行封包擷取
 tcpdump -S -i any port 80
-# Run curl on one bash session
+# 在另一個 bash 視窗執行 curl
 curl www.linkedin.com
 </code></pre>
-<p><img alt="tcpdump-3way" src="../images/pcap.png" /></p>
-<p>Here, client sends a <code>SYN</code> flag shown by [S] flag with a sequence number <code>1522264672</code>. The server acknowledges receipt of <code>SYN</code> with an <code>ACK</code> [.] flag and a <code>SYN</code> flag for its sequence number [S]. The server uses the sequence number <code>1063230400</code> and acknowledges the client it's expecting sequence number <code>1522264673</code> (client sequence + 1). Client sends a zero length acknowledgement packet to the server (server sequence + 1) and connection stands established. This is called three way handshake. The client sends a 76 bytes length packet after this and increments its sequence number by 76. Server sends a 170 byte response and closes the connection. This was the difference we were talking about between HTTP/1.1 and HTTP/1.0. In HTTP/1.1, this same connection can be reused which reduces overhead of three-way handshake for each HTTP request. If a packet is missed between client and server, server won’t send an <code>ACK</code> to the client and client would retry sending the packet till the <code>ACK</code> is received. This guarantees reliability.
-The flow control is established by the <code>WIN</code> size field in each segment. The <code>WIN</code> size says available TCP buffer length in the kernel which can be used to buffer received segments. A size 0 means the receiver has a lot of lag to catch from its socket buffer and the sender has to pause sending packets so that receiver can cope up. This flow control protects from slow receiver and fast sender problem.</p>
-<p>TCP also does congestion control which determines how many segments can be in transit without an <code>ACK</code>. Linux provides us the ability to configure algorithms for congestion control which we are not covering here.</p>
-<p>While closing a connection, client/server calls a close syscall. Let's assume client do that. Client’s kernel will send a <code>FIN</code> packet to the server. Server’s kernel can’t close the connection till the close syscall is called by the server application. Once server app calls close, server also sends a <code>FIN</code> packet and client enters into <code>TIME_WAIT</code> state for 2*MSS (120s) so that this socket can’t be reused for that time period to prevent any TCP state corruptions due to stray stale packets. </p>
-<p><img alt="Connection tearing" src="../images/closed.png" /></p>
-<p>Armed with our TCP and HTTP knowledge, let's see how this is used by SREs in their role.</p>
-<h2 id="applications-in-sre-role">Applications in SRE role</h2>
+<p><img alt="tcpdump-三次握手" src="../images/pcap.png" /></p>
+<p>此圖中，客戶端發送一個 <code>SYN</code> 標誌 (用 [S] 表示)，序列號為 <code>1522264672</code>。伺服器收到後以帶有確認標誌 <code>ACK</code> (用 [.] 表示) 及自己的序列號標誌 <code>SYN</code> (用 [S] 表示) 回覆。伺服器使用序列號 <code>1063230400</code>，並確認它期待客戶端發送序列號 <code>1522264673</code>（客戶端序列號 + 1）。客戶端發送一個長度為零的確認封包給伺服器（伺服器序列號 + 1），此時連線正式建立。這就是所謂的三次握手。之後，客戶端發送了一個長度為 76 字節的封包，並將序列號增加 76。伺服器回應一個 170 字節的封包並關閉連線。這就是我們先前提到 HTTP/1.1 與 HTTP/1.0 的差異：在 HTTP/1.1 中，同一連線可以重複使用，減少了每次 HTTP 請求都需經過三次握手的額外負擔。若在客戶端與伺服器之間漏失封包，伺服器將不會回送 <code>ACK</code>，客戶端會重試傳送直到收到確認。這樣確保了可靠性。<br />
+流量控制則是由每個區段中的 <code>WIN</code> 大小欄位實現。<code>WIN</code> 大小表示內核中可用於緩衝接收區段的 TCP 緩衝區長度。數值為 0 表示接收方的緩衝區已積壓許多資料，發送方必須暫停發送，讓接收方能夠跟上。這項流量控制可防止「接收方速度慢，發送方速度快」的問題。</p>
+<p>TCP 也有擁塞控制機制，用於判斷在未收到 <code>ACK</code> 前可有多少封包在傳輸中。Linux 允許我們配置擁塞控制算法，這部分在此不做深入介紹。</p>
+<p>當關閉連線時，客戶端或伺服器會呼叫 close 系統呼叫。假設是客戶端呼叫，客戶端內核會送出一個 <code>FIN</code> 封包給伺服器。伺服器內核在伺服器應用呼叫 close 前不會關閉連線。當伺服器應用呼叫 close 後，伺服器也會發送一個 <code>FIN</code> 封包，客戶端則進入 <code>TIME_WAIT</code> 狀態 2*MSS（約 120 秒），此期間該連線 socket 不可重複使用，以避免殘留舊封包導致 TCP 狀態異常。</p>
+<p><img alt="連線關閉" src="../images/closed.png" /></p>
+<p>掌握了 TCP 與 HTTP 的知識之後，我們來看看 SRE 在工作中如何應用。</p>
+<h2 id="sre">SRE 角色中的應用</h2>
 <ol>
-<li>Scaling HTTP performance using load balancers need consistent knowledge about both TCP and HTTP. There are <a href="https://blog.envoyproxy.io/introduction-to-modern-network-load-balancing-and-proxying-a57f6ff80236?gi=428394dbdcc3">different kinds of load balancing</a> like L4, L7 load balancing, Direct Server Return etc. HTTPs offloading can be done on Load balancer or directly on servers based on the performance and compliance needs.</li>
-<li>Tweaking <code>sysctl</code> variables for <code>rmem</code> and <code>wmem</code> like we did for UDP can improve throughput of sender and receiver.</li>
-<li><code>sysctl</code> variable <code>tcp_max_syn_backlog</code> and socket variable <code>somax_conn</code> determines how many connections for which the kernel can complete 3-way handshake before app calling accept syscall. This is much useful in single-threaded applications. Once the backlog is full, new connections stay in <code>SYN_RCVD</code> state (when you run <code>netstat</code>) till the application calls accept syscall.</li>
-<li>Apps can run out of file descriptors if there are too many short-lived connections. Digging through <a href="http://lxr.linux.no/linux+v3.2.8/Documentation/networking/ip-sysctl.txt#L464">tcp_reuse and tcp_recycle</a> can help reduce time spent in the <code>TIME_WAIT</code> state (it has its own risk). Making apps reuse a pool of connections instead of creating ad hoc connection can also help.</li>
-<li>Understanding performance bottlenecks by seeing metrics and classifying whether it's a problem in App or network side. Example too many sockets in <code>CLOSE_WAIT</code> state is a problem on application whereas retransmissions can be a problem more on network or on OS stack than the application itself. Understanding the fundamentals can help us narrow down where the bottleneck is.</li>
+<li>利用負載平衡器擴展 HTTP 效能，需要對 TCP 與 HTTP 有深入了解。市面上有 <a href="https://blog.envoyproxy.io/introduction-to-modern-network-load-balancing-and-proxying-a57f6ff80236?gi=428394dbdcc3">不同形式的負載平衡</a>，例如 L4、L7 負載平衡與直接伺服器回傳（Direct Server Return）等。根據效能與合規需求，可以選擇在負載平衡器或直接在伺服器端執行 HTTPS 解除負載。</li>
+<li>調整 <code>sysctl</code> 參數中的 <code>rmem</code> 和 <code>wmem</code>（如同我們對 UDP 的調整）可提升發送端與接收端的吞吐率。</li>
+<li><code>sysctl</code> 參數 <code>tcp_max_syn_backlog</code> 與 socket 變數 <code>somax_conn</code> 決定內核可完成三次握手但尚未由應用呼叫 accept 系統呼叫的同時連線數量。這在單線程應用中特別有用。當 backlog 滿了，新的連線會停留在 <code>SYN_RCVD</code> 狀態（用 <code>netstat</code> 能看到）直到應用呼叫 accept。</li>
+<li>如果短暫連線過多，應用可能會耗盡檔案描述符。深入瞭解 <a href="http://lxr.linux.no/linux+v3.2.8/Documentation/networking/ip-sysctl.txt#L464">tcp_reuse 與 tcp_recycle</a> 參數可以幫助縮短在 <code>TIME_WAIT</code> 狀態的等待時間（但此方法風險也存在）。讓應用重用連線池而非大量建立新連線，也是改善策略之一。</li>
+<li>透過檢視指標與判斷瓶頸位置，是應用或是網路端問題。例如，若有太多 socket 處於 <code>CLOSE_WAIT</code> 狀態，問題多半在應用層；反覆重傳（retransmission）較可能是網路或作業系統棧的問題。掌握基礎原理可幫助我們更準確定位問題瓶頸。</li>
 </ol>
 
 

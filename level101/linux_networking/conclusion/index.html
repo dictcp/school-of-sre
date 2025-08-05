@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#conclusion" class="md-skip">
+        <a href="#_1" class="md-skip">
           Skip to content
         </a>
       
@@ -5910,14 +5910,14 @@
                   
 
 
-<h1 id="conclusion">Conclusion</h1>
-<p>With this, we have traversed through the TCP/IP stack completely. We hope there will be a different perspective when one opens any website in the browser post the course.</p>
-<p>During the course we have also dissected what are common tasks in this pipeline which falls under the ambit of SRE.</p>
-<h1 id="post-training-exercises">Post Training Exercises</h1>
+<h1 id="_1">結論</h1>
+<p>至此，我們已完整瀏覽了 TCP/IP 協定棧。希望在課程結束後，當大家在瀏覽器開啟任何網站時，能夠有不同的視角。</p>
+<p>在課程中，我們也剖析了這個流程中常見的任務，這些都屬於 SRE 的範疇。</p>
+<h1 id="_2">課後練習</h1>
 <ol>
-<li>Set up your own DNS resolver in the <code>dev</code> environment which acts as an authoritative DNS server for <code>example.com</code> and forwarder for other domains. Update <code>resolv.conf</code> to use the new DNS resolver running in <code>localhost</code>.</li>
-<li>Set up a site <code>dummy.example.com</code> in <code>localhost</code> and run a webserver with a self-signed certificate. Update the trusted CAs or pass self-signed CA’s public key as a parameter so that <code>curl https://dummy.example.com -v</code> works properly without self-signed cert warning.</li>
-<li>Update the routing table to use another host (container/VM) in the same network as a gateway for <code>8.8.8.8/32</code> and run <code>ping 8.8.8.8</code>. Do the packet capture on the new gateway to see L3 hop is working as expected (might need to disable <code>icmp_redirect</code>).</li>
+<li>在 <code>dev</code> 環境中架設自己的 DNS 解析器，作為 <code>example.com</code> 的權威 DNS 伺服器，並為其他網域轉發解析請求。更新 <code>resolv.conf</code> 使用在 <code>localhost</code> 執行的新 DNS 解析器。</li>
+<li>在 <code>localhost</code> 架設一個名為 <code>dummy.example.com</code> 的網站，並使用自簽章憑證執行網頁伺服器。更新受信任的憑證授權，或以參數傳入自簽章 CA 的公鑰，使得執行 <code>curl https://dummy.example.com -v</code> 時不會出現自簽章憑證警告。</li>
+<li>更新路由表，使用同一網路內另一台主機（container/VM）作為 <code>8.8.8.8/32</code> 的閘道，並執行 <code>ping 8.8.8.8</code>。同時對新閘道進行封包擷取，確認 L3 跳轉如預期般運作（可能需要停用 <code>icmp_redirect</code>）。</li>
 </ol>
 
 

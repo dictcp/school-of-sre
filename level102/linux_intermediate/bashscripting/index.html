@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#bash-scripting" class="md-skip">
+        <a href="#bash" class="md-skip">
           Skip to content
         </a>
       
@@ -3941,27 +3941,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Introduction
+      介紹
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#writing-the-first-bash-script" class="md-nav__link">
+  <a href="#bash_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Writing the first bash script:
+      撰寫第一個 bash 腳本：
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#taking-user-input-and-working-with-variables" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Taking user input and working with variables:
+      接受使用者輸入與變數操作：
     </span>
   </a>
   
@@ -3970,25 +3970,25 @@
         <li class="md-nav__item">
   <a href="#exit-status" class="md-nav__link">
     <span class="md-ellipsis">
-      Exit status:
+      退出狀態（Exit status）：
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#command-line-arguments-and-understanding-if-else-branching" class="md-nav__link">
+  <a href="#if-else" class="md-nav__link">
     <span class="md-ellipsis">
-      Command line arguments and understanding If … else branching:
+      命令列參數與 if … else 分支判斷：
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#looping-over-to-do-a-repeated-task" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      Looping over to do a repeated task.
+      迴圈來重複執行任務：
     </span>
   </a>
   
@@ -3997,7 +3997,7 @@
         <li class="md-nav__item">
   <a href="#function" class="md-nav__link">
     <span class="md-ellipsis">
-      Function
+      函式（Function）
     </span>
   </a>
   
@@ -6001,27 +6001,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Introduction
+      介紹
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#writing-the-first-bash-script" class="md-nav__link">
+  <a href="#bash_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Writing the first bash script:
+      撰寫第一個 bash 腳本：
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#taking-user-input-and-working-with-variables" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Taking user input and working with variables:
+      接受使用者輸入與變數操作：
     </span>
   </a>
   
@@ -6030,25 +6030,25 @@
         <li class="md-nav__item">
   <a href="#exit-status" class="md-nav__link">
     <span class="md-ellipsis">
-      Exit status:
+      退出狀態（Exit status）：
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#command-line-arguments-and-understanding-if-else-branching" class="md-nav__link">
+  <a href="#if-else" class="md-nav__link">
     <span class="md-ellipsis">
-      Command line arguments and understanding If … else branching:
+      命令列參數與 if … else 分支判斷：
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#looping-over-to-do-a-repeated-task" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      Looping over to do a repeated task.
+      迴圈來重複執行任務：
     </span>
   </a>
   
@@ -6057,7 +6057,7 @@
         <li class="md-nav__item">
   <a href="#function" class="md-nav__link">
     <span class="md-ellipsis">
-      Function
+      函式（Function）
     </span>
   </a>
   
@@ -6078,202 +6078,202 @@
                   
 
 
-<h1 id="bash-scripting">Bash Scripting</h1>
-<h2 id="introduction">Introduction</h2>
-<p>As an SRE, the Linux system sits at the core of our day to day work and so is bash scripting. It’s a scripting language that is run by Linux Bash Interpreter. Until now we have covered a lot of features mostly on a command line, now we will use this command line as an interpreter to write programs that will ease our day to day job as an SRE.</p>
-<h2 id="writing-the-first-bash-script">Writing the first bash script:</h2>
-<p>We will start with a simple program, we will use Vim as the editor during the whole journey.</p>
+<h1 id="bash">Bash 腳本撰寫</h1>
+<h2 id="_1">介紹</h2>
+<p>作為 SRE，Linux 系統是我們日常工作核心，而 bash 腳本也是如此。這是一種由 Linux Bash 直譯器執行的腳本語言。到目前為止，我們已經覆蓋了許多主要在命令列上的功能，現在我們將使用這個命令列作為直譯器來撰寫程式，讓我們的日常工作作為 SRE 更加輕鬆。</p>
+<h2 id="bash_1">撰寫第一個 bash 腳本：</h2>
+<p>我們從一個簡單的程式開始，整個過程中會使用 Vim 編輯器。</p>
 <pre><code>#!/bin/bash
 
-# This if my first bash script
-# Line starting with # is commented
+# 這是我的第一個 bash 腳本
+# 以 # 開頭的行是註解
 
 echo &quot;Hello world!&quot;
 </code></pre>
-<p>The first line of the script starting with “#!” is called she-bang. This is simply to let the system which interpreter to use while executing the script.</p>
-<p>Any Line starting with “#” (other than #!) is referred to as comments in script and is ignored by the interpreter while executing the script. Line 6 shows the “echo” command that we would be running.</p>
-<p>We will save this script as “firstscript.sh” and make the script executable using <code>chmod</code>.</p>
+<p>腳本第一行以 “#!” 開頭，稱為 she-bang。它告訴系統執行腳本時該使用哪個直譯器。</p>
+<p>除了 #! 外，所有以「#」開頭的行都是註解，執行時會被直譯器忽略。第 6 行展示了我們將執行的「echo」命令。</p>
+<p>我們將此腳本保存為 “firstscript.sh”，並使用 <code>chmod</code> 將腳本設為可執行。</p>
 <p><img alt="" src="../images/image16.png" /></p>
-<p>Next thing is to run the script with the explicit path. We can see the desired “Hello World!” as output.</p>
-<h2 id="taking-user-input-and-working-with-variables">Taking user input and working with variables:</h2>
-<p>Taking standard input using the <code>read</code> command and working with variables in bash.</p>
+<p>接下來使用明確路徑執行腳本，可以看到期望的「Hello World!」輸出。</p>
+<h2 id="_2">接受使用者輸入與變數操作：</h2>
+<p>使用 <code>read</code> 命令接受標準輸入，並使用 bash 的變數。</p>
 <pre><code>#!/bin/bash
 
-#We will take standard input
-#Will list all files at the path
-#We will concate variable and string
+# 我們會接受標準輸入
+# 將列出該路徑下的所有檔案
+# 將變數與字串串接
 
-echo &quot;Enter the path&quot;
+echo &quot;請輸入路徑&quot;
 read path
 
-echo &quot;How deep in directory you want to go:&quot;
+echo &quot;請輸入要遞迴的目錄深度:&quot;
 read depth
 
-echo &quot;All files at path &quot; $path
+echo &quot;路徑下的所有檔案 &quot; $path
 
 du -d $depth -all -h $path
 </code></pre>
-<p>We are reading path in variable “<em>path</em>” and variable “<em>depth</em>” to list files and directories up to that depth. We concatenated strings with variables. We always use <code>$</code> (dollar-sign) to reference the value it contains.</p>
+<p>我們將路徑讀入變數「<em>path</em>」，深度讀入「<em>depth</em>」，用來列出該路徑下到該深度的檔案和目錄。字串與變數已串接，使用 <code>$</code>（美元符號）來引用變數的值。</p>
 <p><img alt="" src="../images/image28.png" /></p>
-<p>We pass these variables to the <code>du</code> command to list out all the files and directories in that path upto the desired depth.</p>
-<h2 id="exit-status">Exit status:</h2>
-<p>Every command and script when it completes executing, returns an integer in the range from 0 to 255 to the system, this is called exit status. “0” denotes success of the command while non-zero return code usually indicates various kinds of errors.</p>
+<p>我們將這些變數傳給 <code>du</code> 命令，列出該路徑下到指定深度的所有檔案與目錄。</p>
+<h2 id="exit-status">退出狀態（Exit status）：</h2>
+<p>每個命令或腳本執行完畢後，會回傳一個介於 0 到 255 之間的整數，這稱為退出狀態。值「0」表示命令執行成功，非零值通常表示各種錯誤。</p>
 <p><img alt="" src="../images/image6.png" /></p>
-<p>We use <code>$?</code> special shell variable to get exit status of the last executed script or command.</p>
-<h2 id="command-line-arguments-and-understanding-if-else-branching">Command line arguments and understanding If … else branching:</h2>
-<p>Another way to pass some values to the script is using command line arguments. Usually command line arguments in bash are accessed by $ followed by the index. The 0th index refers to the file itself, <code>$1</code> to the first argument and so on. We use <code>$#</code> to check the count of arguments passed to the script.</p>
-<p>Making decisions in the programming language is it’s integral part, and to tackle different conditions we use if … else statements or some more nested variant of it.</p>
-<p>The below script uses multiple concepts in one script. The aim of the script is to get some properties of the file.</p>
-<p>Line 4 to 7 is the standard example of "if statement" in bash. Syntax is as explained below:</p>
-<pre><code>If [ condition ]; then
+<p>我們使用特殊 shell 變數 <code>$?</code> 取得上一個執行指令或腳本的退出狀態。</p>
+<h2 id="if-else">命令列參數與 if … else 分支判斷：</h2>
+<p>傳遞值給腳本的另一種方式是透過命令列參數。Bash 命令列參數通常以 <code>$</code> 後接索引存取，第 0 個 <code>$0</code> 指本身檔案，<code>$1</code> 是第一個參數，依此類推。<code>$#</code> 用來檢查傳入參數的個數。</p>
+<p>程式中做出判斷是基本功能，為了處理不同條件，我們使用 if … else 語句，或其巢狀變形。</p>
+<p>以下腳本結合了多個概念，目的在取得檔案屬性。</p>
+<p>第 4 到 7 行是 bash 中 if 判斷的標準範例。語法說明如下：</p>
+<pre><code>If [ 條件 ]; then
 
-If_block_to_execute
+    要執行的 if 代碼區塊
 
 else
 
-else_block_to_execute
+    要執行的 else 代碼區塊
 
 fi
 </code></pre>
-<p>fi is to close the if … else block. We are comparing count of argument($#) if it is equal to 1 or not. If not we prompt for only one argument and exit the script with status code 1(not a success). One or more if statements can exist without else statement but vice versa doesn’t make any sense.</p>
-<p>Operator -ne is used to compare two integers, read as “integer1 <em>not equal to</em> integer 2”. Other comparison operators are:</p>
+<p>fi 用來結束 if … else 區塊。我們比較參數數量 ($#) 是否等於 1，若不等會提示只能傳入一個參數並以狀態碼 1 （非成功）結束。可以有一個或多個 if 判斷沒有 else，但反過來不合理。</p>
+<p>運算子 -ne 是整數不等於的判斷，意為「整數1 <em>不等於</em> 整數2」。其他比較運算子如下：</p>
 <table>
 <thead>
 <tr>
-<th>Operations</th>
-<th>Description</th>
+<th>運算</th>
+<th>說明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>num1 -eq num2</strong></td>
-<td>check if 1st number is equal to 2nd number</td>
+<td>檢查第一個數字是否等於第二個數字</td>
 </tr>
 <tr>
 <td><strong>num1 -ge num2</strong></td>
-<td>checks if 1st number is greater than or equal to 2nd number</td>
+<td>檢查第一個數字是否大於或等於第二個數字</td>
 </tr>
 <tr>
 <td><strong>num1 -gt num2</strong></td>
-<td>checks if 1st number is greater than 2nd number</td>
+<td>檢查第一個數字是否大於第二個數字</td>
 </tr>
 <tr>
 <td><strong>num1 -le num2</strong></td>
-<td>checks if 1st number is less than or equal to 2nd number</td>
+<td>檢查第一個數字是否小於或等於第二個數字</td>
 </tr>
 <tr>
 <td><strong>num1 -lt num2</strong></td>
-<td>checks if 1st number is less than 2nd number</td>
+<td>檢查第一個數字是否小於第二個數字</td>
 </tr>
 </tbody>
 </table>
 <pre><code>#!/bin/bash
-# This script evaluate the status of a file
+# 此腳本評估檔案狀態
 
 if [ $# -ne 1 ]; then
-    echo &quot;Please pass one file name as argument&quot;
+    echo &quot;請傳入一個檔案名稱作為參數&quot;
     exit 1
 fi
 
 FILE=$1
 if [ -e &quot;$FILE&quot; ]; then
     if [ -f &quot;$FILE&quot; ]; then
-        echo &quot;$FILE is a regular file.&quot;
+        echo &quot;$FILE 是一般檔案。&quot;
     fi
     if [ -d &quot;$FILE&quot; ]; then
-        echo &quot;$FILE is a directory.&quot;
+        echo &quot;$FILE 是目錄。&quot;
     fi
     if [ -r &quot;$FILE&quot; ]; then
-        echo &quot;$FILE is readable.&quot;
+        echo &quot;$FILE 可讀。&quot;
     fi
     if [ -w &quot;$FILE&quot; ]; then
-        echo &quot;$FILE is writable.&quot;
+        echo &quot;$FILE 可寫。&quot;
     fi
     if [ -x &quot;$FILE&quot; ]; then
-        echo &quot;$FILE is executable/searchable.&quot;
+        echo &quot;$FILE 可執行/可搜尋。&quot;
     fi
 else
-    echo &quot;$FILE does not exist&quot;
+    echo &quot;$FILE 不存在&quot;
     exit 2
 fi
 
 exit 0
 </code></pre>
-<p>There are lots of file expressions to evaluate file,like in bash script “-e” in line 10 returns true if the file passed as argument exist, false otherwise. Below are the some widely used file expressions:</p>
+<p>有許多檔案測試表達式用來判斷檔案狀態，例如 bash 中的 “-e” 在第 10 行判斷傳入參數的檔案是否存在，存在為真，否則假。以下是常用的檔案測試表達式：</p>
 <table>
 <thead>
 <tr>
-<th>File Operations</th>
-<th>Description</th>
+<th>檔案操作</th>
+<th>說明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>-e file</strong></td>
-<td>File exists</td>
+<td>檔案存在</td>
 </tr>
 <tr>
 <td><strong>-d file</strong></td>
-<td>File exists and is directory</td>
+<td>檔案存在且是目錄</td>
 </tr>
 <tr>
 <td><strong>-f file</strong></td>
-<td>File exists and is regular file</td>
+<td>檔案存在且是一般檔案</td>
 </tr>
 <tr>
 <td><strong>-L file</strong></td>
-<td>File exists and is symbolic link</td>
+<td>檔案存在且是符號連結</td>
 </tr>
 <tr>
 <td><strong>-r file</strong></td>
-<td>File exists and has readable permission</td>
+<td>檔案存在且具有讀取權限</td>
 </tr>
 <tr>
 <td><strong>-w file</strong></td>
-<td>File exists and has writable permission</td>
+<td>檔案存在且具有寫入權限</td>
 </tr>
 <tr>
 <td><strong>-x file</strong></td>
-<td>File exists and has executable permission</td>
+<td>檔案存在且具有執行權限</td>
 </tr>
 <tr>
 <td><strong>-s file</strong></td>
-<td>File exists and size is greater than zero</td>
+<td>檔案存在且大小大於零</td>
 </tr>
 <tr>
 <td><strong>-S file</strong></td>
-<td>File exists and is a network socket.</td>
+<td>檔案存在且為網路 socket。</td>
 </tr>
 </tbody>
 </table>
 <p><img alt="" src="../images/image17.png" /></p>
-<p>Exit status is 2 when the file is not found. And if the file is found it prints out the properties it holds with exit status 0(success).</p>
-<h2 id="looping-over-to-do-a-repeated-task">Looping over to do a repeated task.</h2>
-<p>We usually come up with tasks that are mostly repetitive, looping helps us to code those repetitive tasks in a more formal manner. There are different types of loop statement we can use in bash:</p>
+<p>當檔案找不到時，退出狀態為 2。若檔案存在，則列印出其屬性並以 0 成功狀態退出。</p>
+<h2 id="_3">迴圈來重複執行任務：</h2>
+<p>我們通常會遇到重複性任務，使用迴圈可將重複任務以有結構的程式碼實作。bash 支援多種迴圈語句：</p>
 <table>
 <thead>
 <tr>
-<th>Loop</th>
-<th>Syntax</th>
+<th>迴圈</th>
+<th>語法</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>while</td>
-<td>while [ expression ]<br><br>do <br><br>    [ while_block_to_execute ]<br><br>done</td>
+<td>while [ 條件 ]<br><br>do <br><br>    [ while 區塊程式碼 ]<br><br>done</td>
 </tr>
 <tr>
 <td>for</td>
-<td>for variable in 1,2,3 .. n<br><br>do <br><br>    [ for_block_to_execute ]<br><br>done</td>
+<td>for 變數 in 1,2,3 .. n<br><br>do <br><br>    [ for 區塊程式碼 ]<br><br>done</td>
 </tr>
 <tr>
 <td>until</td>
-<td>until [ expression ] <br><br>do <br><br>    [ until_block_to_execute ]<br><br>done</td>
+<td>until [ 條件 ] <br><br>do <br><br>    [ until 區塊程式碼 ]<br><br>done</td>
 </tr>
 </tbody>
 </table>
 <pre><code>#!/bin/bash
-#Script to monitor the server
+# 監控伺服器的腳本
 
 hosts=`cat host_list`
 
@@ -6285,30 +6285,30 @@ do
         ping -c 1 -q &quot;$h&quot; &amp;&gt;/dev/null
         if [ $? -eq 0 ]
         then
-            echo `date` &quot;server $h alive&quot;
+            echo `date` &quot;伺服器 $h 正常&quot;
         else
-            echo `date` &quot;server $h is dead&quot;
+            echo `date` &quot;伺服器 $h 已離線&quot;
         fi
     done
     sleep 60
 done
 </code></pre>
-<p>Monitoring a server is an important part of being an SRE. The file “host_list” contains the list of host which we want to monitor.</p>
-<p>We used an infinite “while” loop that will sleep every 60seconds. And for each host in the host_list we want to ping that host and check if that ping was successful with its exit status, if it’s successful we say server is live or it’s dead.</p>
+<p>監控伺服器是 SRE 的重要工作。檔案 “host_list” 包含想監控主機清單。</p>
+<p>我們使用無限的 while 迴圈，每 60 秒執行一次。對 host_list 中的每個主機，我們 ping 該主機並透過退出狀態判斷 ping 是否成功，成功則表示伺服器在線，否則是離線。</p>
 <p><img alt="" src="../images/image13.png" /></p>
-<p>The output of the script shows it is running every minute with the timestamp.</p>
-<h2 id="function">Function</h2>
-<p>Developers always try to make their applications/programs in modular fashion so that they don’t have to write the same code every time and everywhere to carry out similar tasks. Functions help us achieve this.</p>
-<p>We usually call functions with some arguments and expect result based on that argument.</p>
-<p>The backup process we discussed in earlier section, we will try to automate that process using the below script and also get familiar with some more concepts like string comparison, functions and logical AND and OR operations.</p>
-<p>In the below code “log_backup” is a function which won’t be executed until it is called.</p>
-<p>Line37 will be executed first where we will check the no. of arguments passed to the script.</p>
-<p>There are many logical operators like AND,OR, XOR etc.</p>
+<p>腳本輸出顯示它每分鐘執行一次，並列出目前時間戳記。</p>
+<h2 id="function">函式（Function）</h2>
+<p>開發者通常讓程式模組化，以免每次在各處重複撰寫相同程式碼。函式可達成此目的。</p>
+<p>函式會被呼叫與傳入參數，並依參數產生結果。</p>
+<p>前述備份過程可藉下面腳本自動化，並學習更進階的字串比較、函式及邏輯 AND 與 OR 運算。</p>
+<p>以下程式中「log_backup」是函式，直到被呼叫前不會執行。</p>
+<p>第 37 行為先執行，檢查傳入腳本的參數數目。</p>
+<p>有多種邏輯運算子如 AND、OR、XOR 等。</p>
 <table>
 <thead>
 <tr>
-<th>Logical Operator</th>
-<th>Symbol</th>
+<th>邏輯運算符</th>
+<th>符號</th>
 </tr>
 </thead>
 <tbody>
@@ -6326,46 +6326,46 @@ done
 </tr>
 </tbody>
 </table>
-<p>Passing the wrong argument to script “backup.sh” will prompt for correct usage. We have to pass whether we want to have incremental backup of the directory or the full backup along with the path of the directory we want to backup. If we want the incremental backup we will an additional argument as a meta file which is used to store the information of previous backed up files.(usually a metafile is .snar extension).</p>
+<p>若傳錯參數給腳本「backup.sh」，會提示正確用法。我們需告知想做的是增量備份或完整備份，以及要備份的目錄路徑。增量備份時會多傳一個 meta 檔案參數，用來儲存先前已備份檔案的資訊（通常 meta 檔為 .snar 副檔名）。</p>
 <pre><code>#!/bin/bash
-#Scripts to take incremental and full backup
+# 增量與完整備份腳本
 
 backup_dir=&quot;/mnt/backup/&quot;
 time_stamp=&quot;`date +%d-%m-%Y-%Hh-%Mm-%Ss`&quot;
 
 log_backup(){
     if [ $# -lt 2 ]; then
-        echo &quot;Usage: ./backup.sh [backup_type] [log_path]&quot;
+        echo &quot;用法: ./backup.sh [backup_type] [log_path]&quot;
         exit 1;
     fi
     if [ $1 == &quot;incremental&quot; ]; then
         if [ $# -ne 3 ]; then
-            echo &quot;Usage: ./backup.sh [backup_type] [log_path] [meta_file]&quot;
+            echo &quot;用法: ./backup.sh [backup_type] [log_path] [meta_file]&quot;
             exit 3;
         fi
         tar --create --listed-incremental=$3 --verbose --verbose --file=&quot;${backup_dir}incremental-${time_stamp}.tar&quot; $2
         if [ $? -eq 0 ]; then
-            echo &quot;Incremental backup succesful at '${backup_dir}incremental-${time_stamp}.tar'&quot;
+            echo &quot;增量備份成功於 '${backup_dir}incremental-${time_stamp}.tar'&quot;
         else
-            echo &quot;Incremental Backup Failure&quot;
+            echo &quot;增量備份失敗&quot;
         fi
 
     elif [ $1 == &quot;full&quot; ];then
         tar cf &quot;${backup_dir}fullbackup-${time_stamp}.tar&quot; $2
         if [ $? -eq 0 ];then
-            echo &quot;Full backup successful at '${backup_dir}fullbackup-${time_stamp}.tar'&quot;
+            echo &quot;完整備份成功於 '${backup_dir}fullbackup-${time_stamp}.tar'&quot;
         else
-            echo &quot;Full Backup Failure&quot;
+            echo &quot;完整備份失敗&quot;
         fi
     else
-        echo &quot;Unknown parameter passed&quot;
-        echo &quot;Usage: ./backup.sh [incremental|full] [log_path]&quot;
+        echo &quot;參數錯誤&quot;
+        echo &quot;用法: ./backup.sh [incremental|full] [log_path]&quot;
         exit 2;
     fi
 }
 
 if [ $# -lt 2 ] || [ $# -gt 3 ];then
-    echo &quot;Usage: ./backup.sh [incremental|full] [log_path]&quot;
+    echo &quot;用法: ./backup.sh [incremental|full] [log_path]&quot;
     exit 1
 elif [ $# -eq 2 ];then
     log_backup $1 $2
@@ -6374,38 +6374,37 @@ elif [ $# -eq 3 ];then
 fi
 exit 0
 </code></pre>
-<p>Passing all 3 arguments for incremental backup will take incremental backup at “/mnt/backup/” with each archive having timestamp concatenated to each file.</p>
+<p>傳入三個參數做增量備份，會在「/mnt/backup/」路徑建立備份檔，每個檔案名稱包含時間戳記。</p>
 <p><img alt="" src="../images/image20.png" /></p>
-<p>The arguments passed inside the function can be accessed via <code>$</code> followed by the index. The 0th index refers to the function itself,</p>
-<p><code>$1</code> to the first argument and so on. We use <code>#$</code> to check the count of arguments passed to the function.</p>
-<p>Once we pass the string “incremental” or “full” it gets compared inside the function and the specific block is executed. Below are some more operations that can be performed over strings.</p>
+<p>在函式內傳入的參數可用 <code>$</code> 加索引的方式存取，第 0 個代表函式本身，<code>$1</code> 是第一個參數，依此類推。<code>#$</code> 用來檢查傳入函式的參數個數。</p>
+<p>傳入字串「incremental」或「full」會被函式內比較並執行對應區塊。以下是更多可執行在字串上的操作：</p>
 <table>
 <thead>
 <tr>
-<th>String Operations</th>
-<th>Description</th>
+<th>字串操作</th>
+<th>說明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>string1 == string2</td>
-<td>Returns true if string1 equals string 2 otherwise false.</td>
+<td>如果 string1 等於 string2 則回傳真，否則假。</td>
 </tr>
 <tr>
 <td>string1 != string2</td>
-<td>Returns true if string NOT equal string 2 otherwise false.</td>
+<td>如果 string1 不等於 string2 則回傳真，否則假。</td>
 </tr>
 <tr>
 <td>string1 ~= regex</td>
-<td>Returns true if string1 matches the extended regular expression.</td>
+<td>如果 string1 符合延伸正規表達式則回傳真。</td>
 </tr>
 <tr>
 <td>-z string</td>
-<td>Returns true if string length is zero otherwise false.</td>
+<td>如果字串長度為零則回傳真，否則假。</td>
 </tr>
 <tr>
 <td>-n string</td>
-<td>Returns true if string length is non-zero otherwise false.</td>
+<td>如果字串長度非零則回傳真，否則假。</td>
 </tr>
 </tbody>
 </table>

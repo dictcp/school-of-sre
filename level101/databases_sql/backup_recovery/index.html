@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#backup-and-recovery" class="md-skip">
+        <a href="#_1" class="md-skip">
           Skip to content
         </a>
       
@@ -1854,13 +1854,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#backup-and-recovery" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Backup and Recovery
+      備份與還原
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Backup and Recovery">
+    <nav class="md-nav" aria-label="備份與還原">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1882,9 +1882,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#further-reading" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Further Reading
+      延伸閱讀
     </span>
   </a>
   
@@ -5976,13 +5976,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#backup-and-recovery" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Backup and Recovery
+      備份與還原
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Backup and Recovery">
+    <nav class="md-nav" aria-label="備份與還原">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -6004,9 +6004,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#further-reading" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Further Reading
+      延伸閱讀
     </span>
   </a>
   
@@ -6034,170 +6034,169 @@
 
   <h1>Backup and Recovery</h1>
 
-<h3 id="backup-and-recovery">Backup and Recovery</h3>
-<p>Backups are a very crucial part of any database setup. They are generally a copy of the data that can be used to reconstruct the data in case of any major or minor crisis with the database. In general terms, backups can be of two types:</p>
+<h3 id="_1">備份與還原</h3>
+<p>備份是任何資料庫設定中非常關鍵的部分。它們通常是資料的複製品，可用於在資料庫發生重大或小型危機時重建資料。一般而言，備份可分為兩種：</p>
 <ul>
-<li><strong>Physical Backup</strong> - the data directory as it is on the disk</li>
-<li><strong>Logical Backup</strong> - the table structure and records in it</li>
+<li><strong>實體備份</strong> - 磁碟上的資料目錄原樣備份</li>
+<li><strong>邏輯備份</strong> - 表結構及其內的紀錄</li>
 </ul>
-<p>Both the above kinds of backups are supported by MySQL with different tools. It is the job of the SRE to identify which should be used when.</p>
+<p>上述兩種備份類型均由 MySQL 使用不同工具支援。由 SRE 判斷何時使用何種備份工具。</p>
 <h4 id="mysqldump">Mysqldump</h4>
-<p>This utility is available with MySQL installation. It helps in getting the logical backup of the database. It outputs a set of SQL statements to reconstruct the data. It is not recommended to use <code>mysqldump</code> for large tables as it might take a lot of time and the file size will be huge. However, for small tables it is the best and the quickest option.</p>
+<p>此工具隨 MySQL 安裝提供，協助取得資料庫的邏輯備份。它輸出一組 SQL 語句來重建資料。不建議對大型表使用 <code>mysqldump</code>，因耗時且檔案體積龐大；對於小型表則為最佳且最快的選擇。</p>
 <pre><code class="language-shell">mysqldump [options] &gt; dump_output.sql
 </code></pre>
-<p>There are certain options that can be used with <code>mysqldump</code> to get an appropriate dump of the database.</p>
-<p>To dump all the databases:</p>
+<p>以下為使用 <code>mysqldump</code> 可搭配的選項以取得合適的資料庫備份。</p>
+<p>備份所有資料庫：</p>
 <pre><code class="language-shell">mysqldump -u&lt;user&gt; -p&lt;pwd&gt; --all-databases &gt; all_dbs.sql
 </code></pre>
-<p>To dump specific databases:</p>
+<p>備份特定資料庫：</p>
 <pre><code class="language-shell">mysqldump -u&lt;user&gt; -p&lt;pwd&gt; --databases db1 db2 db3 &gt; dbs.sql
 </code></pre>
-<p>To dump a single database:</p>
+<p>備份單一資料庫：</p>
 <pre><code class="language-shell">mysqldump -u&lt;user&gt; -p&lt;pwd&gt; --databases db1 &gt; db1.sql
 </code></pre>
-<p>OR</p>
+<p>或</p>
 <pre><code class="language-shell">mysqldump -u&lt;user&gt; -p&lt;pwd&gt; db1 &gt; db1.sql
 </code></pre>
-<p>The difference between the above two commands is that the latter one does not contain the <code>CREATE DATABASE</code> command in the backup output. </p>
-<p>To dump specific tables in a database:</p>
+<p>上述兩者的差別是後者備份輸出中不包含 <code>CREATE DATABASE</code> 指令。</p>
+<p>備份資料庫中特定表：</p>
 <pre><code class="language-shell">mysqldump -u&lt;user&gt; -p&lt;pwd&gt; db1 table1 table2 &gt; db1_tables.sql
 </code></pre>
-<p>To dump only table structures and no data:</p>
+<p>只備份表結構（不含資料）：</p>
 <pre><code class="language-shell">mysqldump -u&lt;user&gt; -p&lt;pwd&gt; --no-data db1 &gt; db1_structure.sql
 </code></pre>
-<p>To dump only table data and no <code>CREATE</code> statements:</p>
+<p>只備份表資料（不含 <code>CREATE</code> 指令）：</p>
 <pre><code class="language-shell">mysqldump -u&lt;user&gt; -p&lt;pwd&gt; --no-create-info db1 &gt; db1_data.sql
 </code></pre>
-<p>To dump only specific records from a table:</p>
+<p>備份表中特定紀錄：</p>
 <pre><code class="language-shell">mysqldump -u&lt;user&gt; -p&lt;pwd&gt; --no-create-info db1 table1 --where=”salary&gt;80000” &gt; db1_table1_80000.sql
 </code></pre>
-<p><code>mysqldump</code> can also provide output in CSV, other delimited text or XML format to support use-cases if any. The backup from <code>mysqldump</code> utility is offline, i.e. when the backup finishes it will not have the changes to the database which were made when the backup was going on. For example, if the backup started at 3:00 pm and finished at 4:00 pm, it will not have the changes made to the database between 3:00 and 4:00 pm.</p>
-<p><strong>Restoring</strong> from <code>mysqldump</code> can be done in the following two ways:</p>
-<p>From shell</p>
+<p><code>mysqldump</code> 也可以輸出為 CSV、其他分隔文字或 XML 格式以支援特定需求。<code>mysqldump</code> 的備份為離線備份，即備份完成時不包含備份期間資料庫的變更。例如，若備份於下午3點開始，4點完成，則不包含下午3點至4點間的資料變更。</p>
+<p><strong>從 <code>mysqldump</code> 還原</strong> 有以下兩種方式：</p>
+<p>從 shell 還原</p>
 <pre><code class="language-shell">mysql -u&lt;user&gt; -p&lt;pwd&gt; &lt; all_dbs.sql
 </code></pre>
-<p>OR</p>
-<p>From shell, if the database is already created:</p>
+<p>或</p>
+<p>若資料庫已建，從 shell 還原：</p>
 <pre><code class="language-shell">mysql -u&lt;user&gt; -p&lt;pwd&gt; db1 &lt; db1.sql
 </code></pre>
-<p>From within MySQL shell:</p>
+<p>MySQL 交談介面中還原：</p>
 <pre><code class="language-shell">mysql&gt; source all_dbs.sql
 </code></pre>
 <h4 id="percona-xtrabackup">Percona XtraBackup</h4>
-<p>This utility is installed separately from the MySQL server and is open source, provided by Percona. It helps in getting the full or partial physical backup of the database. It provides online backup of the database, i.e. it will have the changes made to the database when the backup was going on as explained at the end of the previous section.</p>
+<p>此工具需與 MySQL 伺服器獨立安裝，為 Percona 提供的開源工具。可用於取得完整或部分的物理備份。提供線上備份，即備份進行時的資料變動也會包含在備份中，如前文所示。</p>
 <ul>
-<li><strong>Full Backup</strong> - the complete backup of the database. </li>
-<li><strong>Partial Backup</strong> - Incremental </li>
-<li><strong>Cumulative</strong> - After one full backup, the next backups will have changes post the full backup. For example, we took a full backup on Sunday, from Monday onwards every backup will have changes after Sunday; so, Tuesday’s backup will have Monday’s changes as well, Wednesday’s backup will have changes of Monday and Tuesday as well and so on.</li>
-<li><strong>Differential</strong> - After one full backup, the next backups will have changes post the previous incremental backup. For example, we took a full backup on Sunday, Monday will have changes done after Sunday, Tuesday will have changes done after Monday, and so on.</li>
+<li><strong>完整備份</strong> - 資料庫完整備份</li>
+<li><strong>部分備份</strong> - 增量備份</li>
+<li><strong>累積式</strong> - 完整備份後，接續備份包含從完整備份後至今所有變更。例如，週日做完整備份，從週一起的每次備份都包含從週日以後的變更；週二的備份包含週一的變更，週三備份包含週一和週二的變更，以此類推。</li>
+<li><strong>差異式</strong> - 完整備份後，下一次備份包含自上次增量備份後的變更。例如，週日完成完整備份，週一備份含週日後變更，週二備份含週一後變更，依此類推。</li>
 </ul>
-<p><img alt="partial backups - differential and cummulative" src="../images/partial_backup.png" title="Differential and Cumulative Backups" /></p>
-<p>Percona XtraBackup allows us to get both full and incremental backups as we desire. However, incremental backups take less space than a full backup (if taken per day) but the restore time of incremental backups is more than that of full backups.</p>
-<p><strong>Creating a full backup</strong></p>
-<pre><code class="language-shell">xtrabackup --defaults-file=&lt;location to my.cnf&gt; --user=&lt;mysql user&gt; --password=&lt;mysql password&gt; --backup --target-dir=&lt;location of target directory&gt;
+<p><img alt="部分備份 - 差異與累積" src="../images/partial_backup.png" title="差異式與累積式備份" /></p>
+<p>Percona XtraBackup 可依需求取得完整或增量備份。增量備份比完整備份（每日計）佔用空間小，但還原時間較長。</p>
+<p><strong>建立完整備份</strong></p>
+<pre><code class="language-shell">xtrabackup --defaults-file=&lt;my.cnf路徑&gt; --user=&lt;mysql用戶&gt; --password=&lt;mysql密碼&gt; --backup --target-dir=&lt;目標目錄路徑&gt;
 </code></pre>
-<p>Example:</p>
+<p>範例：</p>
 <pre><code class="language-shell">xtrabackup --defaults-file=/etc/my.cnf --user=some_user --password=XXXX --backup --target-dir=/mnt/data/backup/
 </code></pre>
-<p>Some other options</p>
+<p>其他選項</p>
 <ul>
-<li><code>--stream</code> - can be used to stream the backup files to standard output in a specified format. <code>xbstream</code> is the only option for now.</li>
-<li><code>--tmp-dir</code> - set this to a <code>tmp</code> directory to be used for temporary files while taking backups.</li>
-<li><code>--parallel</code> - set this to the number of threads that can be used to parallely copy data files to target directory.</li>
-<li><code>--compress</code> - by default - <code>quicklz</code> is used. Set this to have the backup in compressed format. Each file is a <code>.qp</code> compressed file and can be extracted by <code>qpress</code> file archiver.</li>
-<li><code>--decompress</code> - decompresses all the files which were compressed with the <code>.qp</code> extension. It will not delete the <code>.qp</code> files after decompression. To do that, use <code>--remove-original</code> along with this. Please note that the <code>decompress</code> option should be run separately from the <code>xtrabackup</code> command that used the compress option.</li>
+<li><code>--stream</code> - 用於以指定格式串流輸出備份檔案。目前僅支援 <code>xbstream</code>。</li>
+<li><code>--tmp-dir</code> - 指定暫存備份檔用的臨時目錄。</li>
+<li><code>--parallel</code> - 設定可用於並行複製檔案數目。</li>
+<li><code>--compress</code> - 預設使用 <code>quicklz</code>，啟用此選項則備份會以壓縮格式保存，每個檔案為 <code>.qp</code> 格式，可用 <code>qpress</code> 解壓縮。</li>
+<li><code>--decompress</code> - 解壓所有 <code>.qp</code> 壓縮檔，執行後不會刪除原始壓縮檔，若需刪除，搭配 <code>--remove-original</code> 使用。請注意，解壓縮選項需與用於壓縮的 <code>xtrabackup</code> 命令分別執行。</li>
 </ul>
-<p><strong>Preparing a backup</strong></p>
-<p>Once the backup is done with the <code>--backup</code> option, we need to prepare it in order to restore it. This is done to make the data files consistent with point-in-time. There might have been some transactions going on while the backup was being executed and those have changed the data files. When we prepare a backup, all those transactions are applied to the data files.</p>
-<pre><code class="language-shell">xtrabackup --prepare --target-dir=&lt;where backup is taken&gt;
+<p><strong>備份準備</strong></p>
+<p>完成 <code>--backup</code> 後，需準備備份以使資料檔案一致且符合時間點。備份執行時途中可能有交易修改資料檔，準備步驟會將這些交易套用於資料檔。</p>
+<pre><code class="language-shell">xtrabackup --prepare --target-dir=&lt;備份目錄&gt;
 </code></pre>
-<p>Example:</p>
+<p>範例：</p>
 <pre><code class="language-shell">xtrabackup --prepare --target-dir=/mnt/data/backup/
 </code></pre>
-<p>It is not recommended to halt a process which is preparing the backup as that might cause data file corruption and backup cannot be used further. The backup will have to be taken again.</p>
-<p><strong>Restoring a Full Backup</strong></p>
-<p>To restore the backup which is created and prepared from above commands, just copy everything from the backup <code>target-dir</code> to the <code>data-dir</code> of MySQL server, change the ownership of all files to MySQL user (the Linux user used by MySQL server) and start MySQL.</p>
-<p>Or the below command can be used as well,</p>
+<p>不建議中斷備份準備程序，否則可能導致資料檔損壞，備份無法使用而須重做。</p>
+<p><strong>還原完整備份</strong></p>
+<p>將備份中 <code>target-dir</code> 內所有檔案複製到 MySQL 伺服器的 <code>data-dir</code>，並變更檔案擁有權為 MySQL 用戶（Linux 執行 MySQL 伺服器的用戶），然後啟動 MySQL。</p>
+<p>亦可用以下指令：</p>
 <pre><code class="language-shell">xtrabackup --defaults-file=/etc/my.cnf --copy-back --target-dir=/mnt/data/backups/
 </code></pre>
-<p><strong>Note</strong> - the backup has to be prepared in order to restore it.</p>
-<p><strong>Creating Incremental backups</strong></p>
-<p>Percona XtraBackup helps create incremental backups, i.e, only the changes can be backed up since the last backup. Every InnoDB page contains a log sequence number or LSN that is also mentioned as one of the last lines of backup and prepare commands.</p>
+<p><strong>注意</strong> - 還原前備份必須先準備。</p>
+<p><strong>建立增量備份</strong></p>
+<p>Percona XtraBackup 支援增量備份，即只備份自上次備份後的變更。每個 InnoDB 頁面包含一個日誌序號（LSN），也會在備份和準備命令結尾顯示。</p>
 <pre><code class="language-shell">xtrabackup: Transaction log of lsn &lt;LSN&gt; to &lt;LSN&gt; was copied.
 </code></pre>
-<p>OR</p>
+<p>或</p>
 <pre><code class="language-shell">InnoDB: Shutdown completed; log sequence number &lt;LSN&gt;
 &lt;timestamp&gt; completed OK!
 </code></pre>
-<p>This indicates that the backup has been taken till the log sequence number mentioned. This is a key information in understanding incremental backups and working towards automating one. Incremental backups do not compare data files for changes, instead, they go through the InnoDB pages and compare their LSN to the last backup’s LSN. So, without one full backup, the incremental backups are useless.</p>
-<p>The <code>xtrabackup</code> command creates a <code>xtrabackup_checkpoint</code> file which has the information about the LSN of the backup. Below are the key contents of the file:</p>
+<p>上述顯示備份包含至該 LSN，此為增量備份核心資訊。增量備份不比較資料檔變更，而是檢查 InnoDB 頁面 LSN 是否超過上次備份 LSN。唯有完整備份後，增量備份方有意義。</p>
+<p><code>xtrabackup</code> 會產生 <code>xtrabackup_checkpoint</code> 檔案，內含備份 LSN 資訊，格式如下：</p>
 <pre><code class="language-shell">backup_type = full-backuped | incremental
-from_lsn = 0 (full backup) | to_lsn of last backup &lt;LSN&gt;
+from_lsn = 0 (完整備份) | 上次備份的 to_lsn &lt;LSN&gt;
 to_lsn = &lt;LSN&gt;
 last_lsn = &lt;LSN&gt;
 </code></pre>
-<p>There is a difference between <code>to_lsn</code> and <code>last_lsn</code>. When the <code>last_lsn</code> is more than <code>to_lsn</code> that means there are transactions that ran while we took the backup and are yet to be applied. That is what <code>--prepare</code> is used for.</p>
-<p>To take incremental backups, first, we require one full backup.</p>
+<p><code>to_lsn</code> 與 <code>last_lsn</code> 不同：若 <code>last_lsn</code> 大於 <code>to_lsn</code>，代表備份時尚有交易尚未套用，此時需執行 <code>--prepare</code>。</p>
+<p>建立完整備份：</p>
 <pre><code class="language-shell">xtrabackup --defaults-file=/etc/my.cnf --user=some_user --password=XXXX --backup --target-dir=/mnt/data/backup/full/
 </code></pre>
-<p>Let’s assume the contents of the <code>xtrabackup_checkpoint</code> file to be as follows:</p>
+<p>假設 <code>xtrabackup_checkpoint</code> 內容為：</p>
 <pre><code class="language-shell">backup_type = full-backuped
 from_lsn = 0
 to_lsn = 1000
 last_lsn = 1000
 </code></pre>
-<p>Now that we have one full backup, we can have an incremental backup that takes the changes. We will go with differential incremental backups.</p>
+<p>有了完整備份，接著建立增量備份（差異式）：</p>
 <pre><code class="language-shell">xtrabackup --defaults-file=/etc/my.cnf --user=some_user --password=XXXX --backup --target-dir=/mnt/data/backup/incr1/ --incremental-basedir=/mnt/data/backup/full/
 </code></pre>
-<p>There are delta files created in the <code>incr1</code> directory like, <code>ibdata1.delta</code>, <code>db1/tbl1.ibd.delta</code> with the changes from the full directory. The <code>xtrabackup_checkpoint</code> file will thus have the following contents.</p>
+<p>在 <code>incr1</code> 目錄會有 delta 檔案，如 <code>ibdata1.delta</code>、<code>db1/tbl1.ibd.delta</code>，代表從完整備份複製的變更。<code>xtrabackup_checkpoint</code> 更新如下：</p>
 <pre><code class="language-shell">backup_type = incremental
 from_lsn = 1000
 to_lsn = 1500
 last_lsn = 1500
 </code></pre>
-<p>Hence, the <code>from_lsn</code> here is equal to the <code>to_lsn</code> of the last backup or the <code>basedir</code> provided for the incremental backups. For the next incremental backup, we can use this incremental backup as the <code>basedir</code>.</p>
+<p><code>from_lsn</code> 與上次備份 <code>to_lsn</code> 相符，將此增量備份作為基底繼續建下一次增量備份：</p>
 <pre><code class="language-shell">xtrabackup --defaults-file=/etc/my.cnf --user=some_user --password=XXXX --backup --target-dir=/mnt/data/backup/incr2/ --incremental-basedir=/mnt/data/backup/incr1/
 </code></pre>
-<p>The <code>xtrabackup_checkpoint</code> file will thus have the following contents:</p>
+<p><code>xtrabackup_checkpoint</code> 更新為：</p>
 <pre><code class="language-shell">backup_type = incremental
 from_lsn = 1500
 to_lsn = 2000
 last_lsn = 2200
 </code></pre>
-<p><strong>Preparing Incremental backups</strong></p>
-<p>Preparing incremental backups is not the same as preparing a full backup. When prepare runs, two operations are performed - <em>committed transactions are applied on the data files</em> and <em>uncommitted transactions are rolled back</em>. While preparing incremental backups, we have to skip rollback of uncommitted transactions as it is likely that they might get committed in the next incremental backup. If we rollback uncommitted transactions, the further incremental backups cannot be applied.</p>
-<p>We use <code>--apply-log-only</code> option along with <code>--prepare</code> to avoid the rollback phase. </p>
-<p>From the last section, we had the following directories with complete backup:</p>
+<p><strong>增量備份準備</strong></p>
+<p>增量備份準備與完整備份不同。準備程序會執行兩個動作：套用已提交交易至資料檔，並回滾未提交交易。對增量備份，必須跳過回滾未提交交易，因它們可能在下一個增量備份被提交；若先回滾將導致後續增量備份無法套用。</p>
+<p>故備份準備時搭配 <code>--apply-log-only</code> 選項跳過回滾階段。</p>
+<p>根據前述三個目錄：</p>
 <pre><code class="language-shell">/mnt/data/backup/full
 /mnt/data/backup/incr1
 /mnt/data/backup/incr2
 </code></pre>
-<p>First, we prepare the full backup, but only with the <code>--apply-log-only</code> option.</p>
+<p>先準備完整備份：</p>
 <pre><code class="language-shell">xtrabackup --prepare --apply-log-only --target-dir=/mnt/data/backup/full
 </code></pre>
-<p>The output of the command will contain the following at the end.</p>
+<p>輸出尾端會顯示：</p>
 <pre><code class="language-shell">InnoDB: Shutdown complete; log sequence number 1000
 &lt;timestamp&gt; Completed OK!
 </code></pre>
-<p>Note the LSN mentioned at the end is the same as the <code>to_lsn</code> from the <code>xtrabackup_checkpoint</code> created for full backup.</p>
-<p>Next, we apply the changes from the first incremental backup to the full backup.</p>
+<p>該 LSN 與完整備份的 <code>to_lsn</code> 相符。</p>
+<p>接著將第一個增量備份套用到完整備份：</p>
 <pre><code class="language-shell">xtrabackup --prepare --apply-log-only --target-dir=/mnt/data/backup/full --incremental-dir=/mnt/data/backup/incr1
 </code></pre>
-<p>This applies the delta files in the incremental directory to the full backup directory. It rolls the data files in the full backup directory forward to the time of incremental backup and applies the redo logs as usual.</p>
-<p>Lastly, we apply the last incremental backup same as the previous one with just a small change.</p>
+<p>最後套用第二個增量備份（不使用 <code>--apply-log-only</code>）：</p>
 <pre><code class="language-shell">xtrabackup --prepare --target-dir=/mnt/data/backup/full --incremental-dir=/mnt/data/backup/incr1
 </code></pre>
-<p>We do not have to use the <code>--apply-log-only</code> option with it. It applies the <em>incr2 delta files</em> to the full backup data files taking them forward, applies redo logs on them and finally rollbacks the uncommitted transactions to produce the final result. The data now present in the full backup directory can now be used to restore.</p>
-<p><strong>Note</strong>: To create cumulative incremental backups, the <code>incremental-basedir</code> should always be the full backup directory for every incremental backup. While preparing, we can start with the full backup with the <code>--apply-log-only</code> option and use just the last incremental backup for the final <code>--prepare</code> as that has all the changes since the full backup. </p>
-<p><strong>Restoring Incremental backups</strong></p>
-<p>Once all the above steps are completed, restoring is the same as done for a full backup.</p>
-<h4 id="further-reading">Further Reading</h4>
+<p>此步驟會將 incr2 的 delta 檔案套用到完整備份資料中，套用 redo 日誌並回滾未提交交易，完成最終資料狀態。此目錄即為還原用資料。</p>
+<p><strong>注意</strong>：累積式增量備份，每次 <code>incremental-basedir</code> 都指向完整備份目錄。準備需先以 <code>--apply-log-only</code> 處理完整備份，最後僅對最後一次增量備份做正常 <code>--prepare</code>。</p>
+<p><strong>還原增量備份</strong></p>
+<p>完成上述步驟後，還原方式同完整備份還原。</p>
+<h4 id="_2">延伸閱讀</h4>
 <ul>
-<li><a href="https://dev.mysql.com/doc/refman/8.0/en/point-in-time-recovery.html">MySQL Point-In-Time-Recovery</a></li>
-<li><a href="https://dev.mysql.com/doc/refman/8.0/en/mysqlpump.html">Another MySQL backup tool - mysqlpump</a></li>
-<li><a href="https://github.com/maxbube/mydumper/tree/master/docs">Another MySQL backup tool - mydumper</a></li>
-<li><a href="https://mydbops.wordpress.com/2019/03/26/mysqldump%E2%80%8B-vs-mysqlpump-vs-mydumper/">A comparison between mysqldump, mysqlpump and mydumper</a></li>
-<li><a href="https://www.percona.com/blog/2020/05/27/best-practices-for-mysql-backups/">Backup Best Practices</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/8.0/en/point-in-time-recovery.html">MySQL 時點還原</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/8.0/en/mysqlpump.html">另一個 MySQL 備份工具 - mysqlpump</a></li>
+<li><a href="https://github.com/maxbube/mydumper/tree/master/docs">另一個 MySQL 備份工具 - mydumper</a></li>
+<li><a href="https://mydbops.wordpress.com/2019/03/26/mysqldump%E2%80%8B-vs-mysqlpump-vs-mydumper/">mysqldump、mysqlpump 與 mydumper 比較</a></li>
+<li><a href="https://www.percona.com/blog/2020/05/27/best-practices-for-mysql-backups/">備份最佳實務</a></li>
 </ul>
 
 

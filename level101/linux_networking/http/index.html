@@ -5911,9 +5911,8 @@
 
 
 <h1 id="http">HTTP</h1>
-<p>Till this point we have only got the IP address of <a href="https://www.linkedin.com/">linkedin.com</a>. The HTML page of <a href="https://www.linkedin.com/">linkedin.com</a> is served by HTTP protocol which the browser renders. Browser sends a HTTP request to the IP of the server determined above.
-Request has a verb GET, PUT, POST followed by a path and query parameters and lines of key-value pair which gives information about the client and capabilities of the client like contents it can accept and a body (usually in POST or PUT).</p>
-<pre><code class="language-bash"># Eg. run the following in your container and have a look at the headers 
+<p>到目前為止，我們只取得了 <a href="https://www.linkedin.com/">linkedin.com</a> 的 IP 位址。<a href="https://www.linkedin.com/">linkedin.com</a> 的 HTML 頁面是由瀏覽器透過 HTTP 協定來提供並渲染的。瀏覽器向前面決定的伺服器 IP 發送 HTTP 請求。請求中包含動詞 GET、PUT、POST，後面接路徑與查詢參數，以及多行的鍵-值對，用來提供關於用戶端的資訊和其能力，例如可以接受的內容型態，以及主體（通常出現在 POST 或 PUT 中）。</p>
+<pre><code class="language-bash"># 例如，在你的容器中執行下列命令，觀察標頭內容
 curl linkedin.com -v
 </code></pre>
 <pre><code class="language-bash">* Connected to linkedin.com (108.174.10.10) port 80 (#0)
@@ -5932,20 +5931,20 @@ curl linkedin.com -v
 * Connection #0 to host linkedin.com left intact
 * Closing connection 0
 </code></pre>
-<p>Here, in the first line <code>GET</code> is the verb, <code>/</code> is the path and <code>1.1</code> is the HTTP protocol version. Then there are key-value pairs which give client capabilities and some details to the server. The server responds back with HTTP version, <a href="https://en.wikipedia.org/wiki/List_of_HTTP_status_codes">Status Code and Status message</a>. Status codes <code>2xx</code> means success, <code>3xx</code> denotes redirection, <code>4xx</code> denotes client-side errors and <code>5xx</code> server-side errors.</p>
-<p>We will now jump in to see the difference between HTTP/1.0 and HTTP/1.1. </p>
-<pre><code class="language-bash">#On the terminal type
+<p>在這裡，第一行中 <code>GET</code> 是動詞，<code>/</code> 是路徑，<code>1.1</code> 是 HTTP 協定版本。接著是多組鍵值對，提供客戶端能力與一些伺服器資訊。伺服器回應包含 HTTP 版本、<a href="https://zh.wikipedia.org/wiki/HTTP%E7%8B%80%E6%85%8B%E7%A2%BC%E6%88%96%E8%80%85%E7%8B%80%E6%85%8B%E6%B6%88%E6%81%AF">狀態碼與狀態訊息</a>。狀態碼中 <code>2xx</code> 代表成功，<code>3xx</code> 代表重導向，<code>4xx</code> 表客戶端錯誤，<code>5xx</code> 表伺服器端錯誤。</p>
+<p>我們接著來看看 HTTP/1.0 與 HTTP/1.1 的差異。</p>
+<pre><code class="language-bash"># 在終端機輸入
 telnet  www.linkedin.com 80
-#Copy and paste the following with an empty new line at last in the telnet STDIN
+# 複製並貼上以下內容，並在最後空一行，在 telnet 的標準輸入中完成
 GET / HTTP/1.1
 HOST:linkedin.com
 USER-AGENT: curl
 
 </code></pre>
-<p>This would get server response and waits for next input as the underlying connection to <a href="https://www.linkedin.com/">www.linkedin.com</a> can be reused for further queries. While going through TCP, we can understand the benefits of this. But in HTTP/1.0, this connection will be immediately closed after the response meaning new connection has to be opened for each query. HTTP/1.1 can have only one inflight request in an open connection but connection can be reused for multiple requests one after another. One of the benefits of HTTP/2.0 over HTTP/1.1 is we can have multiple inflight requests on the same connection. We are restricting our scope to generic HTTP and not jumping to the intricacies of each protocol version but they should be straight forward to understand post the course.</p>
-<p>HTTP is called <strong>stateless protocol</strong>. This section we will try to understand what stateless means. Say we logged in to <a href="https://www.linkedin.com/">linkedin.com</a>, each request to <a href="https://www.linkedin.com/">linkedin.com</a> from the client will have no context of the user and it makes no sense to prompt user to login for each page/resource. This problem of HTTP is solved by <em>COOKIE</em>. A user is created a session when a user logs in. This session identifier is sent to the browser via <em>SET-COOKIE</em> header. The browser stores the COOKIE till the expiry set by the server and sends the cookie for each request from hereon for <a href="https://www.linkedin.com/">linkedin.com</a>. More details on cookies are available <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies">here</a>. Cookies are a critical piece of information like password and since HTTP is a plain text protocol, any man-in-the-middle can capture either password or cookies and can breach the privacy of the user. Similarly as discussed during DNS, a spoofed IP of <a href="https://www.linkedin.com/">linkedin.com</a> can cause a phishing attack on users where an user can give LinkedIn’s password to login on the malicious site. To solve both problems, HTTPS came in place and HTTPS has to be mandated.</p>
-<p>HTTPS has to provide server identification and encryption of data between client and server. The server administrator has to generate a private-public key pair and certificate request. This certificate request has to be signed by a certificate authority which converts the certificate request to a certificate. The server administrator has to update the certificate and private key to the webserver. The certificate has details about the server (like domain name for which it serves, expiry date), public key of the server. The private key is a secret to the server and losing the private key loses the trust the server provides. When clients connect, the client sends a HELLO. The server sends its certificate to the client. The client checks the validity of the cert by seeing if it is within its expiry time, if it is signed by a trusted authority and the hostname in the cert is the same as the server. This validation makes sure the server is the right server and there is no phishing. Once that is validated, the client negotiates a symmetrical key and cipher with the server by encrypting the negotiation with the public key of the server. Nobody else other than the server who has the private key can understand this data. Once negotiation is complete, that symmetric key and algorithm is used for further encryption which can be decrypted only by client and server from thereon as they only know the symmetric key and algorithm. The switch to symmetric algorithm from asymmetric encryption algorithm is to not strain the resources of client devices as symmetric encryption is generally less resource intensive than asymmetric. </p>
-<pre><code class="language-bash"># Try the following on your terminal to see the cert details like Subject Name (domain name), Issuer details, Expiry date
+<p>這樣會取得伺服器回應，並等待後續輸入，因為到底層與 <a href="https://www.linkedin.com/">www.linkedin.com</a> 的連線可以被重複使用以執行更多請求。透過 TCP 的知識可以理解這種好處。但在 HTTP/1.0 中，伺服器回應後會立即關閉連線，也就是說每個請求都需要新開連線。HTTP/1.1 中，一條開啟的連線中只能有一個「執行中（inflight）」的請求，但可以連續不斷用同一條連線做多次請求。HTTP/2.0 相較 HTTP/1.1 的優點是，可同時有多個執行中請求共用同一連線。我們暫且只討論通用 HTTP，而不深入各版本協定細節，這些都能在課程結束後掌握。</p>
+<p>HTTP 稱作<strong>無狀態協定 (stateless protocol)</strong>。接下來我們理解什麼是「無狀態」。假設我們已登入 <a href="https://www.linkedin.com/">linkedin.com</a>，客戶端每個向 <a href="https://www.linkedin.com/">linkedin.com</a> 發出的請求並不記憶用戶上下文，若每次瀏覽網頁時都要求使用者登入，將毫無意義。HTTP 的這個問題由 <em>COOKIE</em> 解決。當使用者登入後，會建立一個 session，並以 <em>SET-COOKIE</em> 標頭把 session 識別碼傳給瀏覽器。瀏覽器會保留該 cookie 直到伺服器設定的過期時間，之後每次向 <a href="https://www.linkedin.com/">linkedin.com</a> 發送請求都會攜帶 cookie。更多關於 Cookie 的資訊可查看 <a href="https://developer.mozilla.org/zh-TW/docs/Web/HTTP/Cookies">這裡</a>。Cookie 是像密碼一樣重要的資訊，且由於 HTTP 是純文字協定，中間人攻擊者可以攔截密碼或 cookie，進而侵犯用戶隱私。類似地，如 DNS 節所提，若 <a href="https://www.linkedin.com/">linkedin.com</a> 的 IP 被惡意偽裝，會對用戶造成釣魚攻擊，令用戶誤將 LinkedIn 密碼輸入至惡意網站。為了解決這些問題，HTTPS 被引入，且其使用必須被強制執行。</p>
+<p>HTTPS 需要提供伺服器身份識別以及用戶端與伺服器間資料的加密。伺服器管理員需產生一對私鑰與公鑰，以及憑證請求，並由憑證授權中心 (CA) 簽署該請求並轉成憑證。伺服器管理員需將憑證與私鑰設定到網頁伺服器上。憑證中載有伺服器資訊（例如服務的網域名稱、到期日），以及伺服器的公鑰。私鑰是伺服器的秘密，若私鑰外洩，該伺服器的信任將化為烏有。連線時，客戶端先送出 HELLO，伺服器回傳憑證給客戶端。客戶端透過檢查憑證的有效期限、是否由信任的機構簽發，以及憑證的主機名稱是否與伺服器相符等步驟，驗證該憑證以確保伺服器正確、無釣魚風險。驗證通過後，客戶端使用伺服器的公鑰加密，與伺服器協商共用的對稱金鑰與密碼演算法。除了擁有私鑰的伺服器外，任何人無法讀懂這些資料。協商完成後，雙方使用此對稱金鑰與演算法加密往後的資料傳輸，包括首次的 HTTP 請求。之所以從非對稱加密轉為對稱加密，是因為對稱加密通常在資源使用上較輕量，避免對用戶端設備造成過大負擔。</p>
+<pre><code class="language-bash"># 在終端機執行以下指令，查看憑證相關詳細資訊，如主旨名稱(網域名稱)、發行者資訊、到期日
 curl https://www.linkedin.com -v 
 </code></pre>
 <pre><code class="language-bash">* Connected to www.linkedin.com (13.107.42.14) port 443 (#0)
@@ -6020,7 +6019,7 @@ date: Mon, 09 Nov 2020 10:50:10 GMT
 
 * Closing connection 0
 </code></pre>
-<p>Here, my system has a list of certificate authorities it trusts in this file <code>/etc/ssl/cert.pem</code>. cURL validates the certificate is for <a href="https://www.linkedin.com/">www.linkedin.com</a> by seeing the CN section of the subject part of the certificate. It also makes sure the certificate is not expired by seeing the expire date. It also validates the signature on the certificate by using the public key of issuer Digicert in <code>/etc/ssl/cert.pem</code>. Once this is done, using the public key of <a href="https://www.linkedin.com/">www.linkedin.com</a> it negotiates cipher <code>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</code> with a symmetric key. Subsequent data transfer including first HTTP request uses the same cipher and symmetric key.</p>
+<p>在這裡，我的系統信任的憑證授權中心清單存放於 <code>/etc/ssl/cert.pem</code>。cURL 會檢查憑證中的 CN（主旨名稱）部分是否為 <a href="https://www.linkedin.com/">www.linkedin.com</a>，同時確認憑證未過期，並使用簽發者 DigiCert 的公鑰（同樣存在 <code>/etc/ssl/cert.pem</code>）驗證憑證簽章。驗證通過後，使用 <a href="https://www.linkedin.com/">www.linkedin.com</a> 的公鑰協商密碼套件 <code>TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384</code> 與對稱金鑰。隨後包含首次 HTTP 請求的資料傳輸皆會使用該密碼套件及對稱金鑰進行加密。</p>
 
 
 

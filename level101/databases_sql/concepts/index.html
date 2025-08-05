@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#popular-databases" class="md-skip">
+        <a href="#_1" class="md-skip">
           Skip to content
         </a>
       
@@ -1755,9 +1755,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#popular-databases" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Popular databases
+      常見資料庫
     </span>
   </a>
   
@@ -5943,9 +5943,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#popular-databases" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Popular databases
+      常見資料庫
     </span>
   </a>
   
@@ -5969,79 +5969,79 @@
   <h1>Key Concepts</h1>
 
 <ul>
-<li>Relational DBs are used for data storage. Even a file can be used to store data, but relational DBs are designed with specific goals:<ul>
-<li>Efficiency</li>
-<li>Ease of access and management</li>
-<li>Organized</li>
-<li>Handle relations between data (represented as tables)</li>
+<li>關聯式資料庫（Relational DB）用於數據存儲。即使檔案也可以用來存儲資料，但關聯式資料庫是為了特定目標而設計：<ul>
+<li>效率</li>
+<li>易於存取與管理</li>
+<li>組織化</li>
+<li>處理資料間的關聯（以表格方式呈現）</li>
 </ul>
 </li>
-<li>Transaction: a unit of work that can comprise multiple statements, executed together</li>
+<li>交易（Transaction）：一個工作單元，可以包含多個語句，一起執行</li>
 <li>
-<p>ACID properties</p>
-<p>Set of properties that guarantee data integrity of DB transactions</p>
+<p>ACID 屬性</p>
+<p>一組保證資料庫交易數據完整性的屬性</p>
 <ul>
-<li>Atomicity: Each transaction is atomic (succeeds or fails completely)</li>
-<li>Consistency: Transactions only result in valid state (which includes rules, constraints, triggers etc.)</li>
-<li>Isolation: Each transaction is executed independently of others safely within a concurrent system</li>
-<li>Durability: Completed transactions will not be lost due to any later failures</li>
+<li>原子性（Atomicity）：每個交易是原子的（完全成功或完全失敗）</li>
+<li>一致性（Consistency）：交易只會導致有效的狀態（包含規則、約束、觸發器等）</li>
+<li>隔離性（Isolation）：每個交易在並行系統中彼此獨立且安全地執行</li>
+<li>持久性（Durability）：完成的交易不會因任何後續故障而遺失</li>
 </ul>
-<p>Let’s take some examples to illustrate the above properties.</p>
+<p>讓我們藉由一些範例說明上述屬性。</p>
 <ul>
-<li>Account A has a balance of ₹200 &amp; B has ₹400. Account A is transferring ₹100 to Account B. This transaction has a deduction from sender and an addition into the recipient’s balance. If the first operation passes successfully while the second fails, A’s balance would be ₹100 while B would be having ₹400 instead of ₹500. <strong>Atomicity</strong> in a DB ensures this partially failed transaction is rolled back.</li>
-<li>If the second operation above fails, it leaves the DB inconsistent (sum of balance of accounts before and after the operation is not the same). <strong>Consistency</strong> ensures that this does not happen.</li>
-<li>There are three operations, one to calculate interest for A’s account,  another to add that to A’s account, then transfer ₹100 from B to A. Without <strong>isolation</strong> guarantees, concurrent execution of these 3 operations may lead to a different outcome every time.</li>
-<li>What happens if the system crashes before the transactions are written to disk? <strong>Durability</strong> ensures that the changes are applied correctly during recovery.</li>
-<li>Relational data</li>
-<li>Tables represent relations</li>
-<li>Columns (fields) represent attributes</li>
-<li>Rows are individual records</li>
-<li>Schema describes the structure of DB</li>
+<li>帳戶 A 餘額為 ₹200，帳戶 B 為 ₹400。A 轉帳 ₹100 給 B。此交易包括從發送方扣款與接收方入帳。如果第一筆操作成功，第二筆失敗，A 則會剩 ₹100，但 B 還是維持 ₹400 而非 ₹500。資料庫的 <strong>原子性</strong> 確保部分失敗的交易會回滾。</li>
+<li>若第二個操作失敗，會造成資料庫不一致（交易前後帳戶餘額總和不相同）。<strong>一致性</strong> 確保不會發生這種情況。</li>
+<li>有三個操作：一個計算 A 帳戶利息、另一個將利息加入 A 帳戶、最後一個從 B 轉帳 ₹100 給 A。若無 <strong>隔離性</strong> 保證，三個操作同時執行可能每次結果不同。</li>
+<li>若系統在交易完成寫入磁碟前當機，<strong>持久性</strong> 確保在恢復過程中正確應用變更。</li>
+<li>關聯式資料</li>
+<li>表格代表關聯</li>
+<li>欄位（欄）代表屬性</li>
+<li>列表示個別記錄</li>
+<li>架構描述資料庫結構</li>
 <li>SQL</li>
 </ul>
-<p>A query language to interact with and manage data.</p>
-<p><a href="https://stackify.com/what-are-crud-operations/">CRUD operations</a>&mdash;create, read, update, delete queries</p>
-<p>Management operations&mdash;create DBs/tables/indexes, backup, import/export, users, access controls, etc</p>
-<p><em>Exercise</em>: Classify the below queries into the four types&mdash;DDL (definition), DML (manipulation), DCL (control) and TCL (transactions) and explain in detail.</p>
+<p>一種用於存取與管理數據的查詢語言。</p>
+<p><a href="https://stackify.com/what-are-crud-operations/">CRUD 操作</a> — 創建（create）、讀取（read）、更新（update）、刪除（delete）查詢</p>
+<p>管理操作 — 建立資料庫/表格/索引、備份、匯入/匯出、使用者、存取控制等</p>
+<p><em>練習</em>: 將以下語句分類為四種型態 — DDL（定義）、DML（操作）、DCL（控制）和 TCL（交易），並詳細說明。</p>
 <pre><code>insert, create, drop, delete, update, commit, rollback, truncate, alter, grant, revoke
 </code></pre>
-<p>You can practise these in the <a href="https://linkedin.github.io/school-of-sre/level101/databases_sql/lab/">lab section</a>.</p>
+<p>你可以在<a href="https://linkedin.github.io/school-of-sre/level101/databases_sql/lab/">實驗室區域</a>練習這些語句。</p>
 </li>
 <li>
-<p>Constraints</p>
-<p>Rules for data that can be stored. Query fails if you violate any of these defined on a table.</p>
-<p><em>Primary key</em>: One or more columns that contain UNIQUE values, and cannot contain NULL values. A table can have only ONE primary key. An index on it is created by default.</p>
-<p><em>Foreign key</em>: Links two tables together. Its value(s) match a primary key in a different table</p>
-<p><em>Not null</em>: Does not allow null values</p>
-<p><em>Unique</em>: Value of column must be unique across all rows</p>
-<p><em>Default</em>: Provides a default value for a column if none is specified during insert</p>
-<p><em>Check</em>: Allows only particular values (like Balance &gt;= 0)</p>
+<p>約束條件（Constraints）</p>
+<p>定義可存入資料的規則。若違反對表所定義的約束，查詢會失敗。</p>
+<p><em>主鍵</em>：一個或多個欄位包含唯一值，不得為 NULL。每個表只能有一個主鍵。系統會自動為主鍵建立索引。</p>
+<p><em>外鍵</em>：連結兩個表，值必須與另一表的主鍵相符。</p>
+<p><em>非空</em>（Not null）：不允許為 NULL 值。</p>
+<p><em>唯一</em>（Unique）：欄位值必須在所有列中唯一。</p>
+<p><em>預設值</em>（Default）：若插入資料時未指定，會自動提供預設值。</p>
+<p><em>檢查</em>（Check）：只允許特定值（例如餘額必須大於等於 0）</p>
 </li>
 <li>
-<p><a href="https://datageek.blog/en/2018/06/05/rdbms-basics-indexes-and-clustered-indexes/">Indexes</a></p>
-<p>Most indexes use B+ tree structure.</p>
-<p>Why use them: Speeds up queries (in large tables that fetch only a few rows, min/max queries, by eliminating rows from consideration, etc)</p>
-<p><em>Types of indexes</em>: unique, primary key, fulltext, secondary</p>
-<p>Write-heavy loads, mostly full table scans or accessing large number of rows, etc. do not benefit from indexes</p>
+<p><a href="https://datageek.blog/en/2018/06/05/rdbms-basics-indexes-and-clustered-indexes/">索引</a></p>
+<p>大多數索引使用 B+ 樹結構。</p>
+<p>為何使用索引：加速查詢（特別是在大型表格中只抓取少數列的情況、最小/最大值查詢，透過排除不必要的列等）</p>
+<p><em>索引類型</em>：唯一索引、主鍵索引、全文索引、次要索引</p>
+<p>大量寫入負載、主要為全表掃描或存取大量列的操作不適合索引。</p>
 </li>
 <li>
-<p><a href="https://www.sqlservertutorial.net/sql-server-basics/sql-server-joins/">Joins</a></p>
-<p>Allows you to fetch related data from multiple tables, linking them together with some common field. Powerful but also resource-intensive and makes scaling databases difficult. This is the cause of many slow performing queries when run at scale, and the solution is almost always to find ways to reduce the joins.</p>
+<p><a href="https://www.sqlservertutorial.net/sql-server-basics/sql-server-joins/">連接（Joins）</a></p>
+<p>允許從多個表根據共通欄位取出關聯資料。功能強大但也資源耗費大，且使資料庫擴展困難。大量使用 Join 是導致大規模查詢緩慢的主要原因，解決方法幾乎總是尋找能減少 Join 的策略。</p>
 </li>
 <li>
-<p><a href="https://dev.mysql.com/doc/refman/8.0/en/access-control.html">Access control</a></p>
-<p>DBs have privileged accounts for admin tasks, and regular accounts for clients. There are fine-grained controls on what actions (DDL, DML, etc. discussed earlier) are allowed for these accounts.</p>
-<p>DB first verifies the user credentials (authentication), and then examines whether this user is permitted to perform the request (authorization) by looking up these information in some internal tables.</p>
-<p>Other controls include activity auditing that allows examining the history of actions done by a user, and resource limits which define the number of queries, connections, etc. allowed.</p>
+<p><a href="https://dev.mysql.com/doc/refman/8.0/en/access-control.html">存取控制</a></p>
+<p>資料庫設有具管理權限的帳號及一般客戶帳號，精細控管這些帳號可執行的操作（如前述 DDL、DML 等）。</p>
+<p>資料庫先驗證使用者身份（認證），再查詢內部表判斷該使用者是否有權執行請求（授權）。</p>
+<p>其他控制包括活動審核，可檢視使用者執行過的操作歷史，以及資源限制，定義允許的查詢數、連線數等。</p>
 </li>
 </ul>
-<h3 id="popular-databases">Popular databases</h3>
-<p>Commercial, closed source: Oracle, Microsoft SQL Server, IBM DB2</p>
-<p>Open source with optional paid support: MySQL, MariaDB, PostgreSQL</p>
-<p>Individuals and small companies have always preferred open source DBs because of the huge cost associated with commercial software.</p>
-<p>In recent times, even large organizations have moved away from commercial software to open source alternatives because of the flexibility and cost savings associated with it.</p>
-<p>Lack of support is no longer a concern because of the paid support available from the developer and third parties.</p>
-<p>MySQL is the most widely used open source DB, and it is widely supported by hosting providers, making it easy for anyone to use. It is part of the popular Linux-Apache-MySQL-PHP (<a href="https://en.wikipedia.org/wiki/LAMP_(software_bundle)">LAMP</a>) stack that became popular in the 2000s. We have many more choices for a programming language, but the rest of that stack is still widely used.</p>
+<h3 id="_1">常見資料庫</h3>
+<p>商用、閉源：Oracle、Microsoft SQL Server、IBM DB2</p>
+<p>開源並有付費支援選項：MySQL、MariaDB、PostgreSQL</p>
+<p>個人和小型公司一向偏好開源資料庫，因為商用軟體成本龐大。</p>
+<p>近年來，許多大型組織也逐漸轉向開源替代方案，因為具備彈性且節省成本。</p>
+<p>不再擔心缺乏支援，因為開發者與第三方提供商有付費支援服務。</p>
+<p>MySQL 是最廣泛使用的開源資料庫，且得到眾多託管服務商支持，讓任何人都容易使用。它是流行的 Linux-Apache-MySQL-PHP （<a href="https://en.wikipedia.org/wiki/LAMP_(software_bundle)">LAMP</a>）框架的一部分，該框架在2000年代盛行。雖然現代有更多程式語言選擇，但 LAMP 框架其他部分依然廣泛運用。</p>
 
 
 

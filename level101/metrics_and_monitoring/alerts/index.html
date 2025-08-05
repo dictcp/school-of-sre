@@ -3155,9 +3155,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#proactive-monitoring-using-alerts" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Proactive monitoring using alerts
+      使用警示進行主動監控
     </span>
   </a>
   
@@ -5959,9 +5959,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#proactive-monitoring-using-alerts" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Proactive monitoring using alerts
+      使用警示進行主動監控
     </span>
   </a>
   
@@ -5983,32 +5983,12 @@
 
 
 <h2 id="_1"></h2>
-<h1 id="proactive-monitoring-using-alerts">Proactive monitoring using alerts</h1>
-<p>Earlier we discussed different ways to collect key metric data points
-from a service and its underlying infrastructure. This data gives us a
-better understanding of how the service is performing. One of the main
-objectives of monitoring is to detect any service degradations early 
-(reduce Mean Time To Detect) and notify stakeholders so that the issues
-are either avoided or can be fixed early, thus reducing Mean Time To
-Recover (MTTR). For example, if you are notified when resource usage by
-a service exceeds 90%, you can take preventive measures to avoid
-any service breakdown due to a shortage of resources. On the other hand,
-when a service goes down due to an issue, early detection and
-notification of such incidents can help you quickly fix the issue.</p>
-<p><img alt="An alert notification received on Slack" src="../images/image11.png" /> </p>
-<p align="center"> Figure 8: An alert notification received on Slack </p>
+<h1 id="_2">使用警示進行主動監控</h1>
+<p>前面我們討論了從服務及其底層基礎設施收集關鍵指標數據點的不同方法。這些數據讓我們更了解服務的運作狀況。監控的主要目標之一是及早偵測服務性能下降（縮短平均偵測時間，Mean Time To Detect），並通知相關人員，讓問題能被避免或及早修復，進而縮短平均修復時間（MTTR，Mean Time To Recover）。例如，若當服務的資源使用率超過90％時你會被通知，就能採取預防措施，避免因資源短缺而導致服務崩潰。另一方面，當服務因某些問題中斷時，及早偵測並通知此類事件，能幫助你快速修復問題。</p>
+<p><img alt="在 Slack 上收到的警示通知" src="../images/image11.png" />  </p>
+<p align="center"> 圖 8：在 Slack 上收到的警示通知 </p>
 
-<p>Today most of the monitoring services available provide a mechanism to
-set up alerts on one or a combination of metrics to actively monitor the
-service health. These alerts have a set of defined rules or conditions,
-and when the rule is broken, you are notified. These rules can be as
-simple as notifying when the metric value exceeds <em>n</em> to as complex as a
-week-over-week (WoW) comparison of standard deviation over a period of
-time. Monitoring tools notify you about an active alert, and most of
-these tools support instant messaging (IM) platforms, SMS, email, or
-phone calls. Figure 8 shows a sample alert notification received on
-Slack for memory usage exceeding 90% of total RAM space on the
-host.</p>
+<p>如今，大多數可用的監控服務都提供設定警示機制，針對單一或多個指標組合設定警戒條件，主動監控服務健康狀況。這些警示具備一組定義好的規則或條件，當規則被觸發時，系統會通知你。這些規則可以很簡單，如當指標值超過 <em>n</em> 時發出通知，也可以很複雜，例如比較一段期間內的週環比（WoW）標準差。監控工具會通知你有警示觸發，多數工具支援即時通訊（IM）平台、簡訊、電子郵件或電話通知。圖 8 顯示記憶體使用率超過主機總 RAM 空間的 90％ 時，在 Slack 上收到的警示示範。</p>
 
 
 

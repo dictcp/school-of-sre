@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#the-evolution-of-the-cicd" class="md-skip">
+        <a href="#cicd" class="md-skip">
           Skip to content
         </a>
       
@@ -5646,18 +5646,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-evolution-of-the-cicd" class="md-nav__link">
+  <a href="#cicd" class="md-nav__link">
     <span class="md-ellipsis">
-      The Evolution of the CI/CD
+      CI/CD 的演進
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cicd-and-devops" class="md-nav__link">
+  <a href="#cicd-devops" class="md-nav__link">
     <span class="md-ellipsis">
-      CI/CD and DevOps
+      CI/CD 與 DevOps
     </span>
   </a>
   
@@ -5950,18 +5950,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-evolution-of-the-cicd" class="md-nav__link">
+  <a href="#cicd" class="md-nav__link">
     <span class="md-ellipsis">
-      The Evolution of the CI/CD
+      CI/CD 的演進
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cicd-and-devops" class="md-nav__link">
+  <a href="#cicd-devops" class="md-nav__link">
     <span class="md-ellipsis">
-      CI/CD and DevOps
+      CI/CD 與 DevOps
     </span>
   </a>
   
@@ -5984,16 +5984,16 @@
 
   <h1>Brief History</h1>
 
-<h2 id="the-evolution-of-the-cicd">The Evolution of the CI/CD</h2>
-<p>Traditional development approaches have been around for a very long time. The <a href="https://www.linkedin.com/pulse/waterfall-model-shobika-ramasubbarayalu">waterfall model</a> has been widely used in both large and small projects and has been successful. Despite the success, it has a lot of drawbacks like longer cycle times or delivery.</p>
-<p>While multiple team members are working on the project, the code changes get accumulated and never integrated until the planned build date. The build usually happens on agreed cycles that range from a month to a quarter. This results in several integration issues and build failures as the developers were working on their features in silos.</p>
-<p>It was a nightmare situation for the operations teams/for anyone to deploy the new builds/releases to the production environment because of lack of proper documentation on every change and the configuration requirements. So, to deploy successfully, often it required hot fixes and immediate patches.</p>
-<p>Another big challenge was collaboration. It is rare that the developer meets the operation engineers and does not have a full understanding of the production environment. All these challenges have given rise to longer cycle times for the delivery of the code changes.</p>
-<p><a href="https://www.linkedin.com/pulse/list-popular-agile-methodologies-used-organizations">Agile</a> methodology prescribes the delivery of incremental delivery of features in multiple iterations. So, the developers commit their code changes in smaller increments and roll out more frequently. Every code commit triggers a new build, and the integration issues are identified much early.  This has improved the build process and thereby reduced the cycle time. This process is known as <em>continuous integration or CI</em>.</p>
-<p>The big barrier between the developers and the operation teams has been shrunken with the emergence of the trend where organizations are adapting to the DevOps and SRE disciplines. The collaboration between the developers and the operation teams is improved. Moreover, the use of the same tools and processes by both the teams has improved coordination and avoided conflicting understanding of the process. One of the main drivers in this regard is the <em>continuous delivery (CD)</em> process that ensures the incremental deployment of smaller changes. There are multiple pre-production environments also called the staging environments before deploying to production environments.</p>
-<h2 id="cicd-and-devops">CI/CD and DevOps</h2>
-<p>The term <strong>DevOps</strong> represents the combination of Development (Dev) and Operations (Ops) teams. That is bringing developers and operations teams together for more collaboration. The development team often wants to introduce more features and more changes while the operation teams are more focused on the stability of the application in production. A change is always taken as a threat by the operations team as it can shake the stability of the environment. DevOps is termed as a culture that introduces the processes to reduce the barriers between developers and operations.</p>
-<p>The collaboration between Dev and Ops allows better follow-up of end-to-end production deployments and more frequent deployments. So, thus CI/CD is a key element in the DevOps processes.</p>
+<h2 id="cicd">CI/CD 的演進</h2>
+<p>傳統的開發方式已經存在很長一段時間。<a href="https://www.linkedin.com/pulse/waterfall-model-shobika-ramasubbarayalu">瀑布模型</a>在大型和小型專案中都被廣泛使用且取得成功。儘管如此，它仍有很多缺點，例如較長的週期時間或交付時間。</p>
+<p>當多位團隊成員同時在專案中工作時，程式碼變更會逐漸累積，直到預定的建置日期才會整合。建置通常依照約定的週期進行，範圍從一個月到一個季度不等。這導致了多次整合問題和建置失敗，因為開發人員都是各自開發自己的功能，彼此孤立。</p>
+<p>對於運維團隊或任何要將新版本/發行部署到生產環境的人而言，這是一場噩夢，因為缺乏每個變更的適當文件和配置需求。為了成功部署，常常需要緊急修補與臨時補丁。</p>
+<p>另一大挑戰是協作。開發人員很少會與運維工程師會面，也不會完全了解生產環境。所有這些挑戰導致程式碼變更的交付週期變長。</p>
+<p><a href="https://www.linkedin.com/pulse/list-popular-agile-methodologies-used-organizations">敏捷</a>方法主張在多個迭代中逐步交付功能。因此，開發人員會分批提交較小的程式碼變更並更頻繁釋出。每次程式碼提交都會觸發新的建置，整合問題能更早被發現，這改善了建置流程並縮短了週期時間。這個流程被稱為<em>持續整合（Continuous Integration，CI）</em>。</p>
+<p>隨著組織逐漸採用 DevOps 和 SRE（Site Reliability Engineering）體系，開發團隊和運維團隊之間的隔閡大幅縮小。開發人員與運維團隊間的協作得到改善。此外，兩邊使用相同的工具和流程提升了協調性，避免了對流程的誤解。其中一個主要推動因素是<em>持續交付（Continuous Delivery，CD）</em>，該流程確保以增量方式部署較小的變更。在進入生產環境之前，也會有多個預備環境（也稱為上線環境）。</p>
+<h2 id="cicd-devops">CI/CD 與 DevOps</h2>
+<p><strong>DevOps</strong> 一詞代表開發（Development，Dev）與運維（Operations，Ops）團隊的結合，也就是讓開發人員和運維團隊更緊密地合作。開發團隊通常希望新增更多功能及變更，而運維團隊則更專注於生產應用的穩定性。每一次變更對運維團隊來說都是威脅，因為它可能影響環境的穩定性。DevOps 被視為一種文化，引入流程來降低開發與運維團隊間的障礙。</p>
+<p>DevOps 促進開發與運維的合作，使得從端到端的生產部署追蹤更順暢，且部署更頻繁。因此，CI/CD 是 DevOps 流程中的關鍵元素。</p>
 
 
 

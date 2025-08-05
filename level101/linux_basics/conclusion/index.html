@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#conclusion" class="md-skip">
+        <a href="#_1" class="md-skip">
           Skip to content
         </a>
       
@@ -675,18 +675,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#applications-in-sre-role" class="md-nav__link">
+  <a href="#sre" class="md-nav__link">
     <span class="md-ellipsis">
-      Applications in SRE Role
+      在 SRE 角色中的應用
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#useful-courses-and-tutorials" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Useful Courses and Tutorials
+      有用的課程與教學
     </span>
   </a>
   
@@ -5958,18 +5958,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#applications-in-sre-role" class="md-nav__link">
+  <a href="#sre" class="md-nav__link">
     <span class="md-ellipsis">
-      Applications in SRE Role
+      在 SRE 角色中的應用
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#useful-courses-and-tutorials" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Useful Courses and Tutorials
+      有用的課程與教學
     </span>
   </a>
   
@@ -5990,27 +5990,27 @@
                   
 
 
-<h1 id="conclusion">Conclusion</h1>
-<p>We have covered the basics of Linux operating systems and basic commands used in Linux.
-We have also covered the Linux server administration commands.</p>
-<p>We hope that this course will make it easier for you to operate on the command line.</p>
-<h2 id="applications-in-sre-role">Applications in SRE Role</h2>
+<h1 id="_1">結論</h1>
+<p>我們已經涵蓋了 Linux 作業系統的基礎知識以及在 Linux 中常用的基本指令。<br />
+我們也介紹了 Linux 伺服器管理的指令。</p>
+<p>希望這門課程能讓你更輕鬆地使用指令列操作。</p>
+<h2 id="sre">在 SRE 角色中的應用</h2>
 <ol>
-<li>As a SRE, you will be required to perform some general tasks on these Linux servers. You will also be using the command line when you are troubleshooting issues.</li>
-<li>Moving from one location to another in the filesystem will require the help of <code>ls</code>, <code>pwd</code> and <code>cd</code> commands.</li>
-<li>You may need to search some specific information in the log files. <code>grep</code> command would be very useful here. I/O redirection will become handy if you want to store the output in a file or pass it as an input to another command.</li>
-<li><code>tail</code> command is very useful to view the latest data in the log file.</li>
-<li>Different users will have different permissions depending on their roles. We will also not want everyone in the company to access our servers for security reasons. Users permissions can be restricted with <code>chown</code>, <code>chmod</code> and <code>chgrp</code> commands.</li>
-<li><code>ssh</code> is one of the most frequently used commands for a SRE. Logging into servers and troubleshooting along with performing basic administration tasks will only be possible if we are able to login into the server.</li>
-<li>What if we want to run an Apache server or NGINX on a server? We will first install it using the package manager. Package management commands become important here.</li>
-<li>Managing services on servers is another critical responsibility of a SRE. <code>systemd</code>-related commands can help in troubleshooting issues. If a service goes down, we can start it using <code>systemctl start</code> command. We can also stop a service in case it is not needed.</li>
-<li>Monitoring is another core responsibility of a SRE. Memory and CPU are two important system-level metrics which should be monitored. Commands like <code>top</code> and <code>free</code> are quite helpful here.</li>
-<li>If a service throws an error, how do we find out the root cause of the error? We will certainly need to check logs to find out the whole stack trace of the error. The log file will also tell us the number of times the error has occurred along with time when it started.</li>
+<li>作為 SRE，你需要在這些 Linux 伺服器上執行一些常見任務。在排解問題時，你也會使用指令列。</li>
+<li>在檔案系統中從一個位置移動到另一個位置會需要使用 <code>ls</code>、<code>pwd</code> 和 <code>cd</code> 指令的協助。</li>
+<li>你可能需要在日誌檔案中搜尋特定資訊，<code>grep</code> 指令非常好用。如果你想將輸出存到檔案，或者當作輸入傳給另一個指令，I/O 重導向會很實用。</li>
+<li><code>tail</code> 指令非常適合用來查看日誌檔案中的最新資料。</li>
+<li>不同使用者根據角色會有不同的權限。為了安全考量，我們也不希望公司所有人都能存取伺服器。使用者權限可以用 <code>chown</code>、<code>chmod</code> 和 <code>chgrp</code> 指令來限制。</li>
+<li>對 SRE 而言，<code>ssh</code> 是最常使用的指令之一。登入伺服器並進行排錯及基本管理工作，必須先能成功登入伺服器。</li>
+<li>如果想在伺服器上執行 Apache 或 NGINX，我們會先使用套件管理器安裝。套件管理指令在這方面就非常重要。</li>
+<li>管理伺服器上的服務是 SRE 的另一項重要責任。<code>systemd</code> 相關指令能幫忙排錯。服務中斷時，我們可以用 <code>systemctl start</code> 指令啟動它，也可以在不需要時停止服務。</li>
+<li>監控是 SRE 的核心職責之一。記憶體和 CPU 是兩個重要的系統層級指標，應該持續監控。像是 <code>top</code> 和 <code>free</code> 指令相當有幫助。</li>
+<li>當服務拋出錯誤時，我們如何找出錯誤根本原因？肯定需要查看日誌來找出完整的錯誤堆疊軌跡。日誌檔也會告訴我們錯誤發生次數以及開始時間。</li>
 </ol>
-<h2 id="useful-courses-and-tutorials">Useful Courses and Tutorials</h2>
+<h2 id="_2">有用的課程與教學</h2>
 <ul>
-<li><a href="https://courses.edx.org/courses/course-v1:LinuxFoundationX+LFS101x+1T2020/course/">Edx basic linux commands course</a></li>
-<li><a href="https://courses.edx.org/courses/course-v1:RedHat+RH066x+2T2017/course/">Edx Red Hat Enterprise Linux Course</a></li>
+<li><a href="https://courses.edx.org/courses/course-v1:LinuxFoundationX+LFS101x+1T2020/course/">Edx 基本 Linux 指令課程</a></li>
+<li><a href="https://courses.edx.org/courses/course-v1:RedHat+RH066x+2T2017/course/">Edx 紅帽企業 Linux 課程</a></li>
 <li><a href="https://linuxcommand.org/lc3_learning_the_shell.php">https://linuxcommand.org/lc3_learning_the_shell.php</a></li>
 </ul>
 

@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#introduction-to-vim" class="md-skip">
+        <a href="#vim" class="md-skip">
           Skip to content
         </a>
       
@@ -3908,36 +3908,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Introduction
+      介紹
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#opening-a-file-and-using-insert-mode" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Opening a file and using insert mode
+      開啟檔案及使用插入模式
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#saving-a-file" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      Saving a file
+      儲存檔案
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#exiting-the-vim-editor" class="md-nav__link">
+  <a href="#vim_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Exiting the VIM editor
+      離開 VIM 編輯器
     </span>
   </a>
   
@@ -5974,36 +5974,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#introduction" class="md-nav__link">
+  <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Introduction
+      介紹
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#opening-a-file-and-using-insert-mode" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Opening a file and using insert mode
+      開啟檔案及使用插入模式
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#saving-a-file" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      Saving a file
+      儲存檔案
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#exiting-the-vim-editor" class="md-nav__link">
+  <a href="#vim_1" class="md-nav__link">
     <span class="md-ellipsis">
-      Exiting the VIM editor
+      離開 VIM 編輯器
     </span>
   </a>
   
@@ -6024,43 +6024,43 @@
                   
 
 
-<h1 id="introduction-to-vim">Introduction to Vim</h1>
-<h2 id="introduction">Introduction</h2>
-<p>As an SRE we several times log into into the servers and make changes to the config file, edit and modify scripts and the editor which comes handy and available in almost all linux distribution is Vim. Vim is an open-source and free command line editor, widely accepted and used. We will see some basics of how to use vim for creating and editing files. This knowledge will help us in understanding the next section, Scripting.</p>
-<h2 id="opening-a-file-and-using-insert-mode">Opening a file and using insert mode</h2>
-<p>We use the command <em><code>vim filename</code></em> to open a file <em><code>filename</code></em>. The terminal will open an editor but once you start writing, it won’t work. It’s because we are not in "INSERT" mode in vim.</p>
-<p>Press <strong><em><code>i</code></em></strong> and get into insert mode and start writing.</p>
+<h1 id="vim">Vim 簡介</h1>
+<h2 id="_1">介紹</h2>
+<p>作為 SRE，我們經常需要登入伺服器並修改設定檔、編輯及修改腳本，而幾乎所有 Linux 發行版中都附帶的便利編輯器是 Vim。Vim 是一個開放原始碼且免費的命令列編輯器，廣泛被接受與使用。我們將了解一些如何使用 Vim 建立與編輯檔案的基本知識。這些知識將有助於我們理解下一章節——腳本編寫。</p>
+<h2 id="_2">開啟檔案及使用插入模式</h2>
+<p>我們使用指令 <em><code>vim filename</code></em> 來開啟檔案 <em><code>filename</code></em>。終端機會開啟編輯器，但一開始無法直接開始寫入，因為我們尚未進入 Vim 的「插入」模式。</p>
+<p>按下 <strong><em><code>i</code></em></strong> ，進入插入模式並開始書寫。</p>
 <p><img alt="" src="../images/image2.png" /></p>
-<p>You will see on the bottom left “INSERT” after pressing “<strong><em>i</em></strong>” . You can use *<code>ESC</code>” key to get back to normal mode.</p>
-<h2 id="saving-a-file">Saving a file</h2>
-<p>After you insert your text in INSERT mode press ESC(escape) key on your keyboard to get out of it. Press <code>:</code>(colon shift +;) and press <strong><em><code>w</code></em></strong> and hit enter, the text you entered will get written in the file.</p>
+<p>按下「<strong><em>i</em></strong>」後，畫面左下角會顯示「INSERT」。你可以使用 <em><code>ESC</code></em> 鍵返回一般模式。</p>
+<h2 id="_3">儲存檔案</h2>
+<p>在插入模式中輸入文字後，按鍵盤上的 ESC（Esc 鍵）離開插入模式。然後輸入 <code>:</code>（冒號，Shift + ;）並按下 <strong><em><code>w</code></em></strong>，接著按 Enter，文章內容即會寫入檔案。</p>
 <p><img alt="" src="../images/image19.png" /></p>
-<h2 id="exiting-the-vim-editor">Exiting the VIM editor</h2>
-<p>Exiting vim can get real challenging for the beginners. There are various ways you can exit the Vim like exit without saving the work, exit with saving the work.</p>
-<p>Try below commands after exiting insert mode and pressing <strong><em><code>:</code></em></strong>(colon).</p>
+<h2 id="vim_1">離開 VIM 編輯器</h2>
+<p>對初學者而言，離開 Vim 可能相當困難。有多種方式可以離開 Vim，包括不儲存退出、儲存後退出等。</p>
+<p>在離開插入模式後，按 <strong><em><code>:</code></em></strong>（冒號）嘗試以下指令：</p>
 <table>
 <thead>
 <tr>
-<th>Vim Commands</th>
-<th>Description</th>
+<th>Vim 指令</th>
+<th>說明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><strong>:q</strong></td>
-<td>Exit the file but won’t exit if file has unsaved changes</td>
+<td>退出檔案，但若有未儲存的變更則無法退出</td>
 </tr>
 <tr>
 <td><strong>:wq</strong></td>
-<td>Write(save) and exit the file.</td>
+<td>儲存（寫入）檔案並退出</td>
 </tr>
 <tr>
 <td><strong>:q!</strong></td>
-<td>Exit without saving the changes.</td>
+<td>不儲存變更強制退出</td>
 </tr>
 </tbody>
 </table>
-<p>This is basic we would be needing in bash scripting in the next section. You can always visit tutorial for learning more. For quick practice of vim commands visit: <a href="https://www.openvim.com/"><u>https://www.openvim.com/</u></a></p>
+<p>以上基礎指令在下一節的 bash 腳本編寫中會用到。你也可以參考教學進一步學習。若想快速練習 Vim 指令，請訪問：<a href="https://www.openvim.com/"><u>https://www.openvim.com/</u></a></p>
 
 
 

@@ -66,7 +66,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#conclusion" class="md-skip">
+        <a href="#_1" class="md-skip">
           Skip to content
         </a>
       
@@ -1507,45 +1507,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#scaling-the-app" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Scaling The App
+      擴展應用程式
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#monitoring-strategy" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      Monitoring Strategy
+      監控策略
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#applications-in-sre-role" class="md-nav__link">
+  <a href="#sre" class="md-nav__link">
     <span class="md-ellipsis">
-      Applications in SRE role
+      SRE 角色中的應用
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#optional-exercises" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
-      Optional Exercises
+      選擇性練習
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#conclusion_1" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
-      Conclusion
+      總結
     </span>
   </a>
   
@@ -5983,45 +5983,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#scaling-the-app" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      Scaling The App
+      擴展應用程式
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#monitoring-strategy" class="md-nav__link">
+  <a href="#_3" class="md-nav__link">
     <span class="md-ellipsis">
-      Monitoring Strategy
+      監控策略
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#applications-in-sre-role" class="md-nav__link">
+  <a href="#sre" class="md-nav__link">
     <span class="md-ellipsis">
-      Applications in SRE role
+      SRE 角色中的應用
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#optional-exercises" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
-      Optional Exercises
+      選擇性練習
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#conclusion_1" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
-      Conclusion
+      總結
     </span>
   </a>
   
@@ -6042,36 +6042,36 @@
                   
 
 
-<h1 id="conclusion">Conclusion</h1>
-<h2 id="scaling-the-app">Scaling The App</h2>
-<p>The design and development is just a part of the journey. We will need to setup continuous integration and continuous delivery pipelines sooner or later. And we have to deploy this app somewhere.</p>
-<p>Initially, we can start with deploying this app on one virtual machine on any cloud provider. But this is a <code>Single point of failure</code> which is something we never allow as an SRE (or even as an engineer). So an improvement here can be having multiple instances of applications deployed behind a load balancer. This certainly prevents problems of one machine going down.</p>
-<p>Scaling here would mean adding more instances behind the load balancer. But this is scalable upto only a certain point. After that, other bottlenecks in the system will start appearing. ie: DB will become the bottleneck, or perhaps the load balancer itself. How do you know what is the bottleneck? You need to have observability into each aspects of the application architecture.</p>
-<p>Only after you have metrics, you will be able to know what is going wrong where. <strong>What gets measured, gets fixed!</strong></p>
-<p>Get deeper insights into scaling from School Of SRE's <a href="../../systems_design/scalability/">Scalability module</a> and post going through it, apply your learnings and takeaways to this app. Think how will we make this app geographically distributed and highly available and scalable.</p>
-<h2 id="monitoring-strategy">Monitoring Strategy</h2>
-<p>Once we have our application deployed. It will be working okay. But not forever. Reliability is in the title of our job and we make systems reliable by making the design in a certain way. But things still will go down. Machines will fail. Disks will behave weirdly. Buggy code will get pushed to production. And all these possible scenarios will make the system less reliable. So what do we do? <strong>We monitor!</strong></p>
-<p>We keep an eye on the system's health and if anything is not going as expected, we want ourselves to get alerted.</p>
-<p>Now let's think in terms of the given URL-shortening app. We need to monitor it. And we would want to get notified in case something goes wrong. But we first need to decide what is that <em>something</em> that we want to keep an eye on.</p>
+<h1 id="_1">結論</h1>
+<h2 id="_2">擴展應用程式</h2>
+<p>設計與開發只是旅程的一部分。我們遲早需要設置持續整合 (CI) 和持續交付 (CD) 管線。而且我們必須將此應用程式部署到某個地方。</p>
+<p>最初，我們可以從在任何雲端供應商的一台虛擬機上部署應用程式開始。但這是一個「單點故障（Single point of failure）」，作為 SRE（甚至一般工程師）我們絕不允許這種狀況。因此，一個改進是於負載平衡器後面部署多個應用程式實例。這確實可避免單一機器故障所帶來的問題。</p>
+<p>在這裡擴展意味著在負載平衡器後端新增更多實例。但這種擴展有一定的極限。之後，系統中其他瓶頸將會出現，例如：資料庫會成為瓶頸，或者可能是負載平衡器本身。你怎麼知道是什麼成為瓶頸？你需要對應用程式架構的各方面擁有可觀測性。</p>
+<p>只有擁有度量數據，你才知道哪裡出了問題。<strong>能被度量的，才能被修復！</strong></p>
+<p>想更深入了解擴展性，請參考 School Of SRE 的<a href="../../systems_design/scalability/">擴展性模組</a>，並在學習後，將你的體會與收穫應用到此應用程式中。思考如何讓此應用程式具備地理分布、高可用與可擴展性。</p>
+<h2 id="_3">監控策略</h2>
+<p>應用程式一旦部署，它會正常運作。但不會永遠如此。可靠性是我們工作的核心，我們透過設計讓系統可靠，但問題仍然會發生。機器會故障，硬碟會異常行為，有瑕疵的程式碼會被推送到生產環境。所有這些可能的情況都會讓系統的可靠性降低。那我們怎麼做？<strong>我們監控！</strong></p>
+<p>我們監控系統健康狀態，一旦有任何異常，我們希望能立即收到警報。</p>
+<p>現在以 URL 縮短應用程式為例，我們需要監控它，並在發生問題時獲得通知。但我們首先要決定的是，什麼是我們需要監控的「某個東西」。</p>
 <ol>
-<li>Since it's a web app serving HTTP requests, we want to keep an eye on HTTP Status codes and latencies</li>
-<li>Request volume again is a good candidate, if the app is receiving an unusual amount of traffic, something might be off.</li>
-<li>We also want to keep an eye on the database so depending on the database solution chosen. Query times, volumes, disk usage, etc.</li>
-<li>Finally, there also needs to be some external monitoring which runs periodic tests from devices outside of your data centers. This emulates customers and ensures that from customer point of view, the system is working as expected.</li>
+<li>由於它是一個提供 HTTP 請求服務的網頁應用，我們想監控 HTTP 狀態碼與延遲。</li>
+<li>請求量也是監控重點之一，如果應用接收到異常的流量，可能就有問題。</li>
+<li>我們也要監控資料庫，依照所選用的資料庫方案，監控如查詢時間、請求量、硬碟使用率等。</li>
+<li>最後，必須有一些外部監控，從你資料中心外的裝置周期性測試。這模擬顧客使用情況，確保系統從客戶端觀點依然正常運作。</li>
 </ol>
-<h2 id="applications-in-sre-role">Applications in SRE role</h2>
-<p>In the world of SRE, Python is a widely used language for small scripts and tooling developed for various purposes. Since tooling developed by SRE works with critical pieces of infrastructure and has great power (to bring things down), it is important to know what you are doing while using a programming language and its features. Also it is equally important to know the language and its characteristics while debugging the issues. As an SRE having a deeper understanding of Python language, it has helped me a lot to debug very sneaky bugs and be generally more aware and informed while making certain design decisions.</p>
-<p>While developing tools may or may not be part of SRE job, supporting tools or services is more likely to be a daily duty. Building an application or tool is just a small part of productionization. While there is certainly that goes in the design of the application itself to make it more robust, as an SRE you are responsible for its reliability and stability once it is deployed and running. And to ensure that, you’d need to understand the application first and then come up with a strategy to monitor it properly and be prepared for various failure scenarios.</p>
-<h2 id="optional-exercises">Optional Exercises</h2>
+<h2 id="sre">SRE 角色中的應用</h2>
+<p>在 SRE 世界裡，Python 是被廣泛用來撰寫小工具與腳本的語言。由於 SRE 開發的工具會操作關鍵基礎設施，且具有極大權限（可能會造成系統崩潰），使用程式語言及其特性時必須非常謹慎。同時，在調試問題時，了解語言本身與其特性也非常重要。作為 SRE，對 Python 語言有深入了解，對我解決非常棘手的除錯問題有極大幫助，也讓我在做設計決策時更加敏銳與有自信。</p>
+<p>雖然編寫工具未必是 SRE 的主要工作，但支援工具或服務更可能是日常任務。打造一款應用或工具只是產品化的一小部分。雖然在設計應用本身需要考慮其健壯性，但作為 SRE，你要負責該產品部署後的可靠性與穩定性。為了確保這點，你必須先理解應用，然後擬定監控策略，並為各種失效情境做好準備。</p>
+<h2 id="_4">選擇性練習</h2>
 <ol>
-<li>Make a decorator that will cache function return values depending on input parameters.</li>
-<li>Host the URL-shortening app on any cloud provider.</li>
-<li>Setup monitoring using many of the tools available like Catchpoint, Datadog, etc.</li>
-<li>Create a minimal Flask-like framework on top of TCP sockets.</li>
+<li>製作一個裝飾器，用以依據函數輸入參數緩存函數回傳值。</li>
+<li>將 URL 縮短應用部署到任何雲端供應商。</li>
+<li>使用多種可用的監控工具（例如 Catchpoint、Datadog 等）來設置監控。</li>
+<li>在 TCP socket 之上打造一個簡易版類 Flask 框架。</li>
 </ol>
-<h2 id="conclusion_1">Conclusion</h2>
-<p>This module, in the first part, aims to make you more aware of the things that will happen when you choose Python as your programming language and what happens when you run a Python program. With the knowledge of how Python handles things internally as objects, lot of seemingly magic things in Python will start to make more sense.</p>
-<p>The second part will first explain how a framework like Flask works using the existing knowledge of protocols like TCP and HTTP. It then touches the whole lifecycle of an application development lifecycle including the SRE parts of it. While the design and areas in architecture considered will not be exhaustive, it will give a good overview of things that are also important being an SRE and why they are important.</p>
+<h2 id="_5">總結</h2>
+<p>本模組的第一部分，旨在讓你更了解選擇 Python 作為程式語言時會發生的事，以及 Python 程式運作的內部機制。理解 Python 如何內部以物件形式處理事物後，很多表面看似神奇的現象會變得更易理解。</p>
+<p>第二部分將先解釋像 Flask 這樣的框架如何運作，並且基於 TCP、HTTP 等協定的知識。接著探討應用程式整個開發生命週期，包括與 SRE 相關的內容。雖然設計與架構範疇不會涵蓋所有細節，但會提供作為 SRE 必須關注的重要面向，以及為何這些面向如此重要的概述。</p>
 
 
 
