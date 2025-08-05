@@ -6052,7 +6052,7 @@
 <p><img alt="URL 縮短服務請求的追蹤與 span" src="../images/image3.jpg" /> </p>
 <p align="center"> 圖11：URL 縮短服務請求的追蹤與 span </p>
 
-<p>圖11是先前我們在 Python 學習範例中的 <a href="https://linkedin.github.io/school-of-sre/level101/python_web/url-shorten-app/">URL 縮短服務</a>追蹤的圖形展示。</p>
+<p>圖11是先前我們在 Python 學習範例中的 <a href="https://dictcp.github.io/school-of-sre/level101/python_web/url-shorten-app/">URL 縮短服務</a>追蹤的圖形展示。</p>
 <p>與監控類似，追蹤基礎架構包含多個模組用於收集追蹤、儲存追蹤和存取追蹤。每個微服務執行追蹤庫，在背景收集追蹤，建立記憶體內批次並提交給追蹤後端。追蹤後端會正規化接收到的追蹤資料並存入持久儲存。追蹤資料來自多個微服務，因此追蹤儲存通常以遞增方式儲存並依照追蹤識別碼建立索引。此管理方式有助於重建追蹤資料並進行視覺化。圖12說明了分散式系統追蹤的構造。</p>
 <p><img alt="分散式追蹤架構" src="../images/image5.jpg" /></p>
 <p align="center"> 圖12：分散式追蹤架構 </p>
