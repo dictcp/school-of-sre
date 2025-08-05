@@ -1,56 +1,56 @@
-# PART IV: Writing Secure Code & More
+# 第四部分：編寫安全代碼與更多
 
-The first and most important step in reducing security and reliability issues is to educate developers. However, even the best-trained engineers make mistakes, security experts can write insecure code and SREs can miss reliability issues. It’s difficult to keep the many considerations and tradeoffs involved in building secure and reliable systems in mind simultaneously, especially if you’re also responsible for producing software.
+減少安全性和可靠性問題的第一個且最重要的步驟是教育開發人員。然而，即使是訓練有素的工程師也會犯錯，安全專家也可能撰寫不安全的代碼，站點可靠性工程師（SRE）也可能忽略可靠性問題。在同時考慮建構安全且可靠系統所需的多種考量與權衡時尤其困難，特別是當你同時負責軟體產出時。
 
-## Use frameworks to enforce security and reliability while writing code
+## 使用框架在編寫代碼時強制執行安全性和可靠性
 
-- A better approach is to handle security and reliability in common frameworks, languages, and libraries. Ideally, libraries only expose an interface that makes writing code with common classes of security vulnerabilities impossible.
-- Multiple applications can use each library or framework. When domain experts fix an issue, they remove it from all the applications the framework supports, allowing this engineering approach to scale better.
+- 更好的方法是在通用框架、語言和函式庫中處理安全性和可靠性。理想狀況下，函式庫只暴露介面，使得撰寫常見類別的安全漏洞代碼變得不可能。
+- 多個應用程式可以使用每個函式庫或框架。當領域專家修復問題時，他們會從框架支持的所有應用中移除該問題，使這種工程方法具有更好的擴展性。
 
-## Common Security Vulnerabilities
+## 常見的安全漏洞
 
-- In large codebases, a handful of classes account for the majority of security vulnerabilities, despite ongoing efforts to educate developers and introduce code review. OWASP and SANS publish lists of common vulnerability classes
+- 在大型程式碼庫中，少數幾類安全漏洞佔了大多數漏洞，儘管不斷努力教育開發者並引入代碼審查。OWASP 和 SANS 公布了常見漏洞類別清單
 
   ![image26](images/image26.png)
 
-## Write Simple Code
+## 撰寫簡潔代碼
 
- Try to keep your code clean and simple.
+嘗試保持你的代碼乾淨且簡單。
 
-### Avoid Multi-Level Nesting
+### 避免多層嵌套
 
-- Multilevel nesting is a common anti-pattern that can lead to simple mistakes. If the error is in the most common code path, it will likely be captured by the unit tests. However, unit tests don’t always check error handling paths in multilevel nested code. The error might result in decreased reliability (for example, if the service crashes when it mishandles an error) or a security vulnerability (like a mishandled authorization check error).
+- 多層嵌套是一種常見的反模式，可能導致簡單的錯誤。如果錯誤發生在最常用的程式碼路徑，通常會被單元測試捕捉到。然而，單元測試不一定會測試多層嵌套代碼中錯誤處理的路徑。此錯誤可能導致可靠性降低（例如，服務在錯誤處理不當時崩潰）或安全漏洞（如授權檢查錯誤處理錯誤）。
 
-### Eliminate YAGNI Smells
+### 消除 YAGNI 味道
 
-- Sometimes developers overengineer solutions by adding functionality that may be useful in the future, “just in case.” This goes against the YAGNI (You Aren’t Gonna Need It) principle, which recommends implementing only the code that you need. YAGNI code adds unnecessary complexity because it needs to be documented, tested, and maintained.
-- To summarize, avoiding YAGNI code leads to improved reliability, and simpler code leads to fewer security bugs, fewer opportunities to make mistakes, and less developer time spent maintaining unused code.
+- 有時開發人員會過度設計功能，加入未來可能會用到的功能，“以備不時之需”。這違背了 YAGNI（You Aren’t Gonna Need It，你不會用到它）原則，該原則建議只實現你需要的代碼。YAGNI 代碼增加了不必要的複雜性，因為它需要被記錄、測試與維護。
+- 總結來說，避免 YAGNI 代碼有助於提高可靠性，而簡化代碼則會減少安全漏洞、減少犯錯的機會，且節省開發者維護未使用代碼的時間。
 
-### Repay Technical Debt
+### 償還技術債務
 
-- It is a common practice for developers to mark places that require further attention with TODO or FIXME annotations. In the short term, this habit can accelerate the delivery velocity for the most critical functionality, and allow a team to meet early deadlines—but it also incurs technical debt. Still, it’s not necessarily a bad practice, as long as you have a clear process (and allocate time) for repaying such debt.
+- 開發者常用 TODO 或 FIXME 註記標示需要額外注意的地方。短期來看，這種習慣可以加快最關鍵功能的交付速度，並協助團隊趕上早期截止期限，但同時也會帶來技術債務。只要你有明確的流程（並分配時間）來償還這些債務，這並非一定是不好的做法。
 
-### Refactoring
+### 重構
 
-- Refactoring is the most effective way to keep a codebase clean and simple. Even a healthy codebase occasionally needs to be.
-- Regardless of the reasons behind refactoring, you should always follow one golden rule: never mix refactoring and functional changes in a single commit to the code repository. Refactoring changes are typically significant and can be difficult to understand.
-- If a commit also includes functional changes, there’s a higher risk that an author or reviewer might overlook bugs.
+- 重構是保持程式碼庫乾淨且簡單的最有效方式。即使是健康的程式碼庫也偶爾需要重構。
+- 不論重構的原因為何，你應該一直遵守一條黃金準則：絕不要在同一個提交中同時混合重構和功能更改。重構變更通常規模大且難以理解。
+- 如果一個提交同時包含功能更改，作者或審查者忽略錯誤的風險會提高。
 
-### Unit Testing
+### 單元測試
 
-- Unit testing can increase system security and reliability by pinpointing a wide range of bugs in individual software components before a release. This technique involves breaking software components into smaller, self-contained “units” that have no external dependencies, and then testing each unit.
+- 單元測試能在發佈前針對個別軟體元件找出廣泛的錯誤，提升系統的安全性和可靠性。這種方法把軟體元件拆成較小的、獨立的“單元”，沒有外部依賴，然後測試每個單元。
 
-### Fuzz Testing
+### 模糊測試
 
-- Fuzz testing is a technique that complements the previously mentioned testing techniques. Fuzzing involves using a fuzzing engine to generate a large number of candidate inputs that are then passed through a fuzz driver to the fuzz target. The fuzzer then analyzes how the system handles the input. Complex inputs handled by all kinds of software are popular targets for fuzzing&mdash;for example, file parsers, compression algorithms, network protocol implementation and audio codec.
+- 模糊測試是一種補足上述測試技術的方法。模糊測試涉及使用模糊測試引擎生成大量候選輸入，這些輸入通過模糊測試驅動器送到模糊測試目標。然後模糊測試器分析系統如何處理這些輸入。複雜輸入由各種軟體處理是模糊測試的熱門目標，例如文件解析器、壓縮算法、網路協定實作以及音頻編解碼器。
 
-### Integration Testing
+### 整合測試
 
-- Integration testing moves beyond individual units and abstractions, replacing fake or stubbed-out implementations of abstractions like databases or network services with real implementations. As a result, integration tests exercise more complete code paths. Because you must initialize and configure these other dependencies, integration testing may be slower and flakier than unit testing&mdash;to execute the test, this approach incorporates real-world variables like network latency as services communicate end-to-end. As you move from testing individual low-level units of code to testing how they interact when composed together, the net result is a higher degree of confidence that the system is behaving as expected.
+- 整合測試超越單元與抽象，將抽象（如資料庫或網路服務）的假實作或存根替換成真實實作。因此，整合測試涵蓋更完整的程式碼路徑。由於必須初始化並配置這些依賴，整合測試通常比單元測試慢且容易不穩定 —— 在執行測試時，此方法會整合真實世界變數（如服務端到端通訊的網路延遲）。隨著你從測試個別低階單元代碼，進展到測試它們組合時如何互動，最終將帶來更高的信心確保系統如預期運作。
 
-### Last But not the least
+### 最後但同樣重要
 
-- Code Reviews
-- Rely on Automation
-- Don’t check in Secrets
-- Verifiable Builds
+- 代碼審查
+- 依賴自動化
+- 不要提交祕密資料
+- 可驗證構建

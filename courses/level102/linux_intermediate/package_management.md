@@ -1,38 +1,37 @@
-# Package Management
-## Introduction 
+# 套件管理
+## 介紹
 
-One of the main features of any operating system is the ability to run other programs and softwares, and hence Package management comes into picture. Package management is a method of installing and maintaining software programs on any operating system.
+任何作業系統的主要功能之一是能夠執行其他程式與軟體，因此套件管理應運而生。套件管理是指在任何作業系統上安裝與維護軟體程式的方法。
 
-## Package
+## 套件
 
-In the early days of Linux, one had to download source code of any software and compile it to install and run the software. As the Linux space became more mature, it is  understood the software landscape is very dynamic and started distributing software in the form of packages. Package file is a compressed collection of files that contains software, its dependencies, installation instructions and metadata about the package.
+在 Linux 的早期時代，用戶必須下載軟體的原始碼並編譯，才能安裝並執行軟體。隨著 Linux 生態系統愈發成熟，人們開始意識到軟體環境非常動態，因此改以套件形式來發行軟體。套件檔案是一種壓縮檔，其中包含了軟體本身、其相依性、安裝指令以及套件的相關 metadata。
 
-## Dependencies
+## 相依性
 
-It is rare that a software package is stand-alone, it depends on the different software, libraries and modules. These subroutines are stored and made available in the form of shared libraries which may serve more than one program. These shared resources are called dependencies. Package management does this hard job of resolving dependencies and installing them for the user along with the software.
+軟體套件很少是獨立存在的，它通常依賴不同的軟體、函式庫和模組。這些子程序以共享函式庫的形式存在，可能同時為多個程式所共用。這些共享資源稱為相依性。套件管理系統負責處理這些相依性，並會連同軟體一併為使用者安裝。
 
-## Repository
+## 套件庫
 
-Repository is a storage location where all the packages, updates, dependencies are stored. Each repository can contain thousands of software packages hosted on a remote server intended to be installed and updated on linux systems. We usually update the package information ( *often referred to as metadata*) by running “*sudo dnf update”.*
+套件庫是用來存放所有套件、更新與相依性的位置。每個套件庫都可能包含數千個軟體套件，這些套件被託管在遠端伺服器上，供 Linux 系統安裝與更新時使用。我們通常會透過執行 “*sudo dnf update*” 來更新套件資訊（*常稱為 metadata*）。
 
 ![](images/image29.png)
 
-Try out *`sudo dnf repolist all`* to list all the repositories.
+試試 *`sudo dnf repolist all`* 指令來列出所有套件庫。
 
-We usually add repositories for installing packages from third party vendors.
+我們通常會新增第三方供應商的套件庫以便安裝其套件。
 
 > dnf config-manager --add-repo http://www.example.com/example.repo
 
-## High Level and Low-Level Package management tools
+## 高階與低階套件管理工具
 
-There are mainly two types of packages management tools:
+套件管理工具主要有兩種類型：
 
-> 1\. *Low-level tools*: This is mostly used for installing, removing and upgrading package files.
+> 1\. *低階工具*：主要用於安裝、移除與升級套件檔案。
 > 
-> 2\. *High-Level tools*: In addition to Low-level tools, High-level tools do metadata searching and dependency resolution as well.
+> 2\. *高階工具*：除了具備低階工具的功能之外，還會進行 metadata 搜尋和相依性解析。
 
-| Linux Distribution | Low-Level Tools | High-Level tools |
+| Linux 發行版 | 低階工具 | 高階工具 |
 | --- | --- | --- |
 | Debian | dpkg | apt-get |
 | Fedora, RedHat | dnf | dnf |
-

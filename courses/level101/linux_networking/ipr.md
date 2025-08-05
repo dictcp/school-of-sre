@@ -1,8 +1,8 @@
-# IP Routing and Data Link Layer
-We will dig how packets that leave the client reach the server and vice versa. When the packet reaches the IP layer, the transport layer populates source port, destination port. IP/Network layer populates destination IP (discovered from DNS) and then looks up the route to the destination IP on the routing table. 
+# IP 路由與資料連結層
+我們將深入了解離開用戶端的封包如何抵達伺服器，反之亦然。當封包到達 IP 層時，傳輸層會填入來源埠與目標埠。IP/網路層會填入目標 IP（從 DNS 探得），然後在路由表上查找至目標 IP 的路徑。
 
 ```bash
-# Linux `route -n` command gives the default routing table
+# Linux `route -n` 指令顯示預設的路由表
 route -n
 ```
 
@@ -13,20 +13,19 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 172.17.0.0      0.0.0.0         255.255.0.0     U     0      0        0 eth0
 ```
 
-Here, the destination IP is bitwise AND’d with the Genmask and if the answer is the destination part of the table, then that gateway and interface is picked for routing. Here, [linkedin.com](https://www.linkedin.com)’s IP `108.174.10.10` is AND’d with `255.255.255.0` and the answer we get is `108.174.10.0` which doesn’t match with any destination in the routing table. Then, Linux does an AND of destination IP with `0.0.0.0` and we get `0.0.0.0`. This answer matches the default row.
+此處，目的地 IP 與 Genmask 進行位元與運算（AND），若結果與路由表中的目的地欄位相同，則會選擇該閘道器（Gateway）及介面做路由。此例中 [linkedin.com](https://www.linkedin.com) 的 IP `108.174.10.10` 與 `255.255.255.0` 做 AND 運算後得到 `108.174.10.0`，並未與路由表中任一目的地欄位相符。接著 Linux 將目的地 IP 與 `0.0.0.0` 做 AND 運算，結果為 `0.0.0.0`，符合預設路由列。
 
-Routing table is processed in the order of more octets of 1 set in Genmask and Genmask `0.0.0.0` is the default route if nothing matches. 
-At the end of this operation, Linux figured out that the packet has to be sent to next hop `172.17.0.1` via `eth0`. The source IP of the packet will be set as the IP of interface `eth0`. 
-Now, to send the packet to `172.17.0.1`, Linux has to figure out the MAC address of `172.17.0.1`. MAC address is figured by looking at the internal ARP cache which stores translation between IP address and MAC address. If there is a cache miss, Linux broadcasts ARP request within the internal network asking who has `172.17.0.1`. The owner of the IP sends an ARP response which is cached by the kernel and the kernel sends the packet to the gateway by setting Source MAC address as MAC address of `eth0` and destination MAC address of `172.17.0.1` which we got just now. Similar routing lookup process is followed in each hop till the packet reaches the actual server. Transport layer and layers above it come to play only at end servers. During intermediate hops, only till the IP/Network layer is involved.
+路由表會依 Genmask 中設定為 1 的位元數多寡來排序處理，若無匹配時，Genmask 為 `0.0.0.0` 的列即為預設路由。
+此步驟結束後，Linux 決定要透過介面 `eth0` 將封包送到下一跳路由器 `172.17.0.1`。封包的來源 IP 將設為 `eth0` 介面的 IP。
+接著，要送到 `172.17.0.1`，Linux 必須找出該 IP 對應的 MAC 位址。MAC 位址從內部 ARP 快取查得，該快取存有 IP 位址與 MAC 位址的對應關係。若快取未命中，Linux 會在內部網路廣播 ARP 請求，詢問誰擁有 `172.17.0.1`。擁有該 IP 的主機會發送 ARP 回應，核心（Kernel）將其快取，接著將封包發送給閘道器，封包中會將來源 MAC 設為 `eth0` 的 MAC 位址，目的 MAC 設為剛才取得的 `172.17.0.1` 的 MAC 位址。每一跳路由過程類似，直到封包送達實際伺服器。傳輸層與其以上層級的處理則只會在終端伺服器端時才執行，中間跳點只涉及 IP/網路層。
 
-![Screengrab for above explanation](images/arp.gif)
+![上述說明的截圖](images/arp.gif)
 
-One weird gateway we saw in the routing table is `0.0.0.0`. This gateway means no Layer3 (Network layer) hop is needed to send the packet. Both source and destination are in the same network. Kernel has to figure out the MAC of the destination and populate source and destination MAC appropriately and send the packet out so that it reaches the destination without any Layer3 hop in the middle.
+路由表中看到一個特殊閘道器是 `0.0.0.0`。此閘道器代表不需要 Layer3（網路層）跳轉即可送出封包，代表來源與目的地在同一網路內。核心必須找出目的地的 MAC，並適當地填入來源與目的 MAC，然後將封包送出，使其在中間沒有任何網路層跳轉的情況下抵達目的地。
 
-As we followed in other modules, let's complete this session with SRE use cases.
+如同我們在其他章節跟隨的流程，接下來以 SRE 實務的角度完成本單元。
 
-## Applications in SRE role
-1. Generally the routing table is populated by DHCP and playing around is not a good practice. There can be reasons where one has to play around the routing table but take that path only when it's absolutely necessary.
-2. Understanding error messages better like, “No route to host” error can mean MAC address of the destination host is not found and it can mean the destination host is down. 
-3. On rare cases, looking at the ARP table can help us understand if there is a IP conflict where same IP is assigned to two hosts by mistake and this is causing unexpected behavior.
-
+## SRE 角色的應用場景
+1. 一般而言，路由表由 DHCP 自動配置，隨意變更並非良好作法。若有特別原因必須調整路由表，應只在非常必要時才採取此作法。
+2. 更妥善理解錯誤訊息，例如 “No route to host”（找不到主機路由）錯誤可能代表目的主機的 MAC 位址找不到，也可能代表目的主機離線。
+3. 偶爾查看 ARP 表能幫助確認是否發生 IP 位址衝突，即同一 IP 被錯誤指派給兩台主機，導致系統行為異常。

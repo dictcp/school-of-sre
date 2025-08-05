@@ -1,36 +1,35 @@
 
-# Introduction to Vim
+# Vim 簡介
 
-## Introduction
-As an SRE we several times log into into the servers and make changes to the config file, edit and modify scripts and the editor which comes handy and available in almost all linux distribution is Vim. Vim is an open-source and free command line editor, widely accepted and used. We will see some basics of how to use vim for creating and editing files. This knowledge will help us in understanding the next section, Scripting.
+## 介紹
+作為 SRE，我們經常需要登入伺服器並修改設定檔、編輯及修改腳本，而幾乎所有 Linux 發行版中都附帶的便利編輯器是 Vim。Vim 是一個開放原始碼且免費的命令列編輯器，廣泛被接受與使用。我們將了解一些如何使用 Vim 建立與編輯檔案的基本知識。這些知識將有助於我們理解下一章節——腳本編寫。
 
-## Opening a file and using insert mode
+## 開啟檔案及使用插入模式
 
-We use the command *`vim filename`* to open a file *`filename`*. The terminal will open an editor but once you start writing, it won’t work. It’s because we are not in "INSERT" mode in vim.
+我們使用指令 *`vim filename`* 來開啟檔案 *`filename`*。終端機會開啟編輯器，但一開始無法直接開始寫入，因為我們尚未進入 Vim 的「插入」模式。
 
-Press ***`i`*** and get into insert mode and start writing.
+按下 ***`i`*** ，進入插入模式並開始書寫。
 
 ![](images/image2.png)
 
-You will see on the bottom left “INSERT” after pressing “***i***” . You can use *`ESC`” key to get back to normal mode.
+按下「***i***」後，畫面左下角會顯示「INSERT」。你可以使用 *`ESC`* 鍵返回一般模式。
 
-## Saving a file
+## 儲存檔案
 
-After you insert your text in INSERT mode press ESC(escape) key on your keyboard to get out of it. Press `:`(colon shift +;) and press ***`w`*** and hit enter, the text you entered will get written in the file.
+在插入模式中輸入文字後，按鍵盤上的 ESC（Esc 鍵）離開插入模式。然後輸入 `:`（冒號，Shift + ;）並按下 ***`w`***，接著按 Enter，文章內容即會寫入檔案。
 
 ![](images/image19.png)
 
-## Exiting the VIM editor
+## 離開 VIM 編輯器
 
-Exiting vim can get real challenging for the beginners. There are various ways you can exit the Vim like exit without saving the work, exit with saving the work.
+對初學者而言，離開 Vim 可能相當困難。有多種方式可以離開 Vim，包括不儲存退出、儲存後退出等。
 
-Try below commands after exiting insert mode and pressing ***`:`***(colon).
+在離開插入模式後，按 ***`:`***（冒號）嘗試以下指令：
 
-| Vim Commands | Description |
+| Vim 指令 | 說明 |
 | --- | --- |
-| **:q** | Exit the file but won’t exit if file has unsaved changes |
-| **:wq** | Write(save) and exit the file. |
-| **:q!** | Exit without saving the changes. |
+| **:q** | 退出檔案，但若有未儲存的變更則無法退出 |
+| **:wq** | 儲存（寫入）檔案並退出 |
+| **:q!** | 不儲存變更強制退出 |
 
-This is basic we would be needing in bash scripting in the next section. You can always visit tutorial for learning more. For quick practice of vim commands visit: [<u>https://www.openvim.com/</u>](https://www.openvim.com/)
-
+以上基礎指令在下一節的 bash 腳本編寫中會用到。你也可以參考教學進一步學習。若想快速練習 Vim 指令，請訪問：[<u>https://www.openvim.com/</u>](https://www.openvim.com/)

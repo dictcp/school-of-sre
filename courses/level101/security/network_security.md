@@ -1,508 +1,471 @@
-# Part II: Network Security
+# 第二部分：網路安全
 
-## Introduction
+## 簡介
 
-- TCP/IP is the dominant networking technology today. It is a five-layer architecture. These layers are, from top to bottom, the application layer, the transport layer (TCP), the network layer (IP), the data-link layer, and the physical layer. In addition to TCP/IP, there also are other networking technologies. For convenience, we use the OSI network model to represent non-TCP/IP network technologies. Different networks are interconnected using gateways. A gateway can be placed at any layer.
-- The OSI model is a seven-layer architecture. The OSI architecture is similar to the TCP/IP architecture, except that the OSI model specifies two additional layers between the application layer and the transport layer in the TCP/IP architecture. These two layers are the presentation layer and the session layer. Figure 5.1 shows the relationship between the TCP/IP layers and the OSI layers. The application layer in TCP/IP corresponds to the application layer and the presentation layer in OSI. The transport layer in TCP/IP corresponds to the session layer and the transport layer in OSI. The remaining three layers in the TCP/IP architecture are one-to-one correspondent to the remaining three layers in the OSI model.
+- TCP/IP 是當今主流的網路技術，它是一種五層架構。這些層級從上到下為：應用層、傳輸層（TCP）、網路層（IP）、資料連結層以及實體層。除了 TCP/IP，還有其他的網路技術。為了方便起見，我們使用 OSI 網路模型來代表非 TCP/IP 的網路技術。不同的網路之間是透過閘道（gateway）互連的，閘道可以放置於任何層級。
+- OSI 模型是七層架構。OSI 架構與 TCP/IP 架構相似，但 OSI 模型在 TCP/IP 架構的應用層與傳輸層之間，額外規定了兩層：表示層與會話層。圖 5.1 顯示了 TCP/IP 層與 OSI 層的對應關係。TCP/IP 的應用層對應 OSI 的應用層與表示層；TCP/IP 的傳輸層對應 OSI 的會話層與傳輸層；而 TCP/IP 架構中的另外三層與 OSI 模型中的三層是一一對應的。
 
-    ![image14](images/image14.png)
-    Correspondence between layers of the TCP/IP architecture and the OSI model. Also shown are placements of cryptographic algorithms in network layers, where the _dotted arrows_ indicate actual communications of cryptographic algorithms
+    ![image14](images/image14.png)  
+    TCP/IP 架構層與 OSI 模型層的對應關係。圖中亦顯示了密碼演算法置放於網路層級的位置，_虛線箭頭_ 表示密碼演算法的實際通訊方向。
 
-The functionalities of OSI layers are briefly described as follows:
+OSI 各層功能簡述如下：
 
-1. The application layer serves as an interface between applications and network programs. It supports application programs and end-user processing. Common application-layer programs include remote logins, file transfer, email, and Web browsing.
-2. The presentation layer is responsible for dealing with data that is formed differently. This protocol layer allows application-layer programs residing on different sides of a communication channel with different platforms to understand each other's data formats regardless of how they are presented.
-3. The session layer is responsible for creating, managing, and closing a communication connection.
-4. The transport layer is responsible for providing reliable connections, such as packet sequencing, traffic control, and congestion control.
-5. The network layer is responsible for routing device-independent data packets from the current hop to the next hop.
-6. The data-link layer is responsible for encapsulating device-independent data packets into device-dependent data frames. It has two sublayers: logical link control (LLC) and media access control (MAC).
-7. The physical layer is responsible for transmitting device-dependent frames through some physical media.
+1. 應用層：作為應用程式與網路程式的介面，支援應用程式和最終使用者處理。常見的應用層程式包括遠端登入、檔案傳輸、電子郵件與網頁瀏覽。
+2. 表示層：負責處理不同資料形態的問題。此協定層使得位於通訊通道雙側的應用程式，即使使用不同平台，也能互相理解資料格式，而無須關注資料的呈現方式。
+3. 會話層：負責通訊連線的建立、管理及關閉。
+4. 傳輸層：提供可靠連線，如封包排序、流量控制與擁塞控制。
+5. 網路層：負責路由與裝置無關的資料封包，從當前跳點傳送至下一跳。
+6. 資料連結層：將裝置無關的資料封包封裝至裝置相關的資料框架中，分為邏輯鏈路控制（LLC）與媒體存取控制（MAC）兩個子層。
+7. 實體層：負責通訊媒介上裝置相關的框架傳輸。
 
-- Starting from the application layer, data generated from an application program is passed down layer-by-layer to the physical layer. Data from the previous layer is enclosed in a new envelope at the current layer, where the data from the previous layer is also just an envelope containing the data from the layer before it. This is similar to enclosing a smaller envelope in a larger one. The envelope added at each layer contains sufficient information for handling the packet. Application-layer data are divided into blocks small enough to be encapsulated in an envelope at the next layer.
-- Application data blocks are “dressed up” in the TCP/IP architecture according to the following basic steps. At the sending side, an application data block is encapsulated in a TCP packet when it is passed down to the TCP layer. In other words, a TCP packet consists of a header and a payload, where the header corresponds to the TCP envelope and the payload is the application data block. Likewise, the TCP packet will be encapsulated in an IP packet when it is passed down to the IP layer. An IP packet consists of a header and a payload, which is the TCP packet passed down from the TCP layer. The IP packet will be encapsulated in a device-dependent frame (e.g., an Ethernet frame) when it is passed down to the data-link layer. A frame has a header, and it may also have a trailer. For example, in addition to having a header, an Ethernet frame also has a 32-bit cyclic redundancy check (CRC) trailer. When it is passed down to the physical layer, a frame will be transformed into a sequence of media signals for transmission
+- 從應用層開始，應用程式產生的資料會逐層往下傳遞至實體層。前一層的資料會被當前層再包覆成新的封套（類似以小信封裝入大信封），且每層新增的封套中包含足夠資訊以處理該封包。應用層資料會被劃分為足夠小的區塊，以方便下一層封裝。
+- 在 TCP/IP 架構中，應用資料區塊的封裝過程如下：在傳送端，當資料往 TCP 層傳遞時，會被封裝成 TCP 封包（包含標頭與資料部分），TCP 封包再向下傳遞至 IP 層時，被封裝進 IP 封包；IP 封包則被封裝進裝置相關的資料框架（如 Ethernet 框架），框架有標頭，且可能有尾端檢查資料（如 Ethernet 框架有 32 位元 CRC）。最後資料在實體層轉換成媒體訊號進行傳輸。
 
-    ![image15](images/image15.png)
-        Flow Diagram of a Packet Generation
+    ![image15](images/image15.png)  
+    封包產生流程圖
 
-- At the destination side, the medium signals are converted by the physical layer into a frame, which is passed up to the data-link layer. The data-link layer passes the frame payload (i.e., the IP packet encapsulated in the frame) up to the IP layer. The IP layer passes the IP payload, namely, the TCP packet encapsulated in the IP packet, up to the TCP layer. The TCP layer passes the TCP payload, namely, the application data block, up to the application layer. When a packet arrives at a router, it only goes up to the IP layer, where certain fields in the IP header are modified (e.g., the value of TTL is decreased by 1). This modified packet is then passed back down layer-by-layer to the physical layer for further transmission.
+- 在接收端，實體層將媒體訊號轉換成框架，框架傳遞至資料連結層，資料連結層提取框架內的 IP 封包傳給 IP 層，IP 層將封包內的 TCP 封包傳給 TCP 層，最後 TCP 層將資料區塊交給應用層。當封包抵達路由器時，只會上傳至 IP 層，並修改 IP 標頭中的某些欄位（如將 TTL 減 1），接著該封包再按層級向下傳輸至物理層繼續轉發。
 
-### Public Key Infrastructure
+### 公鑰基礎設施（PKI）
 
-- To deploy cryptographic algorithms in network applications, we need a way to distribute secret keys using open networks. Public-key cryptography is the best way to distribute these secret keys. To use public-key cryptography, we need to build a public-key infrastructure (PKI) to support and manage public-key certificates and certificate authority (CA) networks. In particular, PKIs are set up to perform the following functions:
-  - Determine the legitimacy of users before issuing public-key certificates to them.
-  - Issue public-key certificates upon user requests.
-  - Extend public-key certificates valid time upon user requests.
-  - Revoke public-key certificates upon users' requests or when the corresponding private keys are compromised.
-  - Store and manage public-key certificates.
-  - Prevent digital signature signers from denying their signatures.
-  - Support CA networks to allow different CAs to authenticate public-key certificates issued by other CAs.
-  - X.509: <https://certificatedecoder.dev/?gclid=EAIaIQobChMI0M731O6G6gIVVSQrCh04bQaAEAAYASAAEgKRkPD_BwE>
+- 為了在網路應用中部署密碼演算法，我們需透過公開網路分發秘密金鑰。公開金鑰密碼學是分發此類秘密金鑰的最佳方法。使用公開金鑰密碼學需建立公鑰基礎設施（PKI），以支援與管理公鑰憑證和憑證授權中心（CA）網路。PKI 主要執行以下功能：
+  - 在發放公鑰憑證前驗證使用者合法性。
+  - 依使用者請求發放公鑰憑證。
+  - 依使用者請求延長公鑰憑證有效期間。
+  - 於使用者要求或私鑰外洩時撤銷公鑰憑證。
+  - 儲存及管理公鑰憑證。
+  - 防止數位簽章使用者否認其簽署。
+  - 支援 CA 網路，讓不同的 CA 可認證彼此發出的公鑰憑證。
+  - X.509 規範詳見：<https://certificatedecoder.dev/?gclid=EAIaIQobChMI0M731O6G6gIVVSQrCh04bQaAEAAYASAAEgKRkPD_BwE>
 
-### IPsec: A Security Protocol at the Network Layer
+### IPsec：網路層安全協定
 
-- IPsec is a major security protocol at the network layer
-- IPsec provides a potent platform for constructing virtual private networks (VPN). VPNs are private networks overlayed on public networks.
-- The purpose of deploying cryptographic algorithms at the network layer is to encrypt or authenticate IP packets (either just the payloads or the whole packets).
-- IPsec also specifies how to exchange keys. Thus, IPsec consists of authentication protocols, encryption protocols, and key exchange protocols. They are referred to, respectively, as authentication header (AH), encapsulating security payload (ESP), and Internet key exchange (IKE).
+- IPsec 是網路層的重要安全協定。
+- IPsec 為建立虛擬私人網路（VPN）的強大平台，VPN 是建構於公共網路上的私有網路。
+- 在網路層部署密碼演算法的目的是加密或驗證 IP 封包（僅針對有效負載或整個封包）。
+- IPsec 同時定義密鑰交換方式，因此包含驗證協定、加密協定與密鑰交換協定，分別稱為驗證標頭（AH）、封裝安全負載（ESP）與網際網路密鑰交換（IKE）。
 
-### PGP & S/MIME : Email Security
+### PGP 與 S/MIME：電子郵件安全
 
-- There are several security protocols at the application layer. The most used of these protocols are email security protocols namely PGP and S/MIME.
-- SMTP (“Simple Mail Transfer Protocol”) is used for sending and delivering from a client to a server via port 25: it’s the outgoing server. On the contrary, POP (“Post Office Protocol”) allows the users to pick up the message and download it into their inbox: it’s the incoming server. The latest version of the Post Office Protocol is named POP3, and it’s been used since 1996; it uses port 110.
+- 應用層有多種安全協定，最廣泛使用的為電子郵件安全協定：PGP 與 S/MIME。
+- SMTP（簡單郵件傳輸協定）用於客戶端到伺服器的傳送與遞送，使用連接埠 25，為外寄伺服器。相反地，POP（郵局協定）允許用戶接收郵件並下載至收件匣，是收信伺服器。最新版本為 POP3，自 1996 年起使用，使用連接埠 110。
 
 PGP
 
-- PGP implements all major cryptographic algorithms, the ZIP compression algorithm, and the Base64 encoding algorithm.
-- It can be used to authenticate a message, encrypt a message, or both. PGP follows the following general process: authentication, ZIP compression, encryption, and Base64 encoding.
-- The Base64 encoding procedure makes the message ready for SMTP transmission.
+- PGP 實現了所有主要的加密演算法、ZIP 壓縮演算法及 Base64 編碼演算法。
+- 它能用於訊息驗證、加密或兩者並行。PGP 通常依序執行：驗證、ZIP 壓縮、加密與 Base64 編碼。
+- Base64 編碼使訊息準備好用於 SMTP 傳送。
 
-GPG (GnuPG)
+GPG（GnuPG）
 
-- GnuPG is another free encryption standard that companies may use that is based on OpenPGP.
-- GnuPG serves as a replacement for Symantec’s PGP.
-- The main difference is the supported algorithms. However, GnuPG plays nice with PGP by design. Because GnuPG is open, some businesses would prefer the technical support and the user interface that comes with Symantec’s PGP.
-- It is important to note that there are some nuances between the compatibility of GnuPG and PGP, such as the compatibility between certain algorithms, but in most applications such as email, there are workarounds. One such algorithm is the IDEA Module which isn’t included in GnuPG out of the box due to patent issues.
+- GnuPG 是另一種基於 OpenPGP 的免費加密標準，供企業使用。
+- 它可視為 Symantec PGP 的替代品。
+- 主要差異在於支援的演算法，但 GnuPG 設計上與 PGP 兼容。由於 GnuPG 是開放原始碼，部分企業偏好 Symantec PGP 提供的技術支援與使用者介面。
+- 注意 GnuPG 與 PGP 在某些演算法上存在兼容性差異，例如 IDEA 模組因專利問題未隨 GnuPG 預設提供，但在多數應用（如電子郵件）可透過變通達成。
 
 S/MIME
 
-- SMTP can only handle 7-bit ASCII text messages (You can use UTF-8 extensions to alleviate these limitations.) While POP can handle other content types besides 7-bit ASCII, POP may, under a common default setting, download all the messages stored in the mail server to the user's local computer. After that, if POP removes these messages from the mail server. This makes it difficult for the users to read their messages from multiple computers.
-- The Multipurpose Internet Mail Extension protocol (MIME) was designed to support sending and receiving email messages in various formats, including nontext files generated by word processors, graphics files, sound files, and video clips. Moreover, MIME allows a single message to include mixed types of data in any combination of these formats.
-- The Internet Mail Access Protocol (IMAP), operated on TCP port 143 (only for non-encrypted), stores (Configurable on both server & client just like PoP) incoming email messages in the mail server until the user deletes them deliberately. This allows the users to access their mailbox from multiple machines and download messages to a local machine without deleting it from the mailbox in the mail server.
+- SMTP 僅能處理 7-bit ASCII 文本訊息（可用 UTF-8 擴充以減輕此限制）。POP 可處理除 7-bit ASCII 以外的內容，但通常設定會將郵件全部下載至用戶端並從伺服器刪除，不利用戶於多台電腦存取郵件。
+- 多功能網際網路郵件擴充協定（MIME）設計用於支援多種格式郵件傳送，包括非文字處理檔案、圖形檔、音效檔及影片片段，且可混合多種格式於單一郵件中。
+- 網際網路郵件存取協定（IMAP）運作於 TCP 143 端口（僅非加密），郵件持續保存於伺服器，直至用戶刪除，使多台機器能同步讀取郵件並下載而不刪除伺服器上的副本。
 
 SSL/TLS
 
-- SSL uses a PKI to decide if a server’s public key is trustworthy by requiring servers to use a security certificate signed by a trusted CA.
-- When Netscape Navigator 1.0 was released, it trusted a single CA operated by the RSA Data Security corporation.
-- The server’s public RSA keys were used to be stored in the security certificate, which can then be used by the browser to establish a secure communication channel. The security certificates we use today still rely on the same standard (named X.509) that Netscape Navigator 1.0 used back then.
-- Netscape intended to train users (though this didn’t work out later) to differentiate secure communications from insecure ones, so they put a lock icon next to the address bar. When the lock is open, the communication is insecure. A closed lock means communication has been secured with SSL, which required the server to provide a signed certificate. You’re obviously familiar with this icon as it’s been in every browser ever since. The engineers at Netscape truly created a standard for secure Internet communications.
-- A year after releasing SSL 2.0, Netscape fixed several security issues and released SSL 3.0, a protocol that, albeit being officially deprecated since June 2015, remains in use in certain parts of the world more than 20 years after its introduction. To standardize SSL, the Internet Engineering Task Force (IETF) created a slightly modified SSL 3.0 and, in 1999, unveiled it as Transport Layer Security (TLS) 1.0. The name change between SSL and TLS continues to confuse people today. Officially, TLS is the new SSL, but in practice, people use SSL and TLS interchangeably to talk about any version of the protocol.
+- SSL 使用 PKI 判斷伺服器的公開金鑰是否值得信賴，要求伺服器使用可信 CA 簽發的安全憑證。
+- Netscape Navigator 1.0 發布時，僅信任 RSA Data Security 公司經營的單一 CA。
+- 伺服器的 RSA 公開金鑰存於安全憑證中，瀏覽器用以建立安全通訊通道。今日使用的憑證仍遵循同一標準（X.509）。
+- Netscape 打算讓使用者辨識安全與不安全的連線狀態，因此在網址欄旁放置鎖頭符號，以視覺化指示安全性。開鎖為不安全，鏽鎖為 SSL 保護，這標誌已成為所有瀏覽器的標準。
+- SSL 2.0 首版後一年推出 SSL 3.0，該協定在 2015 年 6 月被正式廢止，但全球仍廣泛使用。IETF 制定出略有修改的 SSL 3.0，並於 1999 年發布為 TLS 1.0。SSL 與 TLS 名稱的混用至今仍常見，官方上 TLS 是新版 SSL，但實務上 SSL、TLS 常被當作任何版本的協定名稱。
 
-- Must See:
+- 必看資源：
     - <https://tls.ulfheim.net/>
     - <https://davidwong.fr/tls13/>
 
-## Network Perimeter Security
+## 網路邊界安全
 
-Let us see how we keep a check on the perimeter, i.e the edges, the first layer of protection.
+讓我們看看如何維持周界（perimeter），即邊緣與第一道防線的防護。
 
-### General Firewall Framework
+### 一般防火牆架構
 
-- Firewalls are needed because encryption algorithms cannot effectively stop malicious packets from getting into an edge network.
-- This is because IP packets, regardless of whether they are encrypted, can always be forwarded into an edge network.
-- Firewalls that were developed in the 1990s are important instruments to help restrict network access. A firewall may be a hardware device, a software package, or a combination of both.
-- Packets flowing into the internal network from the outside should be evaluated before they are allowed to enter. One of the critical elements of a firewall is its ability to examine packets without imposing a negative impact on communication speed while providing security protections for the internal network.
-- The packet inspection that is carried out by firewalls can be done using several different methods. Based on the particular method used by the firewall, it can be characterized as either a packet filter, circuit gateway, application gateway, or dynamic packet filter.
+- 防火牆是必要的，因為密碼演算法無法有效阻止惡意封包進入邊緣網路。
+- IP 封包不論是否加密，都能被轉發至邊緣網路。
+- 1990 年代興起的防火牆是限制網路存取的重要工具。防火牆可為硬體裝置、軟體套件或兩者結合。
+- 來自外部進入內部網路的封包需先檢查，防火牆的關鍵能力之一是能在不降低通訊速度的前提下，檢視封包，保護內部網路安全。
+- 防火牆的封包檢查方法多種，依方式可分為封包過濾器、電路閘道器、應用程式閘道器和動態封包過濾。
 
-### Packet Filters
+### 封包過濾器
 
-- It inspects ingress packets coming to an internal network from outside and inspects egress packets going outside from an internal network
-- Packet-filtering only inspects IP headers and TCP headers, not the payloads generated at the application layer.
-- A packet-filtering firewall uses a set of rules to determine whether a packet should be allowed or denied to pass through.
-- 2 types:
-    - Stateless
-        - It treats each packet as an independent object, and it does not keep track of any previously processed packets. In other words, stateless filtering inspects a packet when it arrives and makes a decision without leaving any record of the packet being inspected.
+- 檢查從外部進入內部網路的進入封包及從內部出外的外發封包。
+- 僅檢查 IP 頭和 TCP 頭，不檢查應用層產生的負載。
+- 使用一組規則判斷封包是否允許通過。
+- 分為兩種：
+    - 無狀態（Stateless）  
+        - 將每個封包視為獨立物件，不記錄先前處理過的封包，根據單一封包決定是否放行。
+    - 有狀態（Stateful）  
+        - 又稱連線狀態過濾，追蹤內部主機和外部主機間連線狀態（TCP 或 UDP 連線及是否已建立）。
 
-    - Stateful
-        - Stateful filtering, also referred to as connection-state filtering, keeps track of connections between an internal host and an external host. A connection state (or state, for short) indicates whether it is a TCP connection or a UDP connection and whether the connection is established.
+### 電路閘道器
 
-### Circuit Gateways
+- 又稱電路層閘道器，通常運作於傳輸層。
+- 依據 TCP（或 UDP）標頭內的 IP 地址和埠號資訊，判斷是否允許內部主機與外部主機建立連線。
+- 常和封包過濾器結合以組成動態封包過濾器。
 
-- Circuit gateways, also referred to as circuit-level gateways, are typically operated at the transportation layer.
-- They evaluate the information of the IP addresses and the port numbers contained in TCP (or UDP) headers and use it to determine whether to allow or to disallow an internal host and an external host to establish a connection.
-- It is common practice to combine packet filters and circuit gateways to form a dynamic packet filter (DPF).
+### 應用程式閘道器（ALG）
 
-### Application Gateways (ALG)
+- 也稱代理伺服器（PROXY Server）
+- 作為內部主機的代理，處理來自外部客戶端的服務請求。
+- 深入檢查每個 IP 封包（進入或外出）。
+- 特別檢查封包中應用程式格式（如 MIME、SQL）及負載是否被允許。
+    - 因此，有能力偵測封包負載內的電腦病毒、惡意程式碼並隔離可疑封包，並封鎖可疑 IP 或 TCP 埠。但同時帶來較大計算與記憶體負擔。
 
-- Aka PROXY Servers
-- An Application Level Gateway (ALG) acts as a proxy for internal hosts, processing service requests from external clients.
-- An ALG performs deep inspections on each IP packet (ingress or egress).
-- In particular, an ALG inspects application program formats contained in the packet (e.g., MIME format or SQL format) and examines whether its payload is permitted.
-    - Thus, an ALG may be able to detect a computer virus contained in the payload. Because an ALG inspects packet payloads, it may be able to detect malicious code and quarantine suspicious packets, in addition to blocking packets with suspicious IP addresses and TCP ports. On the other hand, an ALG also incurs substantial computation and space overheads.
+### 可信系統與堡壘主機
 
-### Trusted Systems & Bastion Hosts
+- 可信作業系統（Trusted Operating System, TOS）符合特定安全需求。判斷作業系統是否可信，須評估：
+  - 系統設計無缺陷；
+  - 系統軟體無漏洞；
+  - 系統設定合宜；
+  - 系統管理適當。
 
-- A Trusted Operating System (TOS) is an operating system that meets a particular set of security requirements. Whether an operating system can be trusted or not depends on several elements. For example, for an operating system on a particular computer to be certified trusted, one needs to validate that, among other things, the following four requirements are satisfied:
-  - Its system design contains no defects;
-  - Its system software contains no loopholes;
-  - Its system is configured properly; and
-  - Its system management is appropriate.
-
-- Bastion Hosts
-    - Bastion hosts are computers with strong defence mechanisms. They often serve as host computers for implementing application gateways, circuit gateways, and other types of firewalls. A bastion host is operated on a trusted operating system that must not contain unnecessary functionalities or programs. This measure helps to reduce error probabilities and makes it easier to conduct security checks. Only those network application programs that are necessary, for example, SSH, DNS, SMTP, and authentication programs, are installed on a bastion host.
-    - Bastion hosts are also primarily used as controlled ingress points so that the security monitoring can focus more narrowly on actions happening at a single point closely.
+- 堡壘主機  
+    - 堡壘主機具備強健防禦機制，常作為應用程式閘道器、電路閘道器或其它防火牆類型的主機。堡壘主機運行於可信作業系統，系統無多餘功能與程式，降低錯誤可能並便於安全檢測。僅安裝必要的網路應用程式，如 SSH、DNS、SMTP 及認證程式。
+    - 屬於受控進入點，安全監控可集中於單一位置。
 
 ---
 
-## Common Techniques & Scannings, Packet Capturing 
+## 常用技術與掃描、封包擷取
 
-### Scanning Ports with Nmap
+### 使用 Nmap 掃描埠口
 
-- Nmap ("Network Mapper") is a free and open-source (license) utility for network discovery and security auditing.  Many systems and network administrators also find it useful for tasks such as network inventory, managing service upgrade schedules, and monitoring host or service uptime.
-- The best thing about Nmap is it’s free and open-source and is very flexible and versatile.
-- Nmap is often used to determine alive hosts in a network, open ports on those hosts, services running on those open ports, and version identification of that service on that port.
-- More at [http://scanme.nmap.org/](http://scanme.nmap.org/).
+- Nmap（Network Mapper）是一款免費且開放源碼的網路探索與安全稽核工具，系統與網管員常用於網路盤點、服務更新管理與主機/服務運作時間監控。
+- 優點是免費、開放且功能多元。
+- 用途包含辨識網路中活動主機、該主機開啟的埠口、埠口運行的服務及服務版本識別。
+- 詳情參見 [http://scanme.nmap.org/](http://scanme.nmap.org/)。
 
 ```
-nmap [scan type] [options] [target specification]
+nmap [掃描類型] [選項] [目標規格]
 ```
 
+Nmap 使用 6 種埠口狀態：
 
-Nmap uses 6 different port states:
+- **開啟（Open）** — 主動接受 TCP、UDP 或 SCTP 連線的埠。開啟埠是攻擊者的目標，也是網路服務存在的證明。
+- **關閉（Closed）** — 回應 Nmap 偵查封包但無應用程式監聽的埠，有助於確認主機存在與作業系統識別。
+- **過濾（Filtered）** — 無法判斷埠是否開啟，因封包過濾器阻止偵查封包達該埠，多由防火牆或路由器規則造成，偵查資料通常有限。
+- **未過濾（Unfiltered）** — 埠可存取但不清楚是否開啟，僅用於 ACK 掃描判斷過濾狀況，其他掃描可判別開啟狀態。
+- **開啟/過濾（Open/filtered）** — 未能判定是否開啟或過濾，通常因開啟埠無回應，可能封包遭丟棄或回應被阻擋。
+- **關閉/過濾（Closed/filtered）** — 無法鑑定埠口是關閉或過濾，在 IP ID 空閒掃描中使用。
 
-- **Open**&mdash;An open port is one that is actively accepting TCP, UDP or SCTP connections. Open ports are what interests us the most because they are the ones that are vulnerable to attacks. Open ports also show the available services on a network.
-- **Closed**&mdash;A port that receives and responds to Nmap probe packets but there is no application listening on that port. Useful for identifying that the host exists and for OS detection.
-- **Filtered**&mdash;Nmap can’t determine whether the port is open because packet filtering prevents its probes from reaching the port. Filtering could come from firewalls or router rules. Often little information is given from filtered ports during scans as the filters can drop the probes without responding or respond with useless error messages, e.g. destination unreachable.
-- **Unfiltered**&mdash;Port is accessible but Nmap doesn’t know if it is open or closed. Only used in ACK scan which is used to map firewall rulesets. Other scan types can be used to identify whether the port is open.
-- **Open/filtered**&mdash;Nmap is unable to determine between open and filtered. This happens when an open port gives no response. No response could mean that the probe was dropped by a packet filter or any response is blocked.
-- **Closed/filtered**&mdash;Nmap is unable to determine whether a port is closed or filtered. Only used in the IP ID idle scan.
+### Nmap 掃描類型：
 
-### Types of Nmap Scan:
+1. TCP 全連接掃描（TCP Connect）  
+    - 完成三向交握。  
+    - 若埠開啟，OS 完成連線後掃描器關閉以避免 DOS，屬「有聲」掃描，服務端可記錄來源 IP，可能觸發入侵偵測系統。
+2. UDP 掃描  
+    - 檢查 UDP 埠是否有監聽。  
+    - UDP 不像 TCP 回應正向確認，只有在埠關閉時才回覆。
+3. SYN 掃描  
+    - 另一種 TCP 掃描，又稱半開掃描，未完成整個 TCP 連線。  
+    - 掃描器送 SYN 封包，若回應 SYN-ACK 表示開啟，掃描器回 RST 封包關閉連線。  
+    - 若埠關閉，目標回 RST 封包。避免服務端收到完整連線請求。
+4. FIN 掃描  
+    - 隱蔽型掃描，類似 SYN 掃描，但送 FIN 封包。
+5. ACK 掃描  
+    - 判斷埠是否被過濾。
+6. NULL 掃描  
+    - 非常隱蔽，設置所有 TCP 標誌位關閉。封包非正常，部分主機不知如何處理。
+7. XMAS 掃描  
+    - 類似 NULL，所有 TCP 標誌位設為開啟。
+8. RPC 掃描  
+    - 尋找提供遠端程序調用（RPC）服務的裝置。
+9. IDLE 掃描  
+    - 超隱蔽方法，利用對外第三方（喪屍主機）轉發掃描封包。不需控制第三方，但需先行設定。較常用於惡意攻擊。
 
-1. TCP Connect
-    - TCP Connect scan completes the three-way handshake.
-    - If a port is open, the operating system completes the TCP three-way handshake and the port scanner immediately closes the connection to avoid DOS. This is “noisy” because the services can log the sender IP address and might trigger Intrusion Detection Systems.
-2. UDP Scan
-    - This scan checks to see if any UDP ports are listening.
-    - Since UDP does not respond with a positive acknowledgement like TCP and only responds to an incoming UDP packet when the port is closed.
-
-3. SYN Scan
-    - SYN scan is another form of TCP scanning.
-    - This scan type is also known as “half-open scanning” because it never actually opens a full TCP connection.
-    - The port scanner generates a SYN packet. If the target port is open, it will respond with an SYN-ACK packet. The scanner host responds with an RST packet, closing the connection before the handshake is completed.
-    - If the port is closed but unfiltered, the target will instantly respond with an RST packet.
-    - SYN scan has the advantage that the individual services never actually receive a connection.
-
-4. FIN Scan
-    - This is a stealthy scan, like the SYN scan, but sends a TCP FIN packet instead.
-
-5. ACK Scan
-    - ACK scanning determines whether the port is filtered or not.
-6. NULL Scan
-    - Another very stealthy scan that sets all the TCP header flags to off or NULL.
-    - This is not normally a valid packet and some hosts will not know what to do with this.
-7. XMAS Scan
-    - Similar to the NULL scan except for all the flags in the TCP header is set to on.
-8. RPC Scan
-    - This special type of scan looks for machine answering to RPC (Remote Procedure Call) services.
-9. IDLE Scan
-    - It is a super stealthy method whereby the scan packets are bounced off an external host.
-    - You don’t need to have control over the other host but it does have to set up and meet certain requirements. You must input the IP address of our “zombie” host and what port number to use. It is one of the more controversial options in Nmap since it only has a use for malicious attacks.
-
-Scan Techniques
-
-A couple of scan techniques which can be used to gain more information about a system and its ports. You can read more at <https://medium.com/infosec-adventures/nmap-cheatsheet-a423fcdda0ca>.
+掃描技術詳見 <https://medium.com/infosec-adventures/nmap-cheatsheet-a423fcdda0ca>。
 
 ### OpenVAS
 
-- OpenVAS is a full-featured vulnerability scanner. 
-- OpenVAS is a framework of services and tools that provides a comprehensive and powerful vulnerability scanning and management package
-- OpenVAS, which is an open-source program, began as a fork of the once-more-popular scanning program, Nessus.
-- OpenVAS is made up of three main parts. These are:
-    - a regularly updated feed of Network Vulnerability Tests (NVTs);
-    - a scanner, which runs the NVTs; and
-    - an SQLite 3 database for storing both your test configurations and the NVTs’ results and configurations.
-    - <https://www.greenbone.net/en/install_use_gce/>
+- OpenVAS 為完整漏洞掃描器。
+- 為服務和工具框架，提供強大漏洞掃描與管理功能。
+- OpenVAS 是基於 Nessus 漏洞掃描程式的開源衍生版本。
+- 組成三部分：經常更新的網路漏洞測試（NVT）、執行掃描的掃描器，以及使用 SQLite 3 資料庫儲存測試設定與結果。
+- 詳情：<https://www.greenbone.net/en/install_use_gce/>
 
 ### Wireshark
 
-- Wireshark is a protocol analyzer.
-- This means Wireshark is designed to decode not only packet bits and bytes but also the relations between packets and protocols.
-- Wireshark understands protocol sequences.
+- Wireshark 是協定分析器。
+- 設計用以解碼封包內容及協定間關係，理解協定序列。
+  
+Wireshark 範例：
 
-A simple demo of Wireshark
+1. 只擷取 UDP 封包：  
+   `Capture filter = "udp"`
+2. 只擷取 TCP 封包：  
+   `Capture filter = "tcp"`
 
-1. Capture only UDP packets:
-    - `Capture filter = “udp”`
-
-2. Capture only TCP packets:
-    - `Capture filter = “tcp”`
-
-3. TCP/IP three-way Handshake:<br/><br/>
+3. TCP/IP 三向交握示意：<br/><br/>
    ![image17](images/image17.png)
 
-4. Filter by IP address: displays all traffic from IP, be it source or destination
-    - `ip.addr == 192.168.1.1`
+4. 以 IP 過濾：顯示來源或目的為該 IP 的封包  
+   `ip.addr == 192.168.1.1`
 
-5. Filter by source address: display traffic only from IP source
-    - `ip.src == 192.168.0.1`
+5. 以來源 IP 過濾：  
+   `ip.src == 192.168.0.1`
 
-6. Filter by destination: display traffic only form IP destination
-    - `ip.dst == 192.168.0.1`
+6. 以目的 IP 過濾：  
+   `ip.dst == 192.168.0.1`
 
-7. Filter by IP subnet: display traffic from subnet, be it source or destination
-    - `ip.addr = 192.168.0.1/24` 
+7. 以子網過濾：來源或目的為子網的流量  
+   `ip.addr = 192.168.0.1/24`
 
-8. Filter by protocol: filter traffic by protocol name
-    - dns
-    - http
-    - ftp
-    - arp
-    - ssh
-    - telnet
-    - icmp
+8. 以協定過濾：  
+   dns, http, ftp, arp, ssh, telnet, icmp 等
 
-9. Exclude IP address: remove traffic from and to IP address
-    - `!ip.addr ==192.168.0.1`
+9. 排除特定 IP：  
+   `!ip.addr ==192.168.0.1`
 
-10. Display traffic between two specific subnet
-      - `ip.addr == 192.168.0.1/24 and ip.addr == 192.168.1.1/24`
+10. 兩子網間流量：  
+    `ip.addr == 192.168.0.1/24 and ip.addr == 192.168.1.1/24`
 
-11. Display traffic between two specific workstations
-      - `ip.addr == 192.168.0.1 and ip.addr == 192.168.0.2`
+11. 兩工作站間流量：  
+    `ip.addr == 192.168.0.1 and ip.addr == 192.168.0.2`
 
-12. Filter by MAC
-      - `eth.addr = 00:50:7f:c5:b6:78`
+12. MAC 過濾：  
+    `eth.addr = 00:50:7f:c5:b6:78`
 
-13. Filter TCP port
-      - `tcp.port == 80`
+13. TCP 埠過濾：  
+    `tcp.port == 80`
 
-14. Filter TCP port source
-      - `tcp.srcport == 80`
+14. TCP 埠來源過濾：  
+    `tcp.srcport == 80`
 
-15. Filter TCP port destination
-      - `tcp.dstport == 80`
+15. TCP 埠目的過濾：  
+    `tcp.dstport == 80`
 
-16. Find user agents
-      - `http.user_agent contains Firefox`
-      - `!http.user_agent contains || !http.user_agent contains Chrome`
+16. 搜尋使用者代理：  
+    `http.user_agent contains Firefox`  
+    排除條件：`!http.user_agent contains || !http.user_agent contains Chrome`
 
-17. Filter broadcast traffic
-      - `!(arp or icmp or dns)`
+17. 過濾廣播流量：  
+    `!(arp or icmp or dns)`
 
-18. Filter IP address and port
-      - `tcp.port == 80 && ip.addr == 192.168.0.1`
+18. IP 與埠同時過濾：  
+    `tcp.port == 80 && ip.addr == 192.168.0.1`
 
-19. Filter all HTTP GET requests
-      - `http.request`
+19. 過濾 HTTP GET 請求：  
+    `http.request`
 
-20. Filter all HTTP GET requests and responses
-      - `http.request or http.response`
+20. 過濾所有 HTTP GET 請求及回應：  
+    `http.request or http.response`
 
-21. Filter three-way handshake
-      - `tcp.flags.syn==1 or (tcp.seq==1 and tcp.ack==1 and tcp.len==0 and tcp.analysis.initial_rtt)`
+21. 過濾三向交握封包：  
+    `tcp.flags.syn==1 or (tcp.seq==1 and tcp.ack==1 and tcp.len==0 and tcp.analysis.initial_rtt)`
 
-22. Find files by type
-      - `frame contains “(attachment|tar|exe|zip|pdf)”`
+22. 依檔案類型搜尋：  
+    `frame contains “(attachment|tar|exe|zip|pdf)”`
 
-23. Find traffic based on keyword
-      - `tcp contains facebook`
-      - `frame contains facebook`
+23. 依關鍵字搜尋流量：  
+    `tcp contains facebook`  
+    `frame contains facebook`
 
-24. Detecting SYN Floods
-      - `tcp.flags.syn == 1 and tcp.flags.ack == 0`
+24. 偵測 SYN 洪泛：  
+    `tcp.flags.syn == 1 and tcp.flags.ack == 0`
 
+**Wireshark 混雜模式**
 
-**Wireshark Promiscuous Mode**
-
-  - By default, Wireshark only captures packets going to and from the computer where it runs. By checking the box to run Wireshark in Promiscuous Mode in the Capture Settings, you can capture most of the traffic on the LAN.
+- 預設 Wireshark 只擷取發往及來源是本機的封包。啟用擷取設定中的混雜模式，可擷取 LAN 中的大部分流量。
 
 ### Dumpcap
 
-- Dumpcap is a network traffic dump tool. It captures packet data from a live network and writes the packets to a file. Dumpcap’s native capture file format is `pcapng`, which is also the format used by Wireshark.
-- By default, Dumpcap uses the `pcap` library to capture traffic from the first available network interface and writes the received raw packet data, along with the packets’ time stamps into a `pcapng` file. The capture filter syntax follows the rules of the `pcap` library.
-- The Wireshark command-line utility called `dumpcap.exe` can be used to capture LAN traffic over an extended period of time.
-- Wireshark itself can also be used, but Dumpcap does not significantly utilize the computer's memory while capturing for long periods.
+- Dumpcap 是網路流量擷取工具，能擷取封包並寫至檔案，預設格式是 `pcapng`（Wireshark 的擷取格式）。
+- 預設擷取第一可用網路介面，用 `pcap` 函式庫擷取封包與時間戳記。
+- 支援長時間擷取並備有過濾條件。
+- 可由 Wireshark 指令行工具 `dumpcap.exe` 使用。
 
 ### DaemonLogger
 
-- DaemonLogger is a packet logging application designed specifically for use in Network and Systems Management (NSM) environments.
-- The biggest benefit DaemonLogger provides is that, like Dumpcap, it is simple to use for capturing packets. In order to begin capturing, you need only to invoke the command and specify an interface.
-    - `daemonlogger –i eth1`
-    - This option, by default, will begin capturing packets and logging them to the current working directory.
-    - Packets will be collected until the capture file size reaches 2 GB, and then a new file will be created. This will continue indefinitely until the process is halted.
+- DaemonLogger 是專為網路與系統管理環境設計的封包記錄應用程式。
+- 優點是操作簡便，指定介面即可開始擷取並持續記錄。
+- 擷取滿 2 GB 後自動建立新檔，直到程式停止。
 
 ### netsniff-ng
 
-- netsniff-ng is a high-performance packet capture utility
-- While the utilities we’ve discussed to this point rely on `libpcap` for capture, netsniff-ng utilizes zero-copy mechanisms to capture packets. This is done with the intent to support full packet capture over high throughput links.
-- To begin capturing packets with netsniff-ng, we have to specify an input and output. In most cases, the input will be a network interface, and the output will be a file or folder on disk.
+- netsniff-ng 是高效能封包擷取工具。
+- 不同於其他工具依賴 `libpcap`，netsniff-ng 利用零複製機制（zero-copy）擷取封包，適合高流量連結。
+- 擷取指令範例：
 ```shell
 netsniff-ng –i eth1 –o data.pcap
 ```
 
 ### NetFlow
 
-- NetFlow is a feature that was introduced on Cisco routers around 1996 that provides the ability to collect IP network traffic as it enters or exits an interface. By analyzing the data provided by NetFlow, a network administrator can determine things such as the source and destination of traffic, class of service, and the causes of congestion. A typical flow monitoring setup (using NetFlow) consists of three main components:<sup>[1]</sup>
+- NetFlow 是 Cisco 於 1996 年引入的功能，可收集進出介面的 IP 流量資料。透過分析，網管能瞭解頻寬來源、目的、分類和擁塞成因。
+- NetFlow 架構包括三要素：
+  - 流量匯出器：將封包彙整成流量資料，送至匯出收集器。
+  - 流量收集器：接收、儲存並預處理流量資料。
+  - 分析應用程式：針對入侵偵測或流量標定等目的分析資料。
+- 支援 NetFlow 的路由器及交換器可針對啟用介面收集 IP 流量統計，並送出 NetFlow 記錄，通常送至專用分析伺服器。
 
-  - Flow exporter: aggregates packets into flows and exports flow records towards one or more flow collectors.
-  - Flow collector: responsible for reception, storage and pre-processing of flow data received from a flow exporter.
-  - Analysis application: analyzes received flow data in the context of intrusion detection or traffic profiling, for example.
-    - Routers and switches that support NetFlow can collect IP traffic statistics on all interfaces where NetFlow is enabled, and later export those statistics as NetFlow records toward at least one NetFlow collector—typically a server that does the actual traffic analysis.
+### 入侵偵測系統（IDS）
 
-### IDS
+- IDS 能偵測環境中的安全事件，但不阻擋事件。  
+- IDS 感測器可為軟體或硬體，用於收集並分析網路流量。類型分為網路型 IDS 和主機型 IDS。
+- 主機型 IDS 為安裝於伺服器的代理，以低資源監控作業系統。
+- 網路型 IDS 可嵌入網路設備、獨立裝置或模組，監控網路流量。
 
-A security solution that detects security-related events in your environment but does not block them.
-IDS sensors can be software- and hardware-based used to collect and analyze the network traffic. These sensors are available in two varieties, network IDS and host IDS.
+**基於特徵的 IDS**
 
-- A host IDS is a server-specific agent running on a server with a minimum of overhead to monitor the operating system.
-- A network IDS can be embedded in a networking device, a standalone appliance, or a module monitoring the network traffic.
+- 監控流量，若偵測到已知惡意事件即發警報。
+- 藉由與已知攻擊模式資料庫比對資料流而達成。
+- 這些特徵明確定義哪些流量或行為視為惡意。
+- 特徵式偵測十多年來一直是網路防禦主幹，類似主機端的防毒方式。
+- 流程為：分析師觀察惡意活動，提取指標並製成特徵，當活動重演即觸發警報。
+- 範例：SNORT、SURICATA。
 
-Signature Based IDS
+**基於政策的 IDS**
 
-- The signature-based IDS monitors the network traffic or observes the system and sends an alarm if a known malicious event is happening. 
-- It does so by comparing the data flow against a database of known attack patterns.
-- These signatures explicitly define what traffic or activity should be considered as malicious. 
-- Signature-based detection has been the bread and butter of network-based defensive security for over a decade, partially because it is very similar to how malicious activity is detected at the host level with antivirus utilities
-- The formula is fairly simple: an analyst observes a malicious activity, derives indicators from the activity and develops them into signatures, and then those signatures will alert whenever the activity occurs again.
+- 主要是主機型 IDS，在違反設定的安全政策時發警報。
+- 政策代表允許及禁止行為。
+- 靈活且可客製化，明確定義允許的行為。
+- 相較之下，特徵式系統依賴廠商預設與資料庫。
 
-- ex: SNORT & SURICATA
+**基於異常的 IDS**
 
-Policy-Based IDS
+- 偵測異常流量偏離正常模式的情況，但難以界定「正常」流量。
+- 有兩種方法：統計式及非統計式異常偵測。
+  - 統計式透過長時間學習流量模式。
+  - 非統計式則依預設接受的流量模式。
 
-- The policy-based IDSs (mainly host IDSs) trigger an alarm whenever a violation occurs against the configured policy.
-- This configured policy is or should be a representation of the security policies.
-- This type of IDS is flexible and can be customized to a company's network requirements because it knows exactly what is permitted and what is not.
-- On the other hand, the signature-based systems rely on vendor specifics and default settings.
+**主機型 IDS 與網路型 IDS**
 
+- 主機型 IDS 係分散式代理，部署於須保護之每台伺服器，密切結合作業系統。
+- 網路型 IDS 則為智慧封包監控裝置，從網路擷取資料，與主機型 IDS 從主機擷取資料不同。
 
-Anomaly Based IDS
+**蜜罐（Honeypots）**
 
-- The anomaly-based IDS looks for traffic that deviates from the normal, but the definition of what is a normal network traffic pattern is the tricky part.
-- Two types of anomaly-based IDS exist: statistical and nonstatistical anomaly detection
-  - Statistical anomaly detection learns the traffic patterns interactively over a period of time.
-  - In the nonstatistical approach, the IDS has a predefined configuration of the supposedly acceptable and valid traffic patterns.
-
-Host-Based IDS & Network-Based IDS
-
-- A host IDS can be described as a distributed agent residing on each server of the network that needs protection. These distributed agents are tied very closely to the underlying operating system.
-
-- Network IDSs, on the other hand, can be described as intelligent sniffing devices. Data (raw packets) is captured from the network by a network IDS, whereas host IDSs capture the data from the host on which they are installed.
-
-Honeypots 
-
-- The use of decoy machines to direct intruders' attention away from the machines under protection is a major technique to preclude intrusion attacks. Any device, system, directory, or file used as a decoy to lure attackers away from important assets and to collect intrusion or abusive behaviors is referred to as a honeypot.
-- A honeypot may be implemented as a physical device or as an emulation system. The idea is to set up decoy machines in a LAN, or decoy directories/files in a file system and make them appear important, but with several exploitable loopholes, to lure attackers to attack these machines or directories/files, so that other machines, directories, and files can evade intruders' attentions. A decoy machine may be a host computer or a server computer. Likewise, we may also set up decoy routers or even decoy LANs.
+- 使用誘餌主機吸引入侵者注意，避免攻擊真正目標，是防入侵重要技巧。
+- 蜜罐可為實體設備或模擬系統，於區域網路或檔案系統設置具有漏洞的偽裝目標，誘使攻擊者攻擊，保護真正資產。
+- 可包含主機、伺服器、路由器及整個誘餌 LAN。
 
 ---
 
-## Chinks In The Armour (TCP/IP Security Issues)
+## 漏洞（TCP/IP 安全問題）
 
 ![image18](images/image18.png)
 
-### IP Spoofing
+### IP 欺騙（IP Spoofing）
 
-- In this type of attack, the attacker replaces the IP address of the sender, or in some rare cases the destination, with a different address.
-- IP spoofing is normally used to exploit a target host. In other cases, it is used to start a denial-of-service (DoS) attack.
-  - In a DoS attack, an attacker modifies the IP packet to mislead the target host into accepting the original packet as a packet sourced at a trusted host. The attacker must know the IP address of the trusted host to modify the packet headers (source IP address) so that it appears that the packets are coming from that host.
+- 攻擊者替換封包中來源 IP 位址，或少見地替換目的 IP 位址。
+- 欺騙通常用於針對目標主機發動攻擊，或觸發阻斷服務（DoS）。
+  - 在 DoS 攻擊中，攻擊者修改 IP 封包，使目標主機誤認封包來自受信任主機。攻擊者須知信任主機 IP，以正確修改封包標頭（來源 IP）。
 
-IP Spoofing Detection Techniques
+**IP 欺騙偵測技術**
 
-- Direct TTL Probes
-    - In this technique, we send a packet to a host of suspect spoofed IP that triggers reply and compares TTL with suspect packet; if the TTL in the reply is not the same as the packet being checked; it is a spoofed packet.
-    - This Technique is successful when the attacker is in a different subnet from the victim.
+- 直接 TTL 探測  
+    - 送封包至疑似欺騙 IP 主機並觸發回應，比較回應 TTL 與疑似封包 TTL，不同則為欺騙封包。此法在攻擊者與受害者位於不同子網時有效。  
     ![image19](images/image19.png)
+- IP 識別號比對  
+    - 送探測封包至疑似欺騙主機並觸發回應，比對 IP ID 是否接近封包值，不符即為欺騙。
+- TCP 流量控制法  
+    - 欺騙者無法接收目標的 SYN-ACK 回應，因而不會回應擁塞視窗調整。若接收端流量持續，超過視窗容量，可能為欺騙。
 
-- IP Identification Number.
-  - Send a probe to the host of suspect spoofed traffic that triggers a reply and compares IP ID with suspect traffic.
-  - If IP IDs are not in the near value of packet being checked, suspect traffic is spoofed.
+### 隱密通道（Covert Channel）
 
-- TCP Flow Control Method
-    - Attackers sending spoofed TCP packets will not receive the target’s SYN-ACK packets.
-    - Attackers cannot, therefore, be responsive to change in the congestion window size.
-    - When the receiver still receives traffic even after a windows size is exhausted, most probably the packets are spoofed.
-
-### Covert Channel
-
-- A covert or clandestine channel can be best described as a pipe or communication channel between two entities that can be exploited by a process or application transferring information in a manner that violates the system's security specifications.
-- More specifically for TCP/IP, in some instances, covert channels are established, and data can be secretly passed between two end systems.
-    - Ex: ICMP resides at the Internet layer of the TCP/IP protocol suite and is implemented in all TCP/IP hosts. Based on the specifications of the ICMP Protocol, an ICMP Echo Request message should have an 8-byte header and a 56-byte payload. The ICMP Echo Request packet should not carry any data in the payload. However, these packets are often used to carry secret information. The ICMP packets are altered slightly to carry secret data in the payload. This makes the size of the packet larger, but no control exists in the protocol stack to defeat this behavior. The alteration of ICMP packets allows intruders to program specialized client-server pairs. These small pieces of code export confidential information without alerting the network administrator.
-    - ICMP can be leveraged for more than data exfiltration. For eg. some C&C tools such as Loki used ICMP channel to establish encrypted interactive session back in 1996.
+- 指非法利用系統之溝通管道，在未符合安全規範的情況下傳送資訊。
+- TCP/IP 中可利用部分協定建立隱密通道秘密傳輸資料。
+    - 例如 ICMP 協定，Internet 層的ICMP Echo Request有固定 8 字節標頭與 56 字節有效負載，按規範有效負載不該包含資料，但攻擊者會修改封包以攜帶秘密資料，使封包大小增加，且協定棧無控制機制阻止此行為。攻擊者以此建立客戶端-伺服器程式竊取機密，無法輕易警示系統管理員。
+    - ICMP 通道亦可用於其他場合，如 1996 年 Loki C&C 工具用 ICMP 建立加密互動會話。
     
-    - Deep packet inspection has since come a long way. A lot of IDS/IPS detect ICMP tunnelling.
-        - Check for Echo responses that do not contain the same payload as request.
-        - Check for the volume of ICMP traffic especially for volumes beyond an acceptable threshold.
+    - 目前許多 IDS/IPS 已可偵測 ICMP 隧道。
+        - 檢查 Echo 回應與請求是否負載相符。
+        - 監控 ICMP 流量量級是否超過可接受閾值。
 
-### IP Fragmentation Attack
+### IP 分段攻擊（IP Fragmentation Attack）
 
-- The TCP/IP protocol suite, or more specifically IP, allows the fragmentation of packets. (this is a feature & not a bug)
-- IP fragmentation offset is used to keep track of the different parts of a datagram.
-- The information or content in this field is used at the destination to reassemble the datagrams.
-- All such fragments have the same Identification field value, and the fragmentation offset indicates the position of the current fragment in the context of the original packet.
+- TCP/IP（特別是 IP）協定允許封包分段，利用分段偏移欄位追蹤不同片段。
+- 目的端依偏移欄位將分段重組。
+- 各片段擁有相同識別欄位值，偏移欄位標示片段在原始封包中的位置。
+- 多數路由器與防火牆不負責分組重組。正常分段互不重疊，但攻擊者可製造人為重疊的分段，誤導路由器與防火牆。
+- 封包通常尺寸小且效率低，對端也難處理。
+- 舉例：Ping of Death（PoD）攻擊，以過大重組封包造成目標系統崩潰。
 
-- Many access routers and firewalls do not perform packet reassembly. In normal operation, IP fragments do not overlap, but attackers can create artificially fragmented packets to mislead the routers or firewalls. Usually, these packets are small and almost impractical for end systems because of data and computational overhead.
-- A good example of an IP fragmentation attack is the Ping of Death (PoD) attack. The Ping of Death attack sends fragments that, when reassembled at the end station, create a larger packet than the maximum permissible length.
+**TCP 標誌位**
 
-TCP Flags
-
-- Data exchange using TCP does not happen until a three-way handshake has been completed. This handshake uses different flags to influence the way TCP segments are processed.
-- There are 6 bits in the TCP header that are often called flags. Namely:
-  - six different flags are part of the TCP header: Urgent pointer field (URG), Acknowledgment field (ACK), Push function (PSH), Reset the connection (RST), Synchronize sequence numbers (SYN), and the sender is finished with this connection (FIN).
+- TCP 資料交換須三向交握完成，過程中使用多種標誌位影響封包處理。
+- TCP 標頭中有 6 位標誌，分別是：緊急指標（URG）、確認（ACK）、推送（PSH）、重設連線（RST）、同步序列號（SYN）與連線結束（FIN）。  
   ![image20](images/image20.png)
-
-  - Abuse of the normal operation or settings of these flags can be used by attackers to launch DoS attacks. This causes network servers or web servers to crash or hang.
+- 濫用或非法組合這些標誌可用於 DoS 攻擊，造成伺服器或網站崩潰。
 
 ```
-| SYN  | FIN  | PSH   | RST  | Validity|  
-|------|------|-------|------|---------|
-| 1    |1     |0      |0     |Illegal Combination
-| 1    |1     |1      |0     |Illegal Combination
-| 1    |1     |0      |1     |Illegal Combination
-| 1    |1     |1      |1     |Illegal Combination
+| SYN  | FIN  | PSH   | RST  | 合法性      |  
+|------|------|-------|------|-------------|
+| 1    | 1    | 0     | 0    | 非法組合    |
+| 1    | 1    | 1     | 0    | 非法組合    |
+| 1    | 1    | 0     | 1    | 非法組合    |
+| 1    | 1    | 1     | 1    | 非法組合    |
 ```
 
-- The attacker's ultimate goal is to write special programs or pieces of code that can construct these illegal combinations resulting in an efficient DoS attack.
+- 攻擊者會編寫特製程式，產生上述非法組合，實現有效的 DoS 攻擊。
 
-SYN FLOOD
+**SYN 淹洪**
 
-- The timers (or lack of certain timers) in three-way handshake are often used and exploited by attackers to disable services or even to enter systems.
-- After step 2 of the three-way handshake, no limit is set on the time-to-wait after receiving a SYN. The attacker initiates many connection requests to the webserver of Company XYZ (almost certainly with a spoofed IP address).
-- The SYN+ACK packets (Step 2) sent by the web server back to the originating source IP address are not replied to. This leaves a TCP session half-open on the webserver. Multiple packets cause multiple TCP sessions to stay open.
-- Based on the hardware limitations of the server, a limited number of TCP sessions can stay open, and as a result, the webserver refuses further connection establishments attempts from any host as soon as a certain limit is reached. These half-open connections need to be completed or timed out before new connections can be established.
+- 三向交握中等待限制問題被攻擊者利用導致服務癱瘓。
+- 攻擊者發起大量連線請求（通常用偽造的 IP）。
+- 目標伺服器送出 SYN+ACK 回應，但未收到確認，造成半開連線累積。
+- 伺服器有最大併發連線數限制，導致無法再接受新連線請求。
 
-FIN Attack
+**FIN 攻擊**
 
-- In normal operation, the sender sets the TCP FIN flag indicating that no more data will be transmitted and the connection can be closed down.
-- This is a four-way handshake mechanism, with both sender and receiver expected to send an acknowledgement on a received FIN packet.
+- 正常工作時發送 FIN 表示結束連線，並需彼此確認。
+- 攻擊時為偽造含正確序列號的 FIN 封包，使目標主機認作有效請求。  
+- 這種序號預測攻擊利用了 TCP 序號可偵測性，導致連線崩潰。
 
-- During an attack that is trying to kill connections, a spoofed FIN packet is constructed. This packet also has the correct sequence number, so the packets are seen as valid by the targeted host. These sequence numbers are easy to predict. This process is referred to as TCP sequence number prediction, whereby the attacker either sniffs the current Sequence and Acknowledgment (SEQ/ACK) numbers of the connection or can algorithmically predict these numbers.
-
-### Connection Hijacking
+### 連線劫持（Connection Hijacking）
 
   ![image22](images/image22.png)
 
-- An authorized user (Employee X) sends HTTP requests over a TCP session with the webserver.
-- The web server accepts the packets from Employee X only when the packet has the correct SEQ/ACK numbers. As seen previously, these numbers are important for the webserver to distinguish between different sessions and to make sure it is still talking to Employee X. Imagine that the cracker starts sending packets to the web server spoofing the IP address of Employee X, using the correct SEQ/ACK combination. The web server accepts the packet and increments the ACK number.
-- In the meantime, Employee X continues to send packets but with incorrect SEQ/ACK numbers. As a result of sending unsynchronized packets, all data from Employee X is discarded when received by the webserver. The attacker pretends to be Employee X using the correct numbers. This finally results in the cracker hijacking the connection, whereby Employee X is completely confused and the webserver replies assuming the cracker is sending correct synchronized data.
+- 授權使用者（員工 X）透過 TCP 會話向網站伺服器發送 HTTP 請求。
+- 伺服器接受封包需符合正確 SEQ/ACK 序號以區分會話，保證到訊息完整性。  
+- 攻擊者偽造員工 IP，利用正確 SEQ/ACK 組合將封包送往伺服器，造成伺服器將攻擊者認定為員工，並忽略真實員工的封包。最終攻擊者接管連線，員工被迫斷線。
 
-STEPS:
+**步驟：**
 
-1. The attacker examines the traffic flows with a network monitor and notices traffic from Employee X to a web server.
-2. The web server returns or echoes data back to the origination station (Employee X).
-3. Employee X acknowledges the packet.
-4. The cracker launches a spoofed packet to the server.
-5. The web server responds to the cracker. The cracker starts verifying SEQ/ACK numbers to double-check success. At this time, the cracker takes over the session from Employee X, which results in a session hanging for Employee X.
-6. The cracker can start sending traffic to the webserver.
-7. The web server returns the requested data to confirm delivery with the correct ACK number.
-8. The cracker can continue to send data (keeping track of the correct SEQ/ACK numbers) until eventually setting the FIN flag to terminate the session.
+1. 攻擊者使用網路監控工具觀察員工 X 與網站間流量。
+2. 伺服器會回應員工 X。
+3. 員工 X 回應確認封包。
+4. 攻擊者發出偽造封包到伺服器。
+5. 伺服器回應攻擊者，攻擊者根據回應調整 SEQ/ACK，成功接管會話，導致員工會話中斷。
+6. 攻擊者繼續與伺服器通訊。
+7. 伺服器回應以確認資料送達。
+8. 攻擊者維持會話流並在適當時機發送 FIN 結束會話。
 
-### Buffer Overflow
+### 緩衝區溢位（Buffer Overflow）
 
-- A buffer is a temporary data storage area used to store program code and data.
-- When a program or process tries to store more data in a buffer than it was originally anticipated to hold, a buffer overflow occurs.
-- Buffers are temporary storage locations in memory (memory or buffer sizes are often measured in bytes) that can store a fixed amount of data in bytes. When more data is retrieved than can be stored in a buffer location, the additional information must go into an adjacent buffer, resulting in overwriting the valid data held in them.
+- 緩衝區是用來暫存程式碼與資料的記憶體區域。
+- 當程式試圖寫入超過緩衝區容量的資料時，會發生溢位。
+- 溢位會讓額外資料覆寫鄰近有效資料，造成不良影響。
 
+**機制：**
 
-Mechanism:
+- 緩衝區溢位有多種型態，最終目標為控制特權程式，甚至主機。攻擊需：
+  1. 讓惡意程式碼出現於程式碼位址空間。
+  2. 使程式流程跳轉執行惡意程式，並載入合適參數。
+- 第一任務可透過注入惡意程式到目標空間或利用現有程式碼並微調參數達成。
+- 第二任務較複雜，需修改程式控制流程。
 
-- Buffer overflow vulnerabilities exist in different types. But the overall goal for all buffer overflow attacks is to take over the control of a privileged program and, if possible, the host. The attacker has two tasks to achieve this goal. First, the dirty code needs to be available in the program's code address space. Second, the privileged program should jump to that particular part of the code, which ensures that the proper parameters are loaded into memory.
-- The first task can be achieved in two ways: by injecting the code in the right address space or by using the existing code and modifying certain parameters slightly. The second task is a little more complex because the program's control flow needs to be modified to make the program jump to the dirty code.
+**對策：**
 
+- 最重要的是編碼正確無誤。
+- 另一法是將資料緩衝區設為不可執行地址空間，防止惡意程式碼執行。
 
-Counter Measure:
+### 更多欺騙技術
 
-- The most important approach is to have a concerted focus on writing correct code.
-- A second method is to make the data buffers (memory locations) address space of the program code non-executable. This type of address space makes it impossible to execute code, which might be infiltrated in the program's buffers during an attack.
+**位址解析協定欺騙（ARP Spoofing）**
 
-### More Spoofing
+- ARP 用於將已知 IP 地址對應至 MAC 地址。
+- 攻擊者通過偽造 Host B 的 MAC 位址，使本地網路中的任意設備誤信攻擊者為受信任的 Host B。在交換器環境下此方法常見。
+- 防範方法包括設置靜態 ARP 表格於所有主機與路由器，或使用 ARP 伺服器替目標主機回應 ARP 請求。
 
-Address Resolution Protocol Spoofing
+**DNS 欺騙（DNS Spoofing）**
 
-- The Address Resolution Protocol (ARP) provides a mechanism to resolve, or map, a known IP address to a MAC sublayer address.
-- Using ARP spoofing, the cracker can exploit this hardware address authentication mechanism by spoofing the hardware address of Host B. Basically, the attacker can convince any host or network device on the local network that the cracker's workstation is the host to be trusted. This is a common method used in a switched environment.
-    - ARP spoofing can be prevented with the implementation of static ARP tables in all the hosts and routers of your network. Alternatively, you can implement an ARP server that responds to ARP requests on behalf of the target host.
-
-DNS Spoofing
-
-- DNS spoofing is the method whereby the hacker convinces the target machine that the system it wants to connect to is the machine of the cracker.
-- The cracker modifies some records so that name entries of hosts correspond to the attacker's IP address. There have been instances in which the complete DNS server was compromised by an attack.
-- To counter DNS spoofing, the reverse lookup detects these attacks. The reverse lookup is a mechanism to verify the IP address against a name. The IP address and name files are usually kept on different servers to make compromise much more difficult.
+- 攻擊者使目標機器誤以為欲連線的系統為攻擊者主機。
+- 透過修改 DNS 記錄，將主機名稱對應到攻擊者的 IP 地址。已有整個 DNS 伺服器遭複寫的案例。
+- 防範 DNS 欺騙可透過反向查詢（Reverse Lookup）來驗證 IP 與名稱。IP 與名稱通常分別存放於不同伺服器，難以同時被攻破。

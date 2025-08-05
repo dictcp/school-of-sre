@@ -1,27 +1,27 @@
-**Prerequisites**
+**先決條件**
 
-Install Docker
+安裝 Docker
 
-**Setup**
+**設定**
 
-Create a working directory named `sos` or something similar, and `cd` into it.
+建立一個工作目錄，命名為 `sos` 或其他相似名稱，然後進入該目錄 (`cd`)。
 
-Enter the following into a file named `my.cnf` under a directory named `custom`:
+在 `custom` 資料夾下建立一個名為 `my.cnf` 的檔案，內容如下：
 
 ```shell
 sos $ cat custom/my.cnf
 [mysqld]
 
-# These settings apply to MySQL server
-# You can set port, socket path, buffer size etc.
-# Below, we are configuring slow query settings
+# 這些設定適用於 MySQL 伺服器
+# 可以設定連接埠、socket 路徑、緩衝區大小等
+# 以下我們設定慢查詢相關參數
 
 slow_query_log=1
 slow_query_log_file=/var/log/mysqlslow.log
 long_query_time=1
 ```
 
-Start a container and enable slow query log with the following:
+啟動容器並啟用慢查詢日誌：
 
 ```shell
 sos $ docker run --name db -v custom:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=realsecret -d mysql:8
@@ -29,7 +29,7 @@ sos $ docker cp custom/my.cnf $(docker ps -qf "name=db"):/etc/mysql/conf.d/custo
 sos $ docker restart $(docker ps -qf "name=db")
 ```
 
-Import a sample database:
+匯入示範資料庫：
 
 ```shell
 sos $ git clone git@github.com:datacharmer/test_db.git
@@ -41,16 +41,16 @@ root@3ab5b18b0c7d:/etc# touch /var/log/mysqlslow.log
 root@3ab5b18b0c7d:/etc# chown mysql:mysql /var/log/mysqlslow.log
 ```
 
-_Workshop 1: Run some sample queries_
+_工作坊 1：執行一些範例查詢_
 
-Run the following:
+請執行以下指令：
 
 ```shell
 $ mysql -uroot -prealsecret mysql
 mysql>
 
-# inspect DBs and tables
-# the last 4 are MySQL internal DBs
+# 查看資料庫與資料表
+# 最後 4 個是 MySQL 系統內部資料庫
 
 mysql> SHOW DATABASES;
 +--------------------+
@@ -78,21 +78,21 @@ mysql> SHOW TABLES;
 | titles               |
 +----------------------+
 
-# read a few rows
+# 讀取幾筆資料
 mysql> SELECT * FROM employees LIMIT 5;
 
-# filter data by conditions
+# 依條件篩選資料
 mysql> SELECT COUNT(*) FROM employees WHERE gender = 'M' LIMIT 5;
 
-# find count of particular data
+# 計算特定資料數量
 mysql> SELECT COUNT(*) FROM employees WHERE first_name = 'Sachin'; 
 ```
 
-_Workshop 2: Use explain and explain analyze to profile a query, identify and add indexes required for improving performance_
+_工作坊 2：使用 explain 和 explain analyze 分析查詢，識別並加入索引以提升效能_
 
 ```shell
-# View all indexes on table 
-# (\G is to output horizontally, replace it with a ; to get table output)
+# 查看資料表上的所有索引
+# (\G 會水平輸出，改用 ; 可取得表格格式輸出)
 
 mysql> SHOW INDEX FROM employees FROM employees\G
 *************************** 1. row ***************************
@@ -112,9 +112,9 @@ Index_comment:
       Visible: YES
    Expression: NULL
 
-# This query uses an index, identified by 'key' field
-# By prefixing explain keyword to the command, 
-# we get query plan (including key used)
+# 這個查詢使用索引，由 'key' 欄位表示
+# 加上 explain 關鍵字前置後，
+# 可看到查詢計畫（包含所用索引）
 
 mysql> EXPLAIN SELECT * FROM employees WHERE emp_no < 10005\G
 *************************** 1. row ***************************
@@ -131,7 +131,7 @@ possible_keys: PRIMARY
      filtered: 100.00
         Extra: Using where
 
-# Compare that to the next query which does not utilize any index
+# 與下方不使用索引的查詢做比較
 
 mysql> EXPLAIN SELECT first_name, last_name FROM employees WHERE first_name = 'Sachin'\G
 *************************** 1. row ***************************
@@ -148,7 +148,7 @@ possible_keys: NULL
      filtered: 10.00
         Extra: Using where
 
-# Let's see how much time this query takes
+# 查看該查詢耗時
 
 mysql> EXPLAIN ANALYZE SELECT first_name, last_name FROM employees WHERE first_name = 'Sachin'\G
 *************************** 1. row ***************************
@@ -156,9 +156,9 @@ EXPLAIN: -> Filter: (employees.first_name = 'Sachin')  (cost=30143.55 rows=29911
     -> Table scan on employees  (cost=30143.55 rows=299113) (actual time=0.095..1996.092 rows=300024 loops=1)
 
 
-# Cost (estimated by query planner) is 30143.55
-# actual time=28.284ms for first row, 3952.428 for all rows
-# Now lets try adding an index and running the query again
+# 計畫成本 (query planner 預估) 為 30143.55
+# 實際時間為首筆 28.284 毫秒，全部 3952.428 毫秒
+# 現在新增索引並重新執行查詢
 
 mysql> CREATE INDEX idx_firstname ON employees(first_name);
 Query OK, 0 rows affected (1.25 sec)
@@ -173,28 +173,26 @@ mysql> EXPLAIN ANALYZE SELECT first_name, last_name FROM employees WHERE first_n
 +--------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.01 sec)
 
-# Actual time=0.551ms for first row
-# 2.934ms for all rows. A huge improvement!
-# Also notice that the query involves only an index lookup,
-# and no table scan (reading all rows of the table),
-# which vastly reduces load on the DB.
+# 實際時間為第一筆 0.551 毫秒，全筆 2.934 毫秒，效能大幅提升！
+# 同時可見該查詢僅使用索引搜尋，無需掃描整張資料表，
+# 大幅減少對資料庫的負擔。
 ```
 
-_Workshop 3: Identify slow queries on a MySQL server_
+_工作坊 3：在 MySQL 伺服器上找出慢查詢_
 
 ```shell
-# Run the command below in two terminal tabs to open two shells into the container.
+# 在兩個終端機視窗各執行下面的指令，開啟兩個 shell 進入容器
 
 $ docker exec -it $(docker ps -qf "name=db") bash
 
-# Open a `mysql` prompt in one of them and execute this command
-# We have configured to log queries that take longer than 1s,
-# so this `sleep(3)` will be logged
+# 在其中一個 shell 中開啟 `mysql` 互動介面並執行指令
+# 我們設定只紀錄耗時超過 1 秒的查詢，
+# 因此這個 `sleep(3)` 會被記錄下來
 
 $ mysql -uroot -prealsecret mysql
 mysql> select sleep(3);
 
-# Now, in the other terminal, tail the slow log to find details about the query
+# 接著在另一個終端機中，使用 tail 指令查看慢查日誌細節
 
 root@62c92c89234d:/etc# tail -f /var/log/mysqlslow.log
 /usr/sbin/mysqld, Version: 8.0.21 (MySQL Community Server - GPL). started with:
@@ -213,4 +211,4 @@ SET timestamp=1606402428;
 select sleep(3);
 ```
 
-These were simulated examples with minimal complexity. In real life, the queries would be much more complex and the explain/analyze and slow query logs would have more details.
+以上為模擬且簡化的範例，實務中查詢通常會更複雜，利用 explain/analyze 與慢查詢日誌可帶來更豐富的細節與分析依據。

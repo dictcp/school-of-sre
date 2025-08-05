@@ -1,10 +1,9 @@
-# Conclusion
+# 結論
 
-Understanding package management is very crucial as an SRE, we always want the right set of software with their compatible versions to work in harmony to drive the big infrastructure and organization. 
+了解套件管理對於 SRE 非常重要，我們總是希望擁有正確的一組軟體及其相容版本，以和諧運作，推動大型基礎架構與組織的發展。
 
-We also saw how we can configure and use storage drives and how we can have redundancy of data using RAID to avoid the data loss, how data is placed over disk and use of file systems.
+我們也看到如何配置和使用儲存裝置，以及如何利用 RAID 來達成資料的冗餘，避免資料遺失，了解資料如何分布於磁碟上以及檔案系統的使用。
 
-Archiving and Backup is also a crucial part of being an SRE, It’s our responsibility to keep the data safe and in a more efficient manner. 
+備份與歸檔也是成為 SRE 的關鍵部分，保護資料安全且更有效率是我們的責任。
 
-Bash is very useful to automate the day to day toil that an SRE stumbles into. The above walkthrough of bash gives us an idea to get started, but mere reading through it won’t take you much further. I believe “taking action and practicing the topic” would give you confidence and will help you become a better SRE. 
-
+Bash 非常有用，能自動化 SRE 日常工作中的瑣事。上述的 bash 說明讓我們有了入門的概念，但僅僅閱讀是不夠的。我相信「付諸行動並實際練習」會讓您更有信心，並幫助您成為更優秀的 SRE。

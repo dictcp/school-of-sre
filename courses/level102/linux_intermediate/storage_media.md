@@ -1,252 +1,229 @@
-# Storage Media
-## Introduction
+# 存儲媒體
+## 介紹
 
-Storage media are devices which are used to store data and information. Linux has amazing capabilities when it comes to handling external devices including storage devices. There are many kinds of storage devices physical storage devices like hard drives, virtual storage devices like RAID or LVM, network storage and so on.
+存儲媒體是用來儲存數據和資訊的設備。Linux 在處理外部設備（包含存儲設備）方面有極好的功能。存儲設備種類繁多，包括實體存儲設備如硬碟，虛擬存儲設備如 RAID 或 LVM，網路存儲等等。
 
-In this section we will learn to work with any storage device and configure it to our needs.
+在本節中，我們將學習如何操作任何存儲設備並根據需求進行配置。
 
-## Listing the mounted storage devices:
+## 列出已掛載的存儲設備：
 
-We can use command **`mount`** to list all the storage devices mounted to your computer.
+我們可以使用命令 **`mount`** 來列出所有已掛載到電腦的存儲設備。
 
 ![](images/image30.png)
 
-The format in which we see above output is:
+上述輸出的格式為：
 
-*`device`* on *`mount_point`* type *`file\_system\_type (options)`*
+*`device`* on *`mount_point`* type *`file_system_type (options)`*
 
-For example in the first line the device virtual *sysfs* is mounted at */sys* path and has a *sysfs* file system. Now let’s see what and how a filesystem is created.
+例如第一行虛擬設備 *sysfs* 掛載在 */sys* 路徑，其文件系統為 *sysfs*。現在我們來看看什麼是文件系統以及如何建立文件系統。
 
-## Creating a FileSystem
+## 建立文件系統
 
-Imagine a disk where all the data stored in the disk is in the form of one large chunk, there is nothing to figure out where one piece of data starts and ends, which piece of data is located at which place of the whole chunk of data and hence the File System comes into picture. File System(fs) is responsible for data storage, indexing and retrieval on any storage device.
+想像一個磁碟上的所有數據都是一整塊大數據，無法分辨哪筆數據開始或結束、數據在哪個位置，因此出現了文件系統 (fs)。文件系統負責在任何存儲設備上進行數據的存儲、索引與檢索。
 
-Below are the most popularly used file systems:
+以下是最常用的文件系統：
 
-| FS Type | Description |
+| 文件系統類型 | 描述 |
 | --- | --- |
-| FAT | File Allocation Table, initially used on DOS and Microsoft Windows and now widely used for portable USB storage |
-| NTFS | (New Technology File System) Used on Microsoft’s Windows based operating systems |
-| ext | Extended file system, designed for Linux systems. |
-| ext4 | Fourth extended filesystem, is a journaled file system that is commonly used by the Linux kernel. |
-| HFS | Hierarchical File System, in use until HFS+ was introduced on Mac OS 8.1. |
-| HFS+ | Supports file system journaling, enabling recovery of data after a system crash. |
-| NFS | Network File System originally from Sun Microsystems is the standard in UNIX-based networks. |
+| FAT | 文件分配表，最初用於 DOS 與 Microsoft Windows，現在廣泛用於可攜 USB 存儲裝置 |
+| NTFS | (New Technology File System) 用於 Microsoft Windows 系統 |
+| ext | 用於 Linux 系統的延伸文件系統 |
+| ext4 | 第四代延伸文件系統，是 Linux 核心常用的日誌型文件系統 |
+| HFS | 階層式文件系統，使用直到 Mac OS 8.1 推出 HFS+ |
+| HFS+ | 支援文件系統日誌功能，能在系統當機後恢復數據 |
+| NFS | 原自 Sun Microsystems 的網路文件系統，是 UNIX 類網路標準 |
 
-We will try to create an *ext4* file system which is linux native fs using [*<u>mkfs</u>*](https://man7.org/linux/man-pages/man8/mkfs.8.html).
+我們將嘗試使用 [*<u>mkfs</u>*](https://man7.org/linux/man-pages/man8/mkfs.8.html) 建立一個 Linux 原生的 *ext4* 文件系統。
 
-**Discalimer: Run this command on empty disk as this will wipe out the existing data.**
+**警告：請在空磁碟上執行此命令，因為它會抹除現有資料。**
 
 ![](images/image10.png)
 
-Here the device */dev/sdb1* is formatted and it’s filesystem is changed to *ext4*.
+此例中將設備 */dev/sdb1* 格式化為 *ext4* 文件系統。
 
-## Mounting the device:
+## 掛載設備：
 
-In Linux systems all files are arranged in a tree structure with (/) as root. Mounting a fs simply means making that fs accessible to a certain point in the Linux directory tree.
+在 Linux 系統中，所有檔案以 (/) 為根，排列成樹狀結構。掛載文件系統即是將該文件系統載入 Linux 的目錄樹某路徑，使其可訪問。
 
-We need a mount point(location) where we want to mount the above formatted device.
+我們需要指定一個掛載點（位置）來掛載上面格式化的設備。
 
 ![](images/image12.png)
 
-We created a mount point */mount* and used the *[<u>mount</u>](https://man7.org/linux/man-pages/man8/mount.8.html)* command to attach the filesystem. Here *-t* flag specifies what is the fs type and after that the */dev/sdb1* (device name) and /mount (mount point we created earlier).
+我們建立了掛載點 */mount*，並以 *[<u>mount</u>](https://man7.org/linux/man-pages/man8/mount.8.html)* 命令將文件系統掛載。此處 *-t* 參數指定文件系統類型，接著是設備名稱 */dev/sdb1* 與掛載點 /mount。
 
-## Unmounting the device:
+## 卸載設備：
 
-Now let’s see how we can unmount the device, which is equally important if we have removable storage media and want to mount on another host. We use [***<u>umount</u>***](https://man7.org/linux/man-pages/man8/umount.8.html) for unmounting the device.
+接下來，看如何卸載設備。若為可攜式存儲媒體，想在另一台主機掛載就必須先卸載。我們使用 [***<u>umount</u>***](https://man7.org/linux/man-pages/man8/umount.8.html) 來卸載設備。
 
 ![](images/image15.png)
 
-Our first attempt did not unmount the /sdb1 because we were inside the storage device and it was being used. Once we jumped back to the home directory we were successfully able to unmount the device.
+第一次嘗試卸載 /sdb1 失敗，因為我們正位於該設備的目錄並使用中。切換回家目錄後，成功卸載設備。
 
-## Making it easier with /etc/fstab file?
+## 用 /etc/fstab 文件簡化掛載？
 
-In our production environment, we can have servers with many storage devices that need to be mounted, and it is not feasible to mount each device using the command every time we reboot the system. To ease this burden, we can make use of configuration table called “fstab” usually found in ***`/etc/fstab`*** on Linux systems.
+在生產環境中，伺服器可能有多個存儲設備需要掛載，每次重新開機都逐一手動掛載非常不方便。為了簡化，我們可以使用稱為 “fstab” 的配置表（通常位於 ***`/etc/fstab`***）。
 
 ![](images/image22.png)
 
-Here on the first line we have */dev/mapper/rootvg-rootlv (storage device*) mounted on */ (root mount point) which has the xfs filesystem type* followed by options.
+範例中第一行為 */dev/mapper/rootvg-rootlv*（存儲設備）掛載在系統根目錄 / ，文件系統為 xfs，後面接掛載選項。
 
-We can run *`mount -a`* to reload this file after making changes.
+修改後可執行 *`mount -a`* 來重新讀取此檔案。
 
-## Checking and Repairing FS
+## 檢查與修復文件系統
 
-Filesystems encounter issues in case of any hardware failure, power failure and sometimes due to improper shutdown. Linux usually checks and repairs the corrupted disk if any during startup. We can also manually check for filesystem corruption using the command [***<u>fsck</u>***](https://man7.org/linux/man-pages/man8/fsck.8.html).
+硬體故障、斷電或不當關機有可能造成文件系統損壞。Linux 通常於啟動時自動檢查並修復有問題的磁碟，也可以使用命令 [***<u>fsck</u>***](https://man7.org/linux/man-pages/man8/fsck.8.html) 手動檢查。
 
 ![](images/image25.png)
 
-We can repair the same filesystem using *`fsck -y /dev/sdb1`*.
+可用 *`fsck -y /dev/sdb1`* 修復指定文件系統。
 
-There are error codes attached to each kind of file system error ,and A sum of active errors is returned.
+文件系統錯誤會返回不同錯誤代碼並以其加總表示：
 
-| Error Codes | Description |
+| 錯誤代碼 | 描述 |
 | --- | --- |
-| 0   | No errors |
-| 1   | Filesystem errors corrected |
-| 2   | System should be rebooted |
-| 4   | Filesystem errors left uncorrected |
-| 8   | Operational error |
-| 16  | Usage or syntax error |
-| 32  | Checking canceled by user request |
-| 128 | Shared-library error |
+| 0   | 無錯誤 |
+| 1   | 文件系統錯誤已修正 |
+| 2   | 系統應重新啟動 |
+| 4   | 文件系統錯誤未修正 |
+| 8   | 運作錯誤 |
+| 16  | 使用或語法錯誤 |
+| 32  | 使用者取消檢查 |
+| 128 | 共享函式庫錯誤 |
 
-In the above fs check we got return code as 12 which is the sum of error code 8(operational error) and 4(uncorrected FS error).
+上述檢查回傳代碼為 12，即錯誤代碼 8（運作錯誤）與 4（未修正錯誤）之和。
 
 ## RAID
 
-RAID or “Redundant Arrays of Independent Disks” is a technique that distributes I/O across multiple disks to achieve increased performance and data redundancy. RAID has the ability to increase overall disk performance and survive disk failures. Software RAID uses the computer’s CPU to carry out RAID operations whereas hardware RAID uses specialized processors, on disk controllers, to manage the disks. Three essential features of RAID are mirroring, striping and parity.
+RAID（獨立磁碟冗餘陣列）是一種將輸入/輸出分散到多磁碟以提高性能與資料冗餘的技術。RAID 可提升磁碟整體效能並抵抗磁碟故障。軟體 RAID 使用 CPU 執行 RAID 操作，硬體 RAID 則用磁碟控制器上的專用處理器管理磁碟。RAID 三項重要功能為鏡像、條帶和奇偶校驗。
 
-## RAID levels
+## RAID 級別
 
-The below section discusses the RAID levels that are commonly used. For information on all RAID levels, please refer to [<u>here</u>](https://en.wikipedia.org/wiki/RAID) .
+下方說明常見的 RAID 級別，關於所有 RAID 級別的資訊，請參考 [<u>此處</u>](https://zh.wikipedia.org/wiki/RAID)。
 
-### RAID 0 (Striping)
+### RAID 0（條帶）
 
-Striping is the method by which data is split up into “blocks” and written across all the disks present in the array. By spreading data across multiple drives, it means multiple disks can access the file, resulting in faster read/write speeds. The first disk in the array is not reused until an equal amount of data is written to each of the other disks in the array.
+條帶技術將資料切分成「區塊」並分散寫入陣列中的所有磁碟。多磁碟同時存取可提升讀寫速度。陣列中第一個磁碟會在每個磁碟寫入相同資料大小前不再重用。
 
 ![](images/image9.png)
 
-Advantages
+優點
 
-- It can be easily implemented.
-    
-- Bottlenecks caused due to I/O operations from the same disk are avoided, increasing the performance of such operations.
-    
+- 實作簡單。
+- 避免單一磁碟 I/O 成為瓶頸，提升效能。
 
-Disadvantages
+缺點
 
-- It does not offer any kind of redundancy. If any one of the disks fails, then the data of the entire disk is lost and cannot be recovered.
+- 無冗餘功能，一旦磁碟故障，所有資料將喪失且無法復原。
 
-Use cases
+使用場景
 
-RAID 0 can be used for systems with non-critical data that has to be read at high speed, such as a video/audio editing station or gaming environments.
+適用對資料安全性要求不高，須高速讀取的環境，如影片/音訊編輯工作站或遊戲環境。
 
-### RAID 1(Mirroring)
+### RAID 1（鏡像）
 
-Mirroring writes a copy of data to each disk which is part of the array. This means that the data is written as many times as disks in the array . It stores an exact replica of all data on a separate disk or disks. As expected, this would result in a slow write performance compared to that of a single disk. On the other hand, read operations can be done parallelly improving read performance.
+鏡像會將相同資料寫入陣列的每個磁碟，意即資料會被多次複製。這會導致寫入速度比單磁碟慢，但讀取可並行執行，提升速度。
 
 ![](images/image21.png)
 
-Advantages
+優點
 
-- RAID 1 offers a better read performance than RAID 0 or single disk.
-    
-- It can survive multiple disk failures without the need for special data recovery algorithms
-    
+- 讀取效能優於 RAID 0 或單磁碟。
+- 可承受多個磁碟故障而無需特殊資料恢復演算法。
 
-Disadvantages
+缺點
 
-- It is costly since the effective storage capacity is only half of the number of disks due to replication of data.
+- 成本高昂，因資料多倍複製，實際有效容量約只剩一半。
 
-Use cases
+使用場景
 
-Applications that require low downtime but can have a slight hit on write performance.
+用於要求低停機時間但可接受寫入性能稍降的應用。
 
-### RAID 4(Striping with dedicated parity)
+### RAID 4（帶專用奇偶校驗的條帶）
 
-RAID 4 works uses block-level striping (data can be striped in blocks of a variety of sizes depending on the applications and data to be stored) and a dedicated drive used to store parity information.The parity information is generated by an algorithm every time data is written to an array disk. The use of a parity bit is a way of adding checksums into data that can enable the target device to determine whether the data has been received correctly. In the event of a drive failure , the algorithm can be reversed and missing data can be generated based on the remaining data and parity information.
+RAID 4 採用區塊級條帶，使用指定磁碟存放奇偶校驗資訊。奇偶校驗由演算法在寫入資料時產生，能檢測資料完整性。若磁碟故障，可透過剩餘資料與奇偶校驗資訊還原遺失資料。
 
 ![](images/image4.png)
 
-Advantages
+優點
 
-- Each drive in a RAID 4 array operates independently so I/O requests take place in parallel, speeding up performance over previous RAID levels.
-    
-- It can survive multiple disk failures without the need for special data recovery algorithms
-    
+- 陣列中每個磁碟獨立運作，I/O 請求並行進行，性能較前 RAID 級別提升。
+- 可承受多個磁碟故障，無需特別資料恢復演算法。
 
-Disadvantages
+缺點
 
-- A minimum of 3 disks is required for setup.
-    
-- It needs hardware support for parity calculation.
-    
-- Write speeds are slow since parity relies on a single disk drive and carry out modifications of parity blocks for each I/O session.
-    
+- 需三顆磁碟以上設置。
+- 需要硬體支援奇偶校驗計算。
+- 寫入速度慢，因奇偶校驗集中於單一磁碟，每次 I/O 都須修改奇偶校驗區塊。
 
-Use cases
+使用場景
 
-Operations dealing with really large files – when sequential read and write data process is used
+適合處理大文件，尤其是順序讀寫操作。
 
-### RAID 5(Striping with distributed parity)
+### RAID 5（帶分散奇偶校驗的條帶）
 
-RAID 5 is similar to RAID 4, except that the parity information is spread across all drives in the array. This helps reduce the bottleneck inherent in writing parity information to a single drive during each write operation. RAID 5 is the most common secure RAID level.
+RAID 5 同 RAID 4 類似，但奇偶校驗資訊分散存放於所有磁碟中，減少寫入奇偶校驗的單一磁碟瓶頸。是最常見的安全 RAID 級別。
 
 ![](images/image23.png)
 
-Advantages
+優點
 
-- Read data transactions are fast as compared to write data transactions that are somewhat slow due to the calculation of parity.
-    
-- Data remains accessible even after drive failure and during replacement of a failed hard drive because the storage controller rebuilds the data on the new drive.
-    
+- 讀取速度快，寫入稍慢因需要計算奇偶校驗。
+- 硬碟故障時仍可存取資料，且替換硬碟時控制器會重建資料。
 
-Disadvantages
+缺點
 
-- RAID 5 requires a minimum of 3 drives and can work up to a maximum of 16 drives
-    
-- It needs hardware support for parity calculation.
-    
-- More than two drive failures can cause data loss.
-    
+- 需最低3顆磁碟，可支援至多16顆。
+- 需要硬體支援奇偶校驗計算。
+- 若兩顆以上硬碟同時故障，會導致資料遺失。
 
-Use cases
+使用場景
 
-File storage and application servers, such as email, general storage servers, etc.
+檔案存儲與應用伺服器，如郵件與一般存儲用途。
 
-### RAID 6(Striping with double parity)
+### RAID 6（帶雙重分散奇偶校驗的條帶）
 
-RAID 6 is similar to RAID 5 with an added advantage of double distributed parity, which provides fault tolerance up to two failed drives.
+RAID 6 類似 RAID 5，但具有雙重分散奇偶校驗，可容忍兩顆硬碟同時故障。
 
 ![](images/image5.png)
 
-Advantages
+優點
 
-- Read data transactions are fast.
-    
-- This provides a fault tolerance up to 2 failed drives.
-    
-- RAID 6 is more resilient than RAID 5.
-    
+- 讀取速度快。
+- 容錯能力提升，可耐受兩顆硬碟故障。
+- 比 RAID 5 更堅韌。
 
-Disadvantages
+缺點
 
-- Write data transactions are slow due to double parity.
-    
-- Rebuilding the RAID array takes a longer time because of complex structure.
-    
+- 寫入速度慢，因雙重奇偶校驗計算。
+- RAID 重建時間較長。
 
-Use cases
+使用場景
 
-Office automation, online customer service, and applications that require very high availability.
+辦公自動化、線上客服及需極高可用性的應用。
 
-### RAID 10(RAID 1+0 : Mirroring and Striping)
+### RAID 10（RAID 1+0：鏡像與條帶結合）
 
-RAID 10 is a combination of RAID 0 and RAID 1. It means that both mirroring and striping in one single RAID array.
+RAID 10 是 RAID 0 與 RAID 1 的組合，即同時實現鏡像與條帶。
 
 ![](images/image3.png)
 
-Advantages
+優點
 
-- Rebuilding the RAID array is fast.
-    
-- Read and write operations performance are good.
-    
+- RAID 重建速度快。
+- 讀寫性能良好。
 
-Disadvantages
+缺點
 
-- Just like RAID 1, only half the drive capacity is available.
-    
-- It can be expensive to implement RAID 10.
-    
+- 同 RAID 1，一半的磁碟容量可用。
+- 實施成本較高。
 
-Use cases
+使用場景
 
-Transactional databases with sensitive information that require high performance and high data security.
+用於需要高性能與高資料安全性的交易型資料庫。
 
-## Commands to monitor RAID
+## RAID 監控指令
 
-The command `cat /proc/mdstat` will give the status of a software RAID. Let us examine the output of the command:
+指令 `cat /proc/mdstat` 可顯示軟體 RAID 狀態。範例如下：
 
 ```
 Personalities : [raid1]
@@ -270,9 +247,10 @@ md2 : active raid1 sdb3[2]
 bitmap: 1/1 pages [4KB], 65536KB chunk
 ```
 
-The “personalities” gives us the raid level that the raid is configured. In the above example, the raid is configured with `RAID 1. md0 : active raid1 sdb1[2] sda1[0]` tells us that there is an active raid of RAID 1 between sdb1(which is device 2) and sda1(which is device 0).An inactive array generally means that one of the disks are faulty. Md2 in the above example shows that we have `41909248 blocks super 1.1 [2/1] [_U]` , this means that one disk is down in this particular raid.
+「Personalities」顯示 RAID 類型；以上範例配置為 RAID 1。`md0 : active raid1 sdb1[2] sda1[0]` 表示 sdb1（設備 2）和 sda1（設備 0）間有活躍的 RAID 1。非活躍陣列表示有磁碟故障。`md2`顯示 `[2/1] [_U]` 表示此 RAID 有一顆磁碟故障。
 
-The command `mdadm --detail /dev/<raid-array>` gives detailed information about that particular array.
+指令 `mdadm --detail /dev/<raid-array>` 可取得陣列詳細資訊，範例：
+
 ```
 sudo mdadm --detail /dev/md0
 
@@ -318,11 +296,11 @@ Number Major Minor RaidDevice State
 
 1 8 49 1 active sync /dev/sdb1
 ```
-Incase of a missing disk in the above example, the State of the raid would be ‘dirty’ and Active Devices and Working Devices would be reduced to one. One of the entries(either /dev/sda1 or /dev/sdb1 depending on the missing disk) would have their RaidDevice changed to faulty.
+
+若磁碟缺失，陣列狀態會是 'dirty'，Active Devices 與 Working Devices 會減少到一個，其中一個磁碟 (視缺失而定) RaidDevice 狀態會標示為 faulty。
 
 ## LVM
 
-LVM stands for Logical Volume Management. In the above section we saw how we can create FS and use individual disks according to our need the traditional way but using LVM we can achieve more flexibility in storage allocation like we can stitch three 2TB disks to make one single partition of 6TB, or we can attach another physical disk of 4TB to the server and add that disk to the logical volume group to make it 10TB in total.
+LVM 代表邏輯卷管理。在前述章節中，我們使用傳統方式以單一磁碟建立文件系統，但透過 LVM 可以更靈活配置儲存空間，例如將三顆 2TB 磁碟串接成一個 6TB 分區，或新增一顆 4TB 實體磁碟並加入邏輯卷組，合計成 10TB。
 
-Refer to know more about LVM: [<u>https://www.redhat.com/sysadmin/lvm-vs-partitioning</u>](https://www.redhat.com/sysadmin/lvm-vs-partitioning)
-
+欲了解更多 LVM，請參考：[<u>https://www.redhat.com/sysadmin/lvm-vs-partitioning</u>](https://www.redhat.com/sysadmin/lvm-vs-partitioning)

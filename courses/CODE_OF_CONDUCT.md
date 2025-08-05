@@ -1,39 +1,39 @@
-This code of conduct outlines expectations for participation in LinkedIn-managed open source communities, as well as steps for reporting unacceptable behavior. We are committed to providing a welcoming and inspiring community for all. People violating this code of conduct may be banned from the community.
+此行為準則概述了參與 LinkedIn 管理的開源社群的期望，以及舉報不可接受行為的步驟。我們致力於為所有人提供一個友善且激勵人心的社群。違反本行為準則的人可能會被禁止進入社群。
 
-Our open source communities strive to:
+我們的開源社群努力做到：
 
-* **Be friendly and patient:** Remember you might not be communicating in someone else's primary spoken or programming language, and others may not have your level of understanding.
-* **Be welcoming:** Our communities welcome and support people of all backgrounds and identities. This includes, but is not limited to members of any race, ethnicity, culture, national origin, color, immigration status, social and economic class, educational level, sex, sexual orientation, gender identity and expression, age, size, family status, political belief, religion, and mental and physical ability.
-* **Be respectful:** We are a world-wide community of professionals, and we conduct ourselves professionally. Disagreement is no excuse for poor behavior and poor manners. Disrespectful and unacceptable behavior includes, but is not limited to:
-    * Violent threats or language.
-    * Discriminatory or derogatory jokes and language.
-    * Posting sexually explicit or violent material.
-    * Posting, or threatening to post, people's personally identifying information ("doxing").
-    * Insults, especially those using discriminatory terms or slurs.
-    * Behavior that could be perceived as sexual attention.
-    * Advocating for or encouraging any of the above behaviors.
-* **Understand disagreements:** Disagreements, both social and technical, are useful learning opportunities. Seek to understand the other viewpoints and resolve differences constructively.
-* This code is not exhaustive or complete. It serves to capture our common understanding of a productive, collaborative environment. We expect the code to be followed in spirit as much as in the letter.
+* **友善且有耐心：** 請記得您可能並非在與他人的主要語言（口語或程式語言）溝通，且他人可能沒有您的理解程度。
+* **熱情歡迎：** 我們的社群歡迎並支持各種背景及身份的人士。這包括但不限於任何種族、族裔、文化、國籍、膚色、移民身份、社會及經濟階層、教育程度、性別、性取向、性別認同與表達、年齡、體型、家庭狀況、政治信仰、宗教，以及心理和身體能力的成員。
+* **尊重他人：** 我們是全球的專業人士社群，行為舉止亦應專業。意見不合不是粗魯或無禮的理由。不尊重及不可接受的行為包括但不限於：
+    * 暴力威脅或言論。
+    * 歧視性或貶低性的笑話及言語。
+    * 發佈色情或暴力內容。
+    * 發佈或威脅發佈個人識別資訊（「doxing」）。
+    * 侮辱，尤其是使用歧視性用語或罵人字眼。
+    * 可能被視為性騷擾的行為。
+    * 鼓吹或鼓勵上述任何行為。
+* **理解意見分歧：** 社交及技術上的分歧是有價值的學習機會。試著理解他人的觀點，並建設性地解決分歧。
+* 本準則並非詳盡無遺，而是反映我們對有建設性、協作環境的共同理解。我們期望成員精神上及文字上皆遵守本準則。
 
-### Scope
+### 範圍
 
-This code of conduct applies to all repos and communities for LinkedIn-managed open source projects regardless of whether or not the repo explicitly calls out its use of this code. The code also applies in public spaces when an individual is representing a project or its community. Examples include using an official project e-mail address, posting via an official social media account, or acting as an appointed representative at an online or offline event. Representation of a project may be further defined and clarified by project maintainers.
+本行為準則適用於所有 LinkedIn 管理之開源專案的倉庫及社群，無論該倉庫是否明確宣稱使用本準則。當個人代表專案或社群時，公共場合也應遵守本準則。例如使用官方專案電子郵件地址、透過官方社群媒體帳號發帖，或在線上或線下活動中擔任指定代表。專案維護者可進一步定義及說明代表行為。
 
-Note: Some LinkedIn-managed communities have codes of conduct that pre-date this document and issue resolution process. While communities are not required to change their code, they are expected to use the resolution process outlined here. The review team will coordinate with the communities involved to address your concerns.
+注意：部分 LinkedIn 管理的社群擁有早於此文件及事件處理解決流程的行為準則。雖然社群無須修改其準則，但預期會使用本文件所述的解決流程。審查團隊將與相關社群協調處理您的問題。
 
-### Reporting Code of Conduct Issues
+### 舉報行為準則問題
 
-We encourage all communities to resolve issues on their own whenever possible. This builds a broader and deeper understanding and ultimately a healthier interaction. In the event that an issue cannot be resolved locally, please feel free to report your concerns by contacting [oss@linkedin.com](mailto:oss@linkedin.com).
+我們鼓勵所有社群盡可能自行解決問題。這有助於建立更深入及廣泛的理解，最終促進更健康的互動。如無法在本地解決問題，歡迎通過[oss@linkedin.com](mailto:oss@linkedin.com)舉報您的疑慮。
 
-In your report, please include:
+請在報告中包含：
 
-*   Your contact information.
-*   Names (real, usernames or pseudonyms) of any individuals involved. If there are additional witnesses, please include them as well.
-*   Your account of what occurred, and if you believe the incident is ongoing. If there is a publicly available record (e.g. a mailing list archive or a public chat log), please include a link or attachment.
-*   Any additional information that may be helpful.
+* 您的聯絡資訊。
+* 涉及事件的任何個人名稱（真實姓名、用戶名或化名）。如有其他目擊者，也請一併提供。
+* 您對事件的描述，以及您是否認為事件仍在持續發生。如有公開紀錄（例如郵件列表存檔或公開聊天室記錄），請附上連結或附件。
+* 任何可能有幫助的其他資訊。
 
-All reports will be reviewed by a multi-person team and will result in a response that is deemed necessary and appropriate to the circumstances. Where additional perspectives are needed, the team may seek insight from others with relevant expertise or experience. The confidentiality of the person reporting the incident will be kept at all times. Involved parties are never part of the review team.
+所有報告將由多人組成的團隊審核，並根據情況採取必要且適當的回應。若需更多觀點，團隊可能會尋求具相關專業或經驗者的意見。報告者身份會全程保密。涉事雙方不會參與審查團隊。
 
-Anyone asked to stop unacceptable behavior is expected to comply immediately. If an individual engages in unacceptable behavior, the review team may take any action they deem appropriate, including a permanent ban from the community.
+任何被要求停止不可接受行為的人士，應立即遵從。如有人持續從事不可接受行為，審查團隊可採取包括永久禁止進入社群等適當措施。
 
-_This code of conduct is based on the [Microsoft](https://opensource.microsoft.com/codeofconduct/) Open Source Code of Conduct which was based on the [template](http://todogroup.org/opencodeofconduct) established by the [TODO Group](http://todogroup.org/) and used by numerous other large communities (e.g., [Facebook](https://code.facebook.com/pages/876921332402685/open-source-code-of-conduct), [Yahoo](https://yahoo.github.io/codeofconduct), [Twitter](https://engineering.twitter.com/opensource/code-of-conduct), [GitHub](http://todogroup.org/opencodeofconduct/#opensource@github.com)) and the Scope section from the [Contributor Covenant version 1.4](http://contributor-covenant.org/version/1/4/)._
+_本行為準則基於[Microsoft](https://opensource.microsoft.com/codeofconduct/)開源行為守則，該守則又基於由[TODO Group](http://todogroup.org/)制定的[範本](http://todogroup.org/opencodeofconduct)，並由多個大型社群採用（例如，[Facebook](https://code.facebook.com/pages/876921332402685/open-source-code-of-conduct)、[Yahoo](https://yahoo.github.io/codeofconduct)、[Twitter](https://engineering.twitter.com/opensource/code-of-conduct)、[GitHub](http://todogroup.org/opencodeofconduct/#opensource@github.com)），以及[Contributor Covenant 1.4 版本](http://contributor-covenant.org/version/1/4/)的範圍章節。_

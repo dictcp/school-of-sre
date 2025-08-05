@@ -1,175 +1,75 @@
-> *This section will cover threat vectors faced by services facing
-external/internal clients. Potential mitigation options to consider
-while deploying them. This will touch upon perimeter security, DDoS
-protection, Network demarcation and operational practices.*
+> *本節將涵蓋面對外部/內部客戶之服務所面臨的威脅向量，以及部署時可考慮的潛在緩解選項。內容將涉及周邊安全、DDoS 防護、網路劃分及運營實務。*
 
-### Security Threat
+### 安全威脅
 
-Security is one of the major considerations in any infrastructure. There
-are various security threats, which could amount to data theft, loss of
-service, fraudulent activity, etc. An attacker can use techniques like
-phishing, spamming, malware, Dos/DDoS, exploiting vulnerabilities,
-man-in-the-middle attack, and many more. In this section, we will cover
-some of these threats and possible mitigation. As there are numerous
-means to attack and secure the infrastructure, we will only focus on
-some of the most common ones.
+安全性是任何基礎設施的主要考量之一。存在各種安全威脅，可能導致資料竊取、服務中斷、詐欺活動等。攻擊者可能使用釣魚、垃圾郵件、惡意軟體、Dos/DDoS 攻擊、漏洞利用、中間人攻擊等多種技術。在本節中，我們將介紹部分威脅及其可能的緩解措施。由於攻擊及防護手法眾多，我們將只聚焦於較常見的幾種。
 
-**Phishing** is mostly done via email (and other mass communication
-methods), where an attacker provides links to fake websites/URLs. Upon
-accessing that, victim's sensitive information like login
-credentials or personal data is collected and can be misused.
+**釣魚 (Phishing)** 多透過電子郵件（及其他大眾通訊方式）進行，攻擊者會提供偽造的網站/網址連結。受害者點擊後，敏感資訊如登入憑證或個人資料會被收集並可能遭濫用。
 
-**Spamming** is also similar to phishing, but the attacker doesn't collect
-data from users but tries to spam a particular website and probably
-overwhelm them (to cause slowness) and well use that opportunity to,
-compromise the security of the attacked website.
+**垃圾郵件 (Spamming)** 與釣魚相似，但攻擊者不收集用戶資料，而是試圖對特定網站發送大量垃圾訊息，可能導致網站負載過重變慢，進而趁機危害該網站的安全。
 
-**Malware** is like a trojan horse, where an attacker manages to install a
-piece of code on the secured systems in the infrastructure. Using this,
-the hacker can collect sensitive data and as well infect the critical
-services of the target company.
+**惡意軟體 (Malware)** 如特洛伊木馬，攻擊者會在基礎設施的安全系統中植入惡意程式碼。藉由此手段，駭客得以蒐集敏感資料，並感染目標公司的關鍵服務。
 
-**Exploiting vulnerabilities** is another method an attacker can gain access
-to the systems. These could be bugs or misconfiguration in web servers,
-internet-facing routers/switches/firewalls, etc.
+**漏洞利用 (Exploiting vulnerabilities)** 攻擊者利用系統漏洞獲取存取權限，這些漏洞可能來自網頁伺服器、面向網際網路的路由器/交換器/防火牆等的錯誤設定或程式缺陷。
 
-**DoS/DDoS** is one of the common attacks seen on internet-based
-services/solutions, especially those businesses based on eyeball
-traffic. Here the attacker tries to overwhelm the resources of the
-victim by generating spurious traffic to the external-facing services.
-By this, primarily the services turn slow or non-responsive, during this
-time, the attacker could try to hack into the network, if some of the
-security mechanism fails to filter through the attack traffic due to
-overload.
+**阻斷服務攻擊 (DoS/DDoS)** 是互聯網服務中常見攻擊，尤其針對依賴瀏覽量的商業模式。攻擊者透過大量偽造流量淹沒受害者的對外服務，導致服務變慢或無響應，同時可能趁機入侵網路，特別是當安全機制因超載無法過濾攻擊流量時。
 
-### Securing the infrastructure
+### 保護基礎設施
 
-The first and foremost aspect for any infrastructure administration is
-to identify the various security threats that could affect the business
-running over this infrastructure. Once different threats are known, the
-security defence mechanism has to be designed and implemented. Some of
-the common means to securing the infrastructure are
+任何基礎設施管理的首要任務是辨識可能影響業務的各種安全威脅。了解不同威脅後，必須設計與實施相應的防禦機制。常見保護基礎設施的方法包括：
 
-#### Perimeter security
+#### 周邊安全（Perimeter security）
 
-This is the first line of defence in any infrastructure, where
-unwanted/unexpected traffic flows into the infrastructure are
-filtered/blocked. These could be filters in the edge routers, that allow
-expected services (like port 443 traffic for web service running on
-HTTPS), or this filter can be set up to block unwanted traffic, like
-blocking UDP ports, if the services are not dependent on UDP.
+為基礎設施的第一道防線，過濾或封鎖不必要或意外進入的流量。可在邊界路由器設置過濾器，只允許預期服務（如埠號443的HTTPS流量）通過，並封鎖不必要的流量，例如如果服務不依賴UDP，可封鎖UDP埠。
 
-Similar to the application traffic entering the network, there could be
-other traffic like BGP messages for Internet peers, VPN tunnels traffic,
-as well other services like email/DNS, etc. There are means to protect
-every one of these, like using authentication mechanisms (password or
-key-based) for peers of BGP, VPN, and whitelisting these specific peers
-to make inbound connections (in perimeter filters). Along with these,
-the amount of messages/traffic can be rate-limited to known scale or
-expected load, so the resources are not overwhelmed.
+除了應用流量外，還有其他流量如BGP訊息（與網際網路對等體的連線）、VPN隧道流量及電子郵件/DNS等服務。各類流量均有保護方法，例如對BGP和VPN對等體設定認證機制（密碼或金鑰），並使用白名單限制特定對等體可進行的入站連線，同時對訊息量與流量設定速率限制，以避免資源過載。
 
-#### DDoS mitigation
+#### DDoS 緩解
 
-Protecting against a DDoS attack is another important aspect. The attack
-traffic will look similar to the genuine users/client request, but with
-the intention to flood the externally exposed app, which could be a web
-server, DNS, etc. Therefore it is essential to differentiate between the
-attack traffic and genuine traffic, for this, there are different
-methods to do at the application level, one such example using Captcha
-on a web service, to catch traffic originating from bots.
+防護 DDoS 攻擊是另一重要環節。攻擊流量在外觀上類似合法用戶或客戶端請求，但目的是淹沒對外應用，例如網頁伺服器、DNS等。因此，區分攻擊流量與正常流量十分關鍵。常見方法有在網頁上使用驗證碼（Captcha），用以辨識及過濾由機器人發起的流量。
 
-For these methods to be useful, the nodes should be capable of handling
-both the attack traffic and genuine traffic. It may be possible in
-cloud-based infrastructure to dynamically add more virtual
-machines/resources, to handle the sudden spike in volume of traffic, but
-on-prem, the option to add additional resources might be challenging.
+為使這些方法有效，節點需能同時處理攻擊流量與正常流量。雲端基礎設施可能可動態增加虛擬機器或資源應對流量激增，但在本地部署則較難追加資源。
 
-To handle a large volume of attack traffic, there are solutions
-available, which can inspect the packets/traffic flows and identify
-anomalies (i.e.) traffic patterns that don't resemble a genuine
-connection, like client initiating TCP connection, but fail to complete
-the handshake, or set of sources, which have abnormally huge traffic
-flow. Once this unwanted traffic is identified, these are dropped at the
-edge of the network itself, thereby protecting the resources of app
-nodes. This topic alone can be discussed more in detail, but that will
-be beyond the scope of this section.
+針對大量攻擊流量，有解決方案可檢查封包與流量模式，辨識異常行為，如客戶端啟動TCP連線但未完成三次握手，或特定來源流量異常龐大。一旦確定為攻擊流量，便於網路邊緣即阻擋，保護應用資源。此議題龐大，超出本節範圍。
 
-#### Network Demarcation
+#### 網路劃分（Network Demarcation）
 
-Network demarcation is another common strategy deployed in different
-networks when applications are grouped based on their security needs and
-vulnerability to an attack. Some common demarcations are, the
-external/internet facing nodes are grouped into a separate zone, whereas
-those nodes having sensitive data are segregated into a separate zone.
-And any communication between these zones is restricted with the help of
-security tools to limit exposure to unwanted hosts/ports. These
-inter-zone communication filters are sometimes called ring-fencing. The
-number of zones to be created, varies for different deployments, for
-example, there could be a host which should be able to communicate to
-the external world as well as internal servers, like proxy, email, in
-this case, these can be grouped under one zone, say De-Militarized Zones
-(DMZ). The main advantage of creating zones is that, even if there is a
-compromised host, that doesn't act as a back door entry for the rest of
-the infrastructure.
+依據應用的安全需求與攻擊風險，將應用節點分區管理。常見做法是將外部/公共網路節點劃分至獨立區域，持有敏感資料之節點則分至另一區。區域間通訊受限，透過安全工具限制非必要主機/埠存取，稱為「圍籬防護（ring-fencing）」。劃分區域數量依部署不同而異，例如代理伺服器、電子郵件伺服器同時需與外部與內部通訊，可共置於一區，稱為非軍事區（DMZ）。區域劃分有助於即使單一主機遭入侵，也不至於成為整體基礎設施後門。
 
-####  Node protection
+#### 節點保護
 
-Be it server, router, switches, load balancers, firewall, etc, each of
-these devices come with certain capabilities to secure themselves, like
-support for filters (e.g. Access-list, Iptables) to control what traffic
-to process and what to drop, anti-virus software can be used in servers
-to check on the software installed in them.
+無論是伺服器、路由器、交換器、負載平衡器、防火牆等，均具備基本自我保護功能，例如過濾規則（如Access-list、Iptables）以控制允許與拒絕的流量。伺服器還可安裝防毒軟體檢查系統內軟體安全。
 
-#### Operational practices
+#### 運營實務
 
-There are numerous security threats for infrastructure, and there are
-different solutions to defend them. The key part to the defence, is not
-only identifying the right solution and the tools for it but also making
-sure there are robust operational procedures in place, to respond
-promptly, decisively and with clarity, for any security incident.
+基礎設施面臨眾多安全威脅，防禦方案多樣，關鍵在於決定適當工具及方案，並確保建立健全的運營程序，能在安全事件發生時迅速、果斷且明確地回應。
 
-##### Standard Operating Procedures (SOP)
+##### 標準作業程序（SOP）
 
-SOP need to be well defined and act as a reference for on-call to follow
-during a security incident. This SoP should cover things like,
+SOP應明確定義，供值班人員於安全事件時依循。內容包含：
 
-- When a security incident happens, how it will be alerted, to whom it
-will be alerted.
+- 安全事件發生時，如何與誰進行警示通知。
 
-- Identify the scale and severity of the security incident.
+- 評估安全事件規模與嚴重性。
 
-- Who are the points of escalation and the threshold/time to intimate
-them, there could be other concerned teams or to the management or
-even to the security operations in-charge.
+- 升級聯絡點及其通知門檻與時間，包括相關團隊、管理層或安全運營負責人。
 
-- Which solutions to use (and the procedure to follow in them) to
-mitigate the security incident.
+- 使用何種方案及執行程序來緩解安全事件。
 
-- Also the data about the security incident has to be collated for
-further analysis.
+- 收集安全事件相關資料以供事後分析。
 
-Many organisations have a dedicated team focused on security, and they
-drive most of the activities, during an attack and even before, to come
-up with best practices, guidelines and compliance audits. It is the
-responsibility of respective technical teams, to ensure the
-infrastructure meets these recommendations and gaps are fixed.
+許多組織設有專責安全團隊，負責攻擊期間以及事前制定最佳實務、指導方針及合規稽核。各技術團隊需確保基礎設施符合建議，並修補安全漏洞。
 
-##### Periodic review
+##### 定期審查
 
-Along with defining SoP's, the entire security of the infrastructure has
-to be reviewed periodically. This review should include,
+除制定 SOP 外，應定期檢視整體基礎設施安全，包括：
 
-- Identifying any new/improved security threat that could potentially
-target the infrastructure.
+- 辨識可能新出現或改進的安全威脅。
 
-- The SoP's have to be reviewed periodically, depending upon new
-security threats or changes in the procedure (to implement the
-solutions)
+- 定期檢討 SOP，因應新威脅或程序變動。
 
-- Ensuring software upgrades/patches are done in a timely manner.
+- 確保軟體升級/修補及時完成。
 
-- Audit the infrastructure for any non-compliance of the security
-standards.
+- 稽核基礎設施是否符合安全標準。
 
-- Review of recent security incidents and find means to improvise the
-defence mechanisms.
+- 檢討近期安全事件，尋求強化防護機制的方案。

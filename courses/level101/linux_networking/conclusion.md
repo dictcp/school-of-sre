@@ -1,11 +1,10 @@
-# Conclusion
+# 結論
 
-With this, we have traversed through the TCP/IP stack completely. We hope there will be a different perspective when one opens any website in the browser post the course.
+至此，我們已完整瀏覽了 TCP/IP 協定棧。希望在課程結束後，當大家在瀏覽器開啟任何網站時，能夠有不同的視角。
 
-During the course we have also dissected what are common tasks in this pipeline which falls under the ambit of SRE.
+在課程中，我們也剖析了這個流程中常見的任務，這些都屬於 SRE 的範疇。
 
-# Post Training Exercises
-1. Set up your own DNS resolver in the `dev` environment which acts as an authoritative DNS server for `example.com` and forwarder for other domains. Update `resolv.conf` to use the new DNS resolver running in `localhost`.
-2. Set up a site `dummy.example.com` in `localhost` and run a webserver with a self-signed certificate. Update the trusted CAs or pass self-signed CA’s public key as a parameter so that `curl https://dummy.example.com -v` works properly without self-signed cert warning.
-3. Update the routing table to use another host (container/VM) in the same network as a gateway for `8.8.8.8/32` and run `ping 8.8.8.8`. Do the packet capture on the new gateway to see L3 hop is working as expected (might need to disable `icmp_redirect`).
-
+# 課後練習
+1. 在 `dev` 環境中架設自己的 DNS 解析器，作為 `example.com` 的權威 DNS 伺服器，並為其他網域轉發解析請求。更新 `resolv.conf` 使用在 `localhost` 執行的新 DNS 解析器。
+2. 在 `localhost` 架設一個名為 `dummy.example.com` 的網站，並使用自簽章憑證執行網頁伺服器。更新受信任的憑證授權，或以參數傳入自簽章 CA 的公鑰，使得執行 `curl https://dummy.example.com -v` 時不會出現自簽章憑證警告。
+3. 更新路由表，使用同一網路內另一台主機（container/VM）作為 `8.8.8.8/32` 的閘道，並執行 `ping 8.8.8.8`。同時對新閘道進行封包擷取，確認 L3 跳轉如預期般運作（可能需要停用 `icmp_redirect`）。

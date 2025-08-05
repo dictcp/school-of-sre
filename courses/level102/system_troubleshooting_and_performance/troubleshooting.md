@@ -1,47 +1,46 @@
-Troubleshooting system failures can be tricky or tedious at times. In this practice we need to examine the end-to-end flow of a service, all its downstreams, analysing logs, memory leak, CPU usage, disk IO, network failures, hosts issues, etc. Knowing certain practices and tools can help figure & mitigate failures faster. Here’s the high level troubleshooting flowchart -:
+排除系統故障有時會很棘手或繁瑣。在這個實務中，我們需要檢視服務的端到端流程，所有的下游，分析日誌、記憶體洩漏、CPU 使用率、磁碟 IO、網路故障、主機問題等等。了解某些實務與工具有助於更快找出並緩解故障。以下是高階的排錯流程圖：
 
-### Troubleshooting Flowchart
+### 排錯流程圖
 ![](images/TroubleshootingFlow.jpg)
 
-### General Practices
-Different systems require different approaches for finding issues. Scope of this is limited and given a problem, there can be many more points which can be looked into. Following points will look at some high level practices towards finding webapp failures and finding fixes for the same.
+### 一般實務
+不同系統需採用不同方式尋找問題。範圍有限，且針對不同問題，還有許多可檢視的方向。以下要點將介紹一些針對 Web 應用故障的高階實務，並找出修復方法。
 
-**Reproduce problem**
+**重現問題**
 
-* Try the broken request to reproduce the issue, Like try Hit http/s request which fails.
-* Check the end to end flow of request and look for return codes, mostly [3xx, 4xx or 5xx](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes). 3xx are mostly about redirections, 4xx are about unauthorized, bad request, forbidden, etc, And 5xx is mostly about server side issues. Based on the return code you can look for the next step.
-* Client side issues are mainly about missing or buggy static contents, like javascript issues, bad image, broken json from an async call etc, such can result in incorrect page rendering on browsers.
+* 嘗試重現失敗請求，例如重複發送失敗的 HTTP/s 請求。
+* 檢查請求的端到端流程，查看回傳碼，多為 [3xx、4xx 或 5xx](https://zh.wikipedia.org/wiki/HTTP%E7%8A%B6%E6%80%81%E7%A0%81列表)。3xx 主要是重導向，4xx 為未授權、錯誤請求、禁止存取等，而 5xx 多屬伺服器端問題。根據回傳碼判斷下一步。
+* 客戶端問題多與缺失或錯誤的靜態內容有關，比如 JavaScript 錯誤、損壞的圖片、非同步呼叫返回錯誤的 JSON 等，導致瀏覽器中頁面渲染異常。
 
-**Gather Information**
+**收集資訊**
 
-* Look for errors/exceptions in application logs, Like "Can’t Allocate Memory" or OutOfMemoryError, Or Something like "disk I/O error", Or a DNS resolution error.
-* Check application and host metrics, Look for anomalies in service and hosts graphs. Since when CPU usage has increased, since when memory usage increased, since when disk space is reduced Or Disk I/O is increased, when load average start shooting up etc. Please read the School of SRE link for more detail around [metrics and monitoring](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/introduction).
-* Look for recent code or config changes which possibly are breaking the system.
+* 查看應用程式日誌中的錯誤/異常，例如「無法分配記憶體」或 OutOfMemoryError，亦或是「磁碟 I/O 錯誤」、DNS 解析失敗等。
+* 檢視應用與主機指標，觀察服務和主機的異常圖表，注意 CPU 使用率何時上升、記憶體何時增加、磁碟空間何時減少或磁碟 I/O 上升、負載平均值何時飆升等。欲了解更多指標與監控細節，請參考 School of SRE 連結：[metrics and monitoring](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/introduction)。
+* 檢查最近的程式碼或設定變更，可能導致系統破損。
 
-**Understand the problem**
+**理解問題**
 
-* Try correlating gathered data with recent actions, like an exception showing up in logs after config/code deployment.
-* Is it due to the [QPS](https://en.wikipedia.org/wiki/Queries_per_second) increase? Is it bad SQL queries? Do recent code changes demand better or more hardware?
+* 嘗試將收集到的資料與最近操作關聯，例如錯誤異常是否在部署配置/程式碼後出現。
+* 問題是否因為 [QPS](https://zh.wikipedia.org/wiki/%E6%AF%94%E6%8B%89%E7%8F%AD%E9%80%9A%E4%BF%A1%E9%87%8F) 增加？是否有不良 SQL 查詢？或是最近程式碼變更需要更好的硬體？
 
-**Find a solution and apply a fix**
+**尋找解決方案並修正**
 
-* Based on the above findings, look for a quick fix if possible, For example like rolling back changes if errors/exceptions correlate.
-* Try patching or [hotfixing](https://en.wikipedia.org/wiki/Hotfix) the code, probably in staging setup if you want to fix forward.
-* Try to scale up the system, if high QPS is the reason for system failure, then try adding resources (compute, storage, memory, etc) as necessary.
-* Optimize SQL queries if needed.
+* 根據上述發現，尋找快速修復方法，例如如果錯誤異常與改動相關，則回滾變更。
+* 嘗試修補或 [熱修正（hotfix）](https://zh.wikipedia.org/wiki/%E7%86%B1%E4%BF%AE%E6%AD%A3) 程式碼，若想向前修復可先在測試環境進行。
+* 若系統故障因高 QPS，則嘗試擴充系統資源（計算、儲存、記憶體等）。
+* 如有需要，優化 SQL 查詢。
 
-**Verify complete request flow**
+**驗證完整請求流程**
 
-* Hit requests again and ensure returns are successful (return code 2xx).
-* Check Logs ensure no more exceptions/errors, as found earlier.
-* Ensure metrics are back to normal.
+* 再次發送請求，確保回傳成功（回傳碼 2xx）。
+* 檢查日誌，確保之前發現的異常/錯誤已消失。
+* 確保指標回復正常。
 
-### General Host issues
+### 一般主機問題
 
-To Know if host health is fine or not, look for any hardware failures or its performance issues, one can try following -:
+要判斷主機健康狀況是否正常，檢視硬體故障或性能問題，可以嘗試以下操作：
 
-* Dmesg -: Shows recent errors / failures thrown by kernel. This help with knowing  hardware failures if any
-* ls commands -: lspci, lsblk, lscpu, lsscsi, These commands list out pci, disk, cpu information.
-* /var/log/messages -: Shows system app/service related errors/warnings, also shows kernel issues.
-* Smartd -: check disk health.
-
+* dmesg：顯示內核最近的錯誤/故障，有助於辨識硬體故障。
+* ls 指令系列：lspci、lsblk、lscpu、lsscsi，這些指令列出 PCI、磁碟、CPU 等資訊。
+* /var/log/messages：顯示系統應用/服務相關錯誤或警告，也包括內核問題。
+* smartd：檢查磁碟健康狀態。

@@ -1,63 +1,63 @@
-# Evolution of Hadoop
+# Hadoop 的演進
 
 ![Evolution of hadoop](images/hadoop_evolution.png)
 
-# Architecture of Hadoop
+# Hadoop 的架構
 
 1. **HDFS**
-    1. The Hadoop Distributed File System (HDFS) is a distributed file system designed to run on commodity hardware. It has many similarities with existing distributed file systems. However, the differences from other distributed file systems are significant.
-    2. HDFS is highly fault-tolerant and is designed to be deployed on low-cost hardware. HDFS provides high throughput access to application data and is suitable for applications that have large datasets.
-    3. HDFS is part of the [Apache Hadoop Core project](https://github.com/apache/hadoop).
+    1. Hadoop 分散式檔案系統（HDFS）是一個設計用於在普通硬體上運行的分散式檔案系統。它與現有的分散式檔案系統有許多相似之處，不過與其他分散式檔案系統的差異也相當明顯。
+    2. HDFS 具高度容錯能力，並設計為能部署於低成本硬體。HDFS 提供對應用程式資料的高吞吐量訪問，適合具有大規模資料集的應用。
+    3. HDFS 是 [Apache Hadoop Core 專案](https://github.com/apache/hadoop) 的一部分。
 
-    ![HDFS Architecture](images/hdfs_architecture.png)
+    ![HDFS 架構](images/hdfs_architecture.png)
 
-    The main components of HDFS include:
-    1. NameNode: is the arbitrator and central repository of file namespace in the cluster. The NameNode executes the operations such as opening, closing, and renaming files and directories.
-    2. DataNode: manages the storage attached to the node on which it runs. It is responsible for serving all the read and writes requests. It performs operations on instructions on NameNode such as creation, deletion, and replications of blocks.
-    3. Client: Responsible for getting the required metadata from the NameNode and then communicating with the DataNodes for reads and writes. </br></br></br>
+    HDFS 的主要組件包括：
+    1. NameNode：為集群中檔案命名空間的仲裁者與中央儲存庫。NameNode 處理打開、關閉及重命名檔案和目錄等操作。
+    2. DataNode：管理附加於該節點的儲存空間，負責處理所有讀寫請求。根據 NameNode 指令執行操作，如區塊的建立、刪除和複製。
+    3. Client：負責從 NameNode 取得所需的元資料，接著與 DataNode 溝通以完成讀取和寫入作業。 </br></br></br>
 
 2. **YARN**
-    YARN stands for “Yet Another Resource Negotiator“. It was introduced in Hadoop 2.0 to remove the bottleneck on Job Tracker which was present in Hadoop 1.0. YARN was described as a “Redesigned Resource Manager” at the time of its launching, but it has now evolved to be known as a large-scale distributed operating system used for Big Data processing.
+    YARN 是 “Yet Another Resource Negotiator”（另一個資源協調器）的縮寫。它在 Hadoop 2.0 中引入，以解決 Hadoop 1.0 中 Job Tracker 的瓶頸問題。當時 YARN 被描述為“重新設計的資源管理器”，目前已演變為用於大數據處理的大規模分散式作業系統。
 
-    ![YARN Architecture](images/yarn_architecture.gif)
+    ![YARN 架構](images/yarn_architecture.gif)
     
-    The main components of YARN architecture include:
-    1. Client: It submits map-reduce (MR) jobs to the resource manager.
-    2. Resource Manager: It is the master daemon of YARN and is responsible for resource assignment and management among all the applications. Whenever it receives a processing request, it forwards it to the corresponding node manager and allocates resources for the completion of the request accordingly. It has two major components:
-        1. Scheduler: It performs scheduling based on the allocated application and available resources. It is a pure scheduler, which means that it does not perform other tasks such as monitoring or tracking and does not guarantee a restart if a task fails. The YARN scheduler supports plugins such as Capacity Scheduler and Fair Scheduler to partition the cluster resources.
-        2. Application manager: It is responsible for accepting the application and negotiating the first container from the resource manager. It also restarts the Application Manager container if a task fails.
-    3. Node Manager: It takes care of individual nodes on the Hadoop cluster and manages application and workflow and that particular node. Its primary job is to keep up with the Node Manager. It monitors resource usage, performs log management, and also kills a container based on directions from the resource manager. It is also responsible for creating the container process and starting it at the request of the Application master.
-    4. Application Master: An application is a single job submitted to a framework. The application manager is responsible for negotiating resources with the resource manager, tracking the status, and monitoring the progress of a single application. The application master requests the container from the node manager by sending a Container Launch Context (CLC) which includes everything an application needs to run. Once the application is started, it sends the health report to the resource manager from time-to-time.
-    5. Container: It is a collection of physical resources such as RAM, CPU cores, and disk on a single node. The containers are invoked by Container Launch Context (CLC) which is a record that contains information such as environment variables, security tokens, dependencies, etc.</br></br>
+    YARN 架構的主要組件包括：
+    1. Client：提交 MapReduce（MR）工作給資源管理器。
+    2. Resource Manager：YARN 的主控守護程序，負責所有應用的資源分配與管理。當接收處理請求時，會將其轉送給相應的節點管理器，並依需求分配資源。其內含兩大組件：
+        1. Scheduler：根據已分配的應用和可用資源進行排程。它純粹是排程器，無監控或追蹤功能，也無保證失敗任務會重啟。YARN 排程器支持 Capacity Scheduler 和 Fair Scheduler 等插件以分割叢集資源。
+        2. Application manager：負責接受應用並從資源管理器協商第一個容器。任務失敗時，亦會重啟 Application Manager 容器。
+    3. Node Manager：管理 Hadoop 叢集中個別節點和該節點上的應用程式及工作流程。主要工作是與 Node Manager 保持同步，監控資源使用，管理日誌，並依資源管理器指示終止容器。它也負責建立並啟動容器進程，根據 Application Master 的請求。
+    4. Application Master：應用程序是提交給框架的單一工作。Application Master 負責與資源管理器協商資源，追蹤狀態並監控單一應用的進展。它透過送出 Container Launch Context (CLC) 向 Node Manager 請求容器，該 CLC 包括應用執行所需所有資訊。應用啟動後，會不定時向資源管理器報告狀態。
+    5. Container：為單一節點上的物理資源集合，如 RAM、CPU 核心及磁碟。容器由 Container Launch Context (CLC) 呼叫，CLC 包含環境變數、權限令牌、依賴程式等資訊。 </br></br>
 
 
-# MapReduce framework
+# MapReduce 框架
 
 ![MapReduce Framework](images/map_reduce.jpg)
 
-1. The term MapReduce represents two separate and distinct tasks Hadoop programs perform&mdash;Map Job and Reduce Job. Map jobs take datasets as input and process them to produce key-value pairs. Reduce job takes the output of the Map job i.e. the key-value pairs and aggregates them to produce desired results.
-2. Hadoop MapReduce (Hadoop Map/Reduce) is a software framework for distributed processing of large datasets on computing clusters. MapReduce helps to split the input dataset into a number of parts and run a program on all data parts parallel at once.
-3. Please find the below Word count example demonstrating the usage of the MapReduce framework:
+1. MapReduce 一詞代表 Hadoop 程式所執行的兩個不同任務——Map 工作與 Reduce 工作。Map 工作以資料集為輸入並處理產生鍵值對；Reduce 工作則接受 Map 工作的輸出（鍵值對）進行聚合以產生所需結果。
+2. Hadoop MapReduce（Hadoop Map/Reduce）是一個適用於計算叢集的大規模資料分散式處理軟體框架。MapReduce 協助將輸入資料集拆分成多個部分，並能同時平行執行對各部分資料的程式。
+3. 以下為 Word Count 範例，展示 MapReduce 框架的使用：
 
 ![Word Count Example](images/mapreduce_example.jpg)
 </br></br>
 
-# Other tooling around Hadoop
+# Hadoop 周邊其他工具
 
 1. [**Hive**](https://hive.apache.org/)
-    1. Uses a language called HQL which is very SQL like. Gives non-programmers the ability to query and analyze data in Hadoop. Is basically an abstraction layer on top of map-reduce.
-    2. Ex. HQL query:
+    1. 使用稱為 HQL 的語言，極為類似 SQL。賦予非程式設計師查詢與分析 Hadoop 資料的能力，基本上是建立在 MapReduce 之上的抽象層。
+    2. 例如 HQL 查詢：
         1. `SELECT pet.name, comment FROM pet JOIN event ON (pet.name = event.name);`
-    3. In mysql:
+    3. 在 MySQL 中：
         1. `SELECT pet.name, comment FROM pet, event WHERE pet.name = event.name;`
 2. [**Pig**](https://pig.apache.org/)
-    1. Uses a scripting language called Pig Latin, which is more workflow driven. Don't need to be an expert Java programmer but need a few coding skills. Is also an abstraction layer on top of map-reduce.
-    2. Here is a quick question for you:
-    What is the output of running the Pig queries in the right column against the data present in the left column in the below image?
+    1. 使用稱為 Pig Latin 的指令語言，強調工作流程導向。不需成為 Java 專家，但需具備少許編碼能力。也是建立在 MapReduce 之上的抽象層。
+    2. 這裡有個小問題給你：
+    執行下圖中右欄 Pig 查詢語句，針對左欄的資料，输出結果為何？
 
     ![Pig Example](images/pig_example.png)
 
-    Output:
+    輸出：
     <pre><code>
     7,Komal,Nayak,24,9848022334,trivendram
     8,Bharathi,Nambiayar,24,9848022333,Chennai
@@ -66,11 +66,11 @@
     </code></pre>
 
 3. [**Spark**](https://spark.apache.org/)
-    1. Spark provides primitives for in-memory cluster computing that allows user programs to load data into a cluster’s memory and query it repeatedly, making it well-suited to machine learning algorithms.
+    1. Spark 提供基礎用於叢集中的記憶體運算，使使用者程式可將資料載入叢集記憶體並反覆查詢，非常適合機器學習演算法。
 4. [**Presto**](https://prestodb.io/)
-    1. Presto is a high performance, distributed SQL query engine for Big Data.
-    2. Its architecture allows users to query a variety of data sources such as Hadoop, AWS S3, Alluxio, MySQL, Cassandra, Kafka, and MongoDB.
-    3. Example Presto query:
+    1. Presto 是一個高效能、分散式的大數據 SQL 查詢引擎。
+    2. 其架構允許使用者查詢多種資料來源，包含 Hadoop、AWS S3、Alluxio、MySQL、Cassandra、Kafka 及 MongoDB。
+    3. 範例 Presto 查詢：
     <pre><code>
     USE studentDB;
     SHOW TABLES;
@@ -79,8 +79,8 @@
     
 </br>
 
-# Data Serialisation and storage
+# 資料序列化與儲存
 
-1. In order to transport the data over the network or to store on some persistent storage, we use the process of translating data structures or objects state into binary or textual form. We call this process serialization.
-2. Avro data is stored in a container file (a `.avro` file) and its schema (the `.avsc` file) is stored with the data file.
-3. Apache Hive provides support to store a table as Avro and can also query data in this serialisation format.
+1. 為了透過網路傳輸資料或存放於永久儲存裝置，需要將資料結構或物件狀態轉換為二進位或文字形式的過程，我們稱之為序列化。
+2. Avro 資料存放於容器檔案（一個 `.avro` 檔案），其結構描述檔（`.avsc` 檔案）與資料檔一起儲存。
+3. Apache Hive 支援將資料表以 Avro 形式儲存，並可針對此序列化格式的資料進行查詢。

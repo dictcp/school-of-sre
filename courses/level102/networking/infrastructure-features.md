@@ -1,180 +1,93 @@
-> *Some of the aspects to consider are, whether the underlying data
-centre infrastructure supports ToR resiliency, i.e. features like link
-bundling (bonds), BGP, support for anycast service, load balancer,
-firewall, Quality of Service.*
+> *需要考慮的部分有，底層資料中心基礎設施是否支持 ToR 韌性，例如鏈路聚合（bond）、BGP、anycast 服務支持、負載平衡器、防火牆、服務品質 (QoS) 等功能。*
 
-As seen in previous sections, to deploy applications at scale, it will
-need certain capabilities to be supported from the infrastructure. This
-section will cover different options available, and their suitability.
+如前面章節所示，要大規模部署應用程式，基礎設施需要支援特定能力。本節將介紹不同可用選項及其適用性。
 
-### ToR connectivity
+### ToR 連接
 
-This being one of the most frequent points of failure (considering the scale of deployment), there are different options available to connect the servers to the ToR. We are going to see them in detail below,
+考量到大規模部署，這是最常見的故障點之一，有多種選擇可以用來連接伺服器與 ToR，以下將逐一說明：
 
-#### Single ToR
+#### 單一 ToR
 
-This is the simplest of all the options. Where a NIC of the server is
-connected to one ToR. The advantage of this approach is, there is a
-minimal number of switch ports used, allowing the DC fabric to support
-the rapid growth of server infrastructure (Note: Not only the ToR ports
-are used efficiently, but the upper switching layer in DC fabric as well, 
-the port usage will be efficient). On the downside, the servers can be
-unreachable if there is an issue with the ToR, link or NIC. This will
-impact the stateful apps more, as the existing connections get
-abruptly disconnected.
+這是所有選項中最簡單的，即伺服器的一張 NIC 連接至單一 ToR。此做法的優點是使用的交換器埠數量最少，讓資料中心網路能支持伺服器基礎架構的快速成長（註：不僅 ToR 埠使用效率高，上層交換架構中埠使用率也有效率）。缺點是，一旦 ToR、連結或 NIC 發生問題，伺服器將無法連線，此狀況對有狀態應用影響更大，因現有連線會突然中斷。
 
-![Graphical user interface, application Description automatically
-generated with medium
-confidence](./media/Single ToR.png)
+![圖形使用者介面，應用程式說明，可信度中等自動生成](./media/Single ToR.png)
 
-Fig 4: Single ToR design
+圖 4：單一 ToR 設計
 
-#### Dual ToR
+#### 雙 ToR
 
-In this option, each server is connected to two ToR, of the same
-cabinet. This can be set up in active/passive mode, thereby providing
-resiliency during ToR/link/NIC failures. The resiliency can be achieved
-either in layer 2 or in layer 3.
+此選項中，每台伺服器連接至同一機櫃的兩台 ToR，可設定為主動/被動模式，藉此在 ToR、鏈路或 NIC 發生故障時提供韌性。韌性可在第 2 層或第 3 層實現。
 
-##### Layer 2
+##### 第 2 層
 
-In this case, both the links are bundled together as a [bond](https://en.wikipedia.org/wiki/Link_aggregation) on the
-server side (with one NIC taking the active role and the other being
-passive). On the switch side, these two links are made part of
-[multi-chassis lag](https://en.wikipedia.org/wiki/Multi-chassis_link_aggregation_group) (similar to bonding, but spread across switches). The
-prerequisite here is, both the ToR should be part of the same layer 2
-domain. The IP addresses are configured on the bond interface on the
-server and SVI on the switch side.
+此時，兩條鏈路在伺服器端以 [bond](https://en.wikipedia.org/wiki/Link_aggregation)（鏈路聚合）方式綁定（一張 NIC 做為主動，另一個為被動）。在交換器端，這兩條鏈路則成為 [multi-chassis lag](https://en.wikipedia.org/wiki/Multi-chassis_link_aggregation_group) 的一部分（類似 bond，但分佈於多台交換器）。前提是兩台 ToR 必須在同一個第 2 層網域內。伺服器上的 IP 位址設定在 bond 介面上，交換器則在 SVI 上設定。
 
-![Diagram Description automatically
-generated](./media/Dual ToR.png)
+![自動生成的圖示說明](./media/Dual ToR.png)
 
-Note: In this, the ToR 2 role is only to provide resiliency.
+註：此架構中，ToR 2 僅用於提供韌性。
 
-Fig 5: Dual ToR layer 2 setup
+圖 5：雙 ToR 第 2 層架構
 
-##### Layer 3
+##### 第 3 層
 
-In this case, both the links are configured as separate layer 3
-interfaces. The resiliency is achieved by setting up a routing protocol
-(like BGP). Wherein one link is given higher preference over the other.
-In this case, the two ToR's can be set up independently, in layer 3
-mode. The servers would need a virtual address, to which the services
-have to be bound.
+此種情況下，兩條鏈路各自設為獨立的第 3 層介面。透過啟用路由協定（如 BGP）來實現韌性，並將一條鏈路設為較高優先權。此時兩台 ToR 可獨立設定為第 3 層模式。伺服器需要一個虛擬位址，供服務綁定。
 
-![Diagram Description automatically
-generated](./media/Dual ToR BGP.png)
+![自動生成的圖示說明](./media/Dual ToR BGP.png)
 
-Note: In this, the ToR 2 role is only to provide resiliency.
+註：此架構中，ToR 2 僅用於提供韌性。
 
-Fig 6: Dual ToR layer 3 setup
+圖 6：雙 ToR 第 3 層架構
 
-Though the resiliency is better with dual ToR, the drawback is, the
-number of ports being used. As the access port in the ToR doubles up,
-the number of ports required in the Spine layer also doubles up, and
-this keeps cascading to higher layers.
+儘管雙 ToR 韌性較佳，缺點在於所用埠數倍增。由於 ToR 的接取埠數增加一倍，上層 Spine 層埠數也相應增加，這情況會一直級聯到更高層。
 
-Type              | Single ToR       | Dual ToR (layer  2) | Dual ToR (layer 3)
-------------------| ----------------| ----------------- |-----------------
-Resiliency<sup>1</sup>     | No<sup>2</sup>            | Yes              | Yes
-Port usage        | 1:1              | 1:2              | 1:2
-Cabling           | Less             | More             | More
-Cost of DC fabric | Low              | High             | High
-ToR features required      | Low              | High             | Medium
+| 類型                | 單一 ToR          | 雙 ToR（第 2 層） | 雙 ToR（第 3 層）  |
+|---------------------|------------------|------------------|-------------------|
+| 韌性<sup>1</sup>    | 否<sup>2</sup>   | 是               | 是                |
+| 埠使用率            | 1:1              | 1:2              | 1:2               |
+| 佈線                | 較少             | 較多             | 較多              |
+| 資料中心網路成本     | 低               | 高               | 高                 |
+| ToR 功能需求         | 低               | 高               | 中                 |
 
-<sup>1</sup> Resiliency in terms of ToR/Link/NIC
+<sup>1</sup> 指 ToR/鏈路/NIC 韌性
 
-<sup>2</sup> As an alternative, resiliency can be addressed at the application layer.
+<sup>2</sup> 韌性可考慮在應用層面處理，作為替代方案。
 
-
-Along with the above-mentioned ones, an application might need more
-capabilities out of the infrastructure to deploy at scale. Some of them
-are,
+除了上述選項外，應用程式可能還需要從基礎設施取得更多功能以實現大規模部署，以下為部分例子：
 
 ### Anycast
 
-As seen in the previous section, of deploying at scale, anycast is one
-of the means to have services distributed across cabinets and still have
-traffic flowing to each one of the servers. To achieve this, two things
-are required
+如前面部署大規模的章節所述，anycast 是一種讓服務分散在多個機櫃，且流量能流向各伺服器的方式。要達成此點，需要兩項支持：
 
-1. Routing protocol between ToR and server (to announce the anycast
-address)
+1. ToR 與伺服器間的路由協定（用於宣告 anycast 位址）
 
-2. Support for ECMP (Equal Cost Multi-Path) load balancing in the
-infrastructure, to distribute the flows across the cabinets.
+2. 基礎設施能支持 ECMP（等價多路徑路由）負載平衡，用以分散流量至多機櫃。
 
-### Load balancing
+### 負載平衡
 
-Similar to Anycast, another means to achieve load balancing across
-servers (host a particular app), is using load balancers. These could be
-implemented in different ways
+與 Anycast 類似，另一種在伺服器間實現負載平衡（承載特定應用）的方式是使用負載平衡器。可採多種方式實現：
 
-1. Hardware load balancers: A LB device is placed inline of the traffic
-flow, and looks at the layer 3 and layer 4 information in an incoming
-packet. Then determine the set of real hosts, to which the connections
-are to be redirected. As covered in the [Scale](https://linkedin.github.io/school-of-sre/level102/networking/scale/#load-balancer) topic, these load balancers can be set up in two ways,
+1. 硬體負載平衡器：負載平衡裝置位於流量路徑中，檢視封包的第 3 層和第 4 層資訊，決定要將連線導向哪些真實主機。正如在[擴展規模](https://linkedin.github.io/school-of-sre/level102/networking/scale/#load-balancer)一節介紹，可設置為兩種模式：
 
-    - Single-arm mode: In this mode, the load balancer handles only the
-incoming requests to the VIP. The response from the server goes directly
-to the clients. There are two ways to implement this,
+    - 單臂模式：負載平衡器僅處理對 VIP 的進入請求。伺服器回應直接發送給客戶端。可用兩種實作方式：
 
-        * L2 DSR: Where the load balancer and the real servers remain in the
-same VLAN. Upon getting an incoming request, the load balancer
-identifies the real server to redirect the request and then modifies the
-destination mac address of that Ethernet frame. Upon processing this
-packet, the real server responds directly to the client.
+        * L2 DSR（Direct Server Return）：負載平衡器與真實伺服器處於同一 VLAN。收到請求後，負載平衡器辨識目標伺服器並修改乙太網幀的目的 MAC 位址，真實伺服器接獲後直接回應客戶端。
 
-        * [L3 DSR](https://github.com/yahoo/l3dsr): In this case, the load balancer and real servers need not be
-in the same VLAN (does away with layer 2 complexities like running STP,
-managing wider broadcast domain, etc). Upon incoming request, the load
-balancer redirects to the real server, by modifying the destination IP
-address of the packet. Along with this, the DSCP value of the packet is
-set to a predefined value (mapped for that VIP). Upon receipt of this
-packet, the real server uses the DSCP value to determine the loopback
-address (VIP address). The response again goes directly to the client.
+        * [L3 DSR](https://github.com/yahoo/l3dsr)：負載平衡器與伺服器不需在同一 VLAN（消除 STP 運作與廣播域過大等第 2 層複雜性）。負載平衡器收到請求後修改封包目的 IP，並設定封包的 DSCP 值至預定值（對應該 VIP）。真實伺服器根據 DSCP 值識別迴路位址（VIP 位址），回應同樣直接發送給客戶端。
 
-    - Two arm mode: In this case, the load balancer is in line for incoming
-and outgoing traffic.
+    - 雙臂模式：負載平衡器處理進出流量。
 
-2. DNS based load balancer: Here the DNS servers keep a check of the
-health of the real servers and resolve the domain in such a way that the
-client can connect to different servers in that cluster. This part was
-explained in detail in the deployment at [scale](https://linkedin.github.io/school-of-sre/level102/networking/scale/#dns-based-load-balancing) section.
+2. DNS 負載平衡器：透過 DNS 伺服器監控真實伺服器健康狀態，並以適當方式解析網域，讓客戶端能連接該集群中不同伺服器。此部分詳見[擴展規模](https://linkedin.github.io/school-of-sre/level102/networking/scale/#dns-based-load-balancing)章節。
 
-3. IPVS based load balancing: This is another means, where an IPVS
-server presents itself as the service endpoint to the clients. Upon
-incoming request, the IPVS directs the request to the real servers. The
-IPVS can be set up to do health for the real servers.
+3. IPVS 負載平衡：IPVS 伺服器作為服務端點對外，接收請求後導向真實伺服器，並可設定健康檢查。
 
 ### NAT
 
-Network Address Translation (NAT) will be required for hosts that need
-to connect to destinations on the Internet, but don't want to expose
-their configured NIC address. In this case, the address (of the internal
-server) is translated to a public address by a firewall. Few examples of
-this are proxy servers, mail servers, etc.
+網路位址轉換 (NAT) 用於那些需要連接至 Internet 但不想外露內部伺服器 NIC 位址的主機。例如代理伺服器、郵件伺服器等。此時內部位址會由防火牆轉譯為公開位址。
 
 ### QoS
 
-Quality of Service is a means to provide, differentiate treatment to few packets
-over others. These could provide priority in forwarding queues, or
-bandwidth reservations. In the data centre scenario, depending upon the
-bandwidth subscription ratio, the need for QoS varies,
+服務品質 (Quality of Service) 是透過對不同封包提供差異化處理，如優先排隊或頻寬保留。在資料中心場景下，依據頻寬訂閱比，QoS 需求差異如下：
 
-1. 1:1 bandwidth subscription ratio: In this case, the server to ToR
-connectivity (all servers in that cabinet) bandwidth should be
-equivalent to the ToR to Spine switch connectivity. Similarly for the
-upper layers as well. In this design, congestion on a link is not going
-to happen, as enough bandwidth will always be available. In this case,
-the only difference QoS can bring, it provides priority treatment for
-certain packets in the forwarding queue. Note: Packet buffering happens,
-when the packet moves between ports of different speeds, like 100Gbps,
-10Gbps.
+1. 1:1 頻寬訂閱比：伺服器到 ToR（該機櫃所有伺服器）頻寬應與 ToR 到 Spine 的頻寬相等，且上層也是如此。此時不會有鏈路塞車，因為頻寬恰當地完備，QoS 主要用於部分封包在轉發隊列中的優先處理。註：封包緩衝出現在不同速率埠間轉送，如 100Gbps 與 10Gbps 間。
 
-2. Oversubscribed network: In this case, not all layers maintain a
-bandwidth subscription ratio, for example, the ToR uplink may be of
-lower bandwidth, compared to ToR to Server bandwidth (This is sometimes
-referred to as oversubscription ratio). In this case, there is a
-possibility of congestion. Here QoS might be required, to give priority
-as well as bandwidth reservation, for certain types of traffic flows.
+2. 過度訂閱網路：此時並非所有層級皆維持頻寬訂閱比，例如，ToR 上行鏈路頻寬小於 ToR 到伺服器頻寬（即有過度訂閱比）。會有塞車風險，QoS 需求更大，可實現流量優先權與頻寬保留，針對特定流量類型。

@@ -1,3 +1,3 @@
-# Conclusion
+# 結論
 
-Armed with these principles, we hope the course will give a fresh perspective to design software systems. It might be over-engineering to get all this on day zero. But some are really important from day 0 like eliminating single points of failure, making scalable services by just increasing replicas. As a bottleneck is reached, we can _split code by services_, _shard data_ to scale. As the organization matures, bringing in [chaos engineering](https://en.wikipedia.org/wiki/Chaos_engineering) to measure how systems react to failure will help in designing robust software systems.
+掌握這些原則後，我們希望本課程能為設計軟體系統帶來全新視角。一開始就完全實現這些可能有點過度設計，但有些從第零天起就非常重要，例如消除單點故障、僅透過增加副本數來建立可擴展的服務。當遇到瓶頸時，我們可以透過_依服務拆分程式碼_、_分片資料_來擴展。隨著組織成熟，導入[混沌工程](https://en.wikipedia.org/wiki/Chaos_engineering)來衡量系統對失效的反應，將有助於設計出更具韌性的軟體系統。

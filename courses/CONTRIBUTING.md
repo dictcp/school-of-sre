@@ -1,20 +1,20 @@
-We realise that the initial content we created is just a starting point and our hope is that the community can help in the journey refining and extending the contents.
+我們了解最初建立的內容只是起點，我們希望社群能夠在這段旅程中協助精煉與擴充內容。
 
-As a contributor, you represent that the content you submit is not plagiarised. By submitting the content, you (and, if applicable, your employer) are licensing the submitted content to LinkedIn and the open source community subject to the Creative Commons Attribution 4.0 International Public License.
+作為貢獻者，您保證您提交的內容並非抄襲。提交內容即表示您（以及在適用情況下您的雇主）同意將提交的內容依據「創用 CC 姓名標示 4.0 國際公共授權」授權給 LinkedIn 與開源社群。
 
-*Repository URL*: [https://github.com/linkedin/school-of-sre](https://github.com/linkedin/school-of-sre)
+*倉庫網址*: [https://github.com/linkedin/school-of-sre](https://github.com/linkedin/school-of-sre)
 
-### Contributing Guidelines
-Ensure that you adhere to the following guidelines:
+### 貢獻指南
+請確保您遵守以下指南：
 
-* Should be about principles and concepts that can be applied in any company or individual project. Do not focus on particular tools or tech stack (which usually change over time).
-* Adhere to the [Code of Conduct](/school-of-sre/CODE_OF_CONDUCT/).
-* Should be relevant to the roles and responsibilities of an SRE.
-* Should be locally tested (see steps for testing) and well-formatted.
-* It is good practice to open an issue first and discuss your changes before submitting a pull request. This way, you can incorporate ideas from others before you even start.
+* 內容應關於可應用於任何公司或個人專案的原則與概念，不應聚焦於特定工具或技術棧（這些通常會隨時間改變）。
+* 遵守 [行為準則](/school-of-sre/CODE_OF_CONDUCT/)。
+* 內容應與 SRE 的角色與職責相關。
+* 內容應在本地測試（請參照測試步驟）並且格式良好。
+* 最佳實務是先開啟議題並討論您的更改，再提交拉取請求。如此您可以在開始前融合他人的建議。
 
-### Building and testing locally
-Run the following commands to build and view the site locally before opening a PR.
+### 本地構建與測試
+在開啟 PR 前，執行以下指令以在本地構建並檢視網站。
 
 ```shell
 python3 -m venv .venv
@@ -24,7 +24,7 @@ mkdocs build
 mkdocs serve
 ```
 
-### Opening a PR
-Follow the [GitHub PR workflow](https://guides.github.com/introduction/flow/) for your contributions.
+### 開啟 PR
+請依照 [GitHub PR 工作流程](https://guides.github.com/introduction/flow/) 進行您的貢獻。
 
-Fork this repo, create a feature branch, commit your changes and open a PR to this repo.
+將本倉庫分叉（fork），建立功能分支，提交更改，然後開啟指向本倉庫的拉取請求（PR）。

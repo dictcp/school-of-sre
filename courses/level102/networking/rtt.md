@@ -1,33 +1,13 @@
-> *Latency plays a key role in determining the overall performance of the
-distributed service/application, where calls are made between hosts to
-serve the users.*
+> *延遲在決定分散式服務/應用程式的整體效能中扮演關鍵角色，呼叫會在主機間進行，以服務使用者。*
 
-RTT is a measure of time, it takes for a packet to reach B from A, and
-return to A. It is measured in milliseconds. This measure plays a role
-in determining the performance of the services. Its impact is seen in
-calls made between different servers/services, to serve the user, as
-well as the TCP throughput that can be achieved.
+RTT（往返時間）是從 A 發送封包到 B，並返回到 A 所需的時間，單位為毫秒。這個指標在決定服務效能時發揮作用。它的影響能在不同伺服器／服務之間的呼叫中看到，以服務使用者，以及可達成的 TCP 吞吐量。
 
-It is fairly common that service makes multiple calls to servers within
-its cluster or to different services like authentication, logging,
-database, etc, to respond to each user/client request. These servers can
-be spread across different cabinets, at times even between different
-data centres in the same region. Such cases are quite possible in cloud
-solutions, where the deployment spreads across different sites within a
-region. As the RTT increases, the response time for each of the calls
-gets longer and thereby has a cascading effect on the end response being
-sent to the user.
+服務通常會對叢集內的多個伺服器或其他服務（如驗證、日誌、資料庫等）進行多次呼叫，以回應每個使用者／客戶端請求。這些伺服器可能分佈於不同的機櫃，有時甚至位於同區域內不同的資料中心。在雲端解決方案中，部署跨多個站點於區域內的情況相當常見。隨著 RTT 增加，每次呼叫的回應時間變長，因此對送給使用者的最終回應產生連鎖效應。
 
-### Relation of RTT and throughput
+### RTT 與吞吐量的關係
 
-RTT is inversely proportional to the TCP throughput. As RTT increases,
-it reduces the TCP throughput, just like packet loss. Below is a formula
-to estimate the TCP throughput, based on TCP mss, RTT and packet loss.
+RTT 與 TCP 吞吐量成反比。當 RTT 增加時，TCP 吞吐量會降低，像封包遺失一樣。以下為根據 TCP MSS、RTT 與封包遺失率估算 TCP 吞吐量的公式。
 
-![Diagram, schematic Description automatically
-generated](./media/RTT.png)
+![Diagram, schematic Description automatically generated](./media/RTT.png)
 
-As within a data centre, these calculations are also, important for
-communication over the internet, where a client can connect to the DC
-hosted services, over different telco networks and the RTT is not very
-stable, due to the unpredictability of the Internet routing policies.
+與資料中心內部相同，這些計算也對透過網際網路的通訊十分重要。因為使用者端可能透過不同電信網路連接資料中心所架設的服務，而 RTT 經常不穩定，這是因為網際網路路由政策的不可預測性所致。

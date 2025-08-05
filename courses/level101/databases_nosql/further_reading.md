@@ -1,8 +1,8 @@
-# Conclusion
+# 結論
 
-We have covered basic concepts of NoSQL databases. There is much more to learn and do. We hope this course gives you a good start and inspires you to explore further.
+我們已經涵蓋了 NoSQL 資料庫的基本概念。還有更多內容等待學習和實踐。希望本課程能為你打下良好的基礎，並激發你進一步探索的熱情。
 
-# Further reading
+# 延伸閱讀
 
 NoSQL:
 
@@ -12,15 +12,15 @@ NoSQL:
 
 [https://www.mongodb.com/nosql-explained/nosql-vs-sql](https://www.mongodb.com/nosql-explained/nosql-vs-sql)
 
-Cap Theorem
+CAP 定理
 
 [http://www.julianbrowne.com/article/brewers-cap-theorem](http://www.julianbrowne.com/article/brewers-cap-theorem)
 
-Scalability
+可擴展性
 
 [http://www.slideshare.net/jboner/scalability-availability-stability-patterns](http://www.slideshare.net/jboner/scalability-availability-stability-patterns)
 
-Eventual Consistency
+最終一致性
 
 [https://www.allthingsdistributed.com/2008/12/eventually_consistent.html](https://www.allthingsdistributed.com/2008/12/eventually_consistent.html)
 

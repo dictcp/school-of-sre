@@ -1,51 +1,30 @@
-# Conclusion
+# 結論
 
-A robust monitoring and alerting system is necessary for maintaining and
-troubleshooting a system. A dashboard with key metrics can give you an
-overview of service performance, all in one place. Well-defined alerts 
-(with realistic thresholds and notifications) further enable you to
-quickly identify any anomalies in the service infrastructure and in
-resource saturation. By taking necessary actions, you can avoid any
-service degradations and decrease MTTD for service breakdowns.
+為了維護與排除系統故障，建立一套健全的監控與警示系統是必要的。透過包含關鍵指標的儀表板，你可以在同一個地方一覽服務的效能狀況。明確定義的警示（具備合理的門檻與通知機制）能幫助你快速辨識服務基礎架構或資源飽和的任何異常。透過採取必要行動，你可以避免服務降級，並縮短服務故障的平均偵測時間（MTTD）。
 
-In addition to in-house monitoring, monitoring real-user experience can
-help you to understand service performance as perceived by the users.
-Many modules are involved in serving the user, and most of them are out
-of your control. Therefore, you need to have real-user monitoring in
-place.
+除了內部監控之外，監控真實使用者體驗有助於理解用戶感受到的服務效能。因為服務中涉及許多模組，多數不在你掌控範圍內，因此實施真實使用者監控十分重要。
 
-Metrics give very abstract details on service performance. To get a
-better understanding of the system and for faster recovery during
-incidents, you might want to implement the other two pillars of
-observability: logs and tracing. Logs and trace data can help you
-understand what led to service failure or degradation.
+指標提供的是非常抽象的服務效能細節。為了更深入了解系統狀態並在事件發生時加快恢復速度，你可能需要實作觀測性的另外兩大支柱：日誌與追蹤。日誌和追蹤資料可以協助你了解導致服務失敗或降級的原因。
 
-Following are some resources to learn more about monitoring and
-observability:
+以下是一些學習監控與觀測性的資源：
 
--   [Google SRE book: Monitoring Distributed
-     Systems](https://sre.google/sre-book/monitoring-distributed-systems/)
+-   [Google SRE 書籍：監控分散式系統](https://sre.google/sre-book/monitoring-distributed-systems/)
 
--   [Mastering Distributed Tracing by Yuri
-     Shkuro](https://learning.oreilly.com/library/view/mastering-distributed-tracing/9781788628464/)
+-   [Yuri Shkuro 的《精通分散式追蹤》](https://learning.oreilly.com/library/view/mastering-distributed-tracing/9781788628464/)
 
 
-## References
+## 參考資料
 
--   [Google SRE book: Monitoring Distributed
-     Systems](https://sre.google/sre-book/monitoring-distributed-systems/)
+-   [Google SRE 書籍：監控分散式系統](https://sre.google/sre-book/monitoring-distributed-systems/)
 
--   [Mastering Distributed Tracing, by Yuri
-     Shkuro](https://learning.oreilly.com/library/view/mastering-distributed-tracing/9781788628464/)
+-   [Yuri Shkuro 著《精通分散式追蹤》](https://learning.oreilly.com/library/view/mastering-distributed-tracing/9781788628464/)
 
--   [Monitoring and
-     Observability](https://copyconstruct.medium.com/monitoring-and-observability-8417d1952e1c)
+-   [監控與觀測性](https://copyconstruct.medium.com/monitoring-and-observability-8417d1952e1c)
 
--   [Three PIllars with Zero
-     Answers](https://medium.com/lightstephq/three-pillars-with-zero-answers-2a98b36358b8)
+-   [零答案的三支柱](https://medium.com/lightstephq/three-pillars-with-zero-answers-2a98b36358b8)
 
--   Engineering blogs on
-         [LinkedIn](https://engineering.linkedin.com/blog/topic/monitoring),
-         [Grafana](https://grafana.com/blog/),
-         [Elastic.co](https://www.elastic.co/blog/),
-         [OpenTelemetry](https://medium.com/opentelemetry)
+-   工程部落格：
+    [LinkedIn](https://engineering.linkedin.com/blog/topic/monitoring)、
+    [Grafana](https://grafana.com/blog/)、
+    [Elastic.co](https://www.elastic.co/blog/)、
+    [OpenTelemetry](https://medium.com/opentelemetry)

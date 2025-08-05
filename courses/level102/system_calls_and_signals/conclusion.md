@@ -1,14 +1,12 @@
-# Conclusion
+# 結論
 
-One of the main goals of a SRE is to improve the reliability of high scale systems. Inorder to achieve this, a basic understanding of the internal workings of a system is necessary. 
+SRE 的主要目標之一是提升高規模系統的可靠性。為了達成這個目標，對系統內部運作的基本理解是必要的。
 
-Getting to know about how signals work is important since they play a big role in the lifecycle of processes. We see the use of signals in a range of operations on processes : from creating a process to killing a process. Knowledge of signals is important especially when handling them in programs. If you anticipate an event that causes signals, you can define a handler function and tell the operating system to run it when that particular type of signal arrives.
+了解信號的運作方式非常重要，因為信號在程序的生命週期中扮演著重要角色。我們可以看到信號在多種程序操作中的使用：從建立程序到終止程序。對信號的認識尤其重要，當你在程式中處理信號時，如果預期會有觸發信號的事件，可以定義一個處理函式並告訴作業系統，在收到該種類型的信號時執行這個函式。
 
-Understanding system calls is especially useful to SRE's while debugging any Linux process. System calls provide precise knowledge of the internal functionalities of an operating system. It gives an in-depth understanding for programmers about C library functions which implement system calls at a lower level. With the use of *strace* command, one may easily debug slow or hung processes.
+理解系統呼叫對 SRE 在除錯任何 Linux 程式時尤其有用。系統呼叫提供對作業系統內部功能的精確認識，並讓程式設計人員對 C 函式庫中在較低層實作系統呼叫的方式有深入理解。利用 *strace* 指令，可以輕鬆地除錯執行緩慢或當掉的程序。
 
-
-
-# Further Reading
+# 延伸閱讀
 <https://www.oreilly.com/library/view/understanding-the-linux/0596002130/ch01s06.html>
 
 <https://jvns.ca/blog/2021/04/03/what-problems-do-people-solve-with-strace/>

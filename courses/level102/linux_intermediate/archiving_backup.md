@@ -1,80 +1,78 @@
+# 歸檔與備份
 
-# Archiving and Backup
+## 介紹
+SRE（網站可靠性工程師）確保服務持續運作（至少 99.99% 的時間），但在每個執行這些服務的伺服器上產生的資料量龐大。這些資料可能是日誌、資料庫中的使用者資料，或其他類型的元資料。因此，我們需要及時壓縮、歸檔、輪替及備份資料，以保障資料安全並確保空間不會耗盡。
 
-## Introduction
-One of the things SREs make sure of is the services are up all the time (at least 99.99% of the time), but the amount of data generated at each server running those services are immense. This data could be logs, user data in the database, or any other kind of metadata. Hence we need to compress, archive, rotate, and Backup the data in a timely manner for data safety and to make sure we don’t run out of space.
+## 歸檔
 
-## Archiving
-
-We usually archive the data that are no longer needed but are kept mostly for compliance purposes. This helps in storing the data into compressed format saving a lot of space. Below section is to familiarize with the archiving tools and commands.
+我們通常會將不再需要但主要為了合規目的而保留的資料進行歸檔。這幫助我們將資料儲存為壓縮格式，節省大量空間。以下章節將介紹歸檔工具和指令。
 
 ## gzip
 
-gzip is a program used to [<u>compress</u>](https://en.wikipedia.org/wiki/Data_compression) one or more files, it replaces the original file with a compressed version of the original file.
+gzip 是一個用於[<u>壓縮</u>](https://en.wikipedia.org/wiki/Data_compression)一個或多個檔案的程式，它會以壓縮版本取代原始檔案。
 
 ![](images/image14.png)
 
-Here we can see that the *messages* log file is compressed to almost one-fifth of the original size and replaced with messages.gz. We can uncompress this file using [*<u>gunzip</u>*](https://linux.die.net/man/1/gunzip) command.
+我們可以看到，*messages* 日誌檔案被壓縮到原始大小的約五分之一，並以 messages.gz 取代。我們可以使用 [*<u>gunzip</u>*](https://linux.die.net/man/1/gunzip) 指令將此檔案解壓縮。
 
 ## tar
 
-*tar* program is a tool for archiving files and directories into a single file (often called tarball). This tool is usually used to prepare archives of files before it is transferred to a long term backup server. *tar* doesn’t replace the existing files and folders but creates a new file with extension *.tar* . It provides lot of flag to choose from for archiving
+*tar* 程式是一個將檔案和資料夾打包成單一檔案（通常稱為 tarball）的工具。這個工具通常用於在傳送資料到長期備份伺服器之前準備檔案的歸檔。*tar* 不會取代已存在的檔案和資料夾，而會建立一個新的副檔名為 *.tar* 的檔案。它提供許多選項供歸檔時使用。
 
-| Flags  | Description |
+| 選項  | 說明 |
 | --- | --- |
-| -c  | Creates archive |
-| -x  | Extracts the archive |
-| -f  | Creates archive with the given filename |
-| -t  | Displays or lists files in archived file |
-| -u  | Archives and adds to an existing archive file |
-| -v  | Displays verbose information |
-| -A  | Concatenates the archived file |
-| -z  | Compresses the tar file using gzip |
-| -j  | Compresses the tar file using bzip2 |
-| -W  | Verifies an archive file |
-| -r  | Updates or adds file or directory in already existing .tar file |
+| -c  | 建立歸檔檔案 |
+| -x  | 解開歸檔檔案 |
+| -f  | 指定歸檔檔案名稱 |
+| -t  | 顯示或列出歸檔之中的檔案 |
+| -u  | 更新並加入已有的歸檔檔案 |
+| -v  | 顯示詳細資訊 |
+| -A  | 合併多個歸檔檔案 |
+| -z  | 以 gzip 壓縮 tar 檔案 |
+| -j  | 以 bzip2 壓縮 tar 檔案 |
+| -W  | 驗證歸檔檔案 |
+| -r  | 更新或新增檔案/資料夾至已存在的 .tar 檔案 |
 
-### Create an archive with files and folder
+### 建立包含多個檔案與資料夾的歸檔
 
-Flag `c` is used for creating the archive where `f` is the filename.
+使用 `c` 選項建立歸檔，`f` 用於指定檔案名稱。
 
 ![](images/image24.png)
 
-### Listing files in the archive
+### 列出歸檔內的檔案
 
-We can use flag `t` for listing out what an archive contains.
+可以使用 `t` 選項列出歸檔內包含的內容。
 
 ![](images/image7.png)
 
-### Extract files from the archive
+### 從歸檔中解壓檔案
 
-We can use flag `x` to unarchive the archive.
+使用 `x` 選項解壓歸檔。
 
 ![](images/image26.png)
 
-## Backup
+## 備份
 
-Backup is a process of copying/duplicating the existing data, This backup can be used to restore the dataset in case of data loss. Data backup also becomes critical when the data is not needed in a day to day job but can be referred to as a source of truth and for compliance reasons in future. Different types of backup are :
+備份是複製/複製現有資料的過程，在資料遺失時可以用來還原資料集。當資料在日常工作中不常用，但在未來可能作為真實資料來源及合規依據時，備份就顯得非常重要。不同類型的備份包括：
 
-### Incremental backup
+### 增量備份
 
-Incremental backup is the backup of data since the last backup, this reduces data redundancy and storage efficiency.
+增量備份是自上次備份之後的新資料備份，可以減少資料冗餘，並提高儲存效率。
 
-### Differential backup
+### 差異備份
 
-Sometimes our data keeps on modifying/updating. In that case we take backup of changes that occurred since the last backup called differential backup.
+當資料持續修改或更新時，差異備份會備份自上次備份後發生的變更。
 
-### Network backup
+### 網路備份
 
-Network backup refers to sending out data over the network from the source to a backup destination in a client-server model. This backup destination can be centralized or decentralized. Decentralized backups are useful for disaster recovery scenarios.
+網路備份指的是以客戶端-伺服器架構，將資料從來源透過網路傳送至備份目的地。備份目的地可以是集中式的，也可以是分散式的，後者適合災難復原的情境。
 
-`rsync` is one of the linux command which sync up file from one server to the destination server over the network.
+`rsync` 是 Linux 中一個可將檔案從一台伺服器同步至另一台目的地伺服器的指令。
 
 ![](images/image11.png)
 
-The syntax for *rsync* goes like `rsync \[options\] <source> <destination>`. We can locate the file on the path specified after `:` (colon) in the “*destination”*. If nothing is specified the default path is the home directory of the user used for backup. `/home/azureuser` in this case. You can always look for different options for rsync using the `man rsync` command.
+*rsync* 的語法格式為 `rsync \[options\] <source> <destination>`。在「*destination*」中，可於冒號 `:` 後指定檔案路徑；若未指定，預設路徑是用於備份的使用者主目錄，例如此案例中的 `/home/azureuser`。您可以使用 `man rsync` 指令查閱更多 rsync 選項。
 
-### Cloud Backup
+### 雲端備份
 
-There are various third parties which provide the backup of data to the cloud. These cloud backups are much more reliable than stored backups on local machines or any server without RAID configuration as these providers manage redundancy of data, data recovery along with the data security. Two most widely used cloud backup options are Azure backup (from Microsoft) and Amazon Glacier backup (from AWS).
-
+有許多第三方提供將資料備份至雲端的服務。這些雲端備份比儲存在本地機器或未配置 RAID 的普通伺服器備份更為可靠，因為這些服務提供資料冗餘、資料復原及資料安全管理。目前兩個最廣泛使用的雲端備份方案是 Azure 備份（由微軟提供）和 Amazon Glacier 備份（由 AWS 提供）。

@@ -1,100 +1,102 @@
-## Introduction
+## 介紹
 
-Docker has gained huge popularity among other container engines since it was released to the public in 2013. Here are some of the reasons why Docker so popular:
+自 2013 年公開發佈以來，Docker 在眾多容器引擎中大受歡迎。以下是 Docker 如此受歡迎的一些原因：
 
-- _Improved portability_
+- _提升了可攜性_
 
-Docker containers can be shipped and run across environments be it local machine, on-prem or	cloud instances in the form of Docker images. Compared to docker containers, LXC containers have more machine specifications.
-- _Lighter weight_
+Docker 容器可以以 Docker 映像的形式，跨環境運行，無論是本機、內部部署還是雲端實例。相較之下，LXC 容器更依賴機器規格。
 
-Docker images are light weight compared to VM images. For example, an Ubuntu 18.04 VM size is about 3GB whereas the docker image is 45MB!
+- _輕量化_
 
-- _Versioning of container images_
+與虛擬機映像相比，Docker 映像非常輕量。例如，Ubuntu 18.04 的虛擬機映像大小約為 3GB，而 Docker 映像只有約 45MB！
 
-Docker supports maintaining multiple versions of images which makes it easier to look up the history of an image and even rollback.
+- _容器映像的版本控制_
 
-- _Reuse of images_
+Docker 支持維護多個映像版本，便於查閱映像歷史，甚至進行回滾。
 
-Since Docker images are in the form of layers, one image can be used as base on top of which new images are built. For example, [Alpine](https://hub.docker.com/_/alpine) is a light weight image (5MB) which is commonly used as a base image. Docker layers are managed using [storage drivers](https://docs.docker.com/storage/storagedriver/).
+- _映像重用_
 
-- _Community support_
+由於 Docker 映像是分層結構的，一個映像可以作為基礎，再在其上構建新的映像。例如，[Alpine](https://hub.docker.com/_/alpine) 是常用作基底的輕量映像（約 5MB）。Docker 使用[存儲驅動](https://docs.docker.com/storage/storagedriver/)管理這些層。
 
-Docker hub is a container registry where anyone logged in can upload or download a container image. Docker images of popular OS distros are regularly updated in docker hub and receive large community support.
+- _社群支持_
 
-Let’s look at some terms which come up during our discussion of Docker.
+Docker Hub 是一個容器映像註冊中心，任何登入用戶都能上傳或下載容器映像。Docker Hub 中的熱門作業系統映像會定期更新，並有大量社群支持。
 
-## Docker terminology
+讓我們先來了解一些在討論 Docker 時常見的術語。
 
-- _Docker images_
+## Docker 術語
 
-Docker image contains the executable version of the application along with the dependencies (config files, libraries, binaries) required for the application to run as a standalone container. It can be understood as a snapshot of a container.
-Docker images are present as layers on top of the base layer. These layers are the ones that are versioned. The most recent version of layer is the one that is used on top of the base image.
+- _Docker 映像_
 
-`docker image ls` lists the images present in the host machine.
+Docker 映像包含應用程式的可執行版本及其依賴（設定檔、函式庫、二進位檔），可獨立作為容器運行。它可以看作是一個容器的快照。  
+Docker 映像是疊加在基底層之上的多層堆疊，這些層會被版本化。最新的版本會被用於基底映像之上。
 
-- _Docker containers_
+`docker image ls` 列出主機上存在的映像。
 
-Docker container is the running instance of the docker image. While images are static, containers created from the images can be executed into and interacted with. This is actually the “container” from the previous sections of the module.
+- _Docker 容器_
 
-`docker run`  is the command used to instantiate containers from images.
+Docker 容器是映像的執行實例。映像是靜態的，而基於映像創建的容器則可以執行和互動。這就是前面章節所說的「容器」。
 
-`docker ps` lists docker containers currently running in the host machine.
+`docker run` 是用來從映像建立容器的指令。  
+`docker ps` 列出主機中目前正在運行的 Docker 容器。
 
-- _Docker file_
+- _Dockerfile_
 
-It is a plain text file of instructions based on which an image is assembled by docker engine (daemon, to be precise). It contains information on base image, ENV variables to be injected.
+這是一個純文字檔，內含組裝映像所需的指令，由 Docker 引擎（嚴格說是守護進程）執行。裡面包含基底映像、要注入的環境變數等資訊。
 
-`docker build` is used to build images from dockerfile.
+`docker build` 用於根據 Dockerfile 建構映像。
 
+- _Docker Hub_
 
-- _Docker hub_
+Docker 的官方映像註冊中心。任何用戶登入 Docker 後，皆可透過 `docker push` 上傳自訂映像，或用 `docker pull` 下載映像。
 
-It is Docker’s official container registry of images. Any user with a docker login can upload custom images to Docker hub using `docker push` and fetch images using `docker pull`.
+了解基本術語後，我們來看看 Docker 引擎的運作方式：CLI 指令如何被解釋、容器生命週期如何管理。
 
-Having known the basic terminologies let’s look at how docker engine works; how CLI commands are interpreted and container life-cycle is managed.
+## Docker 引擎組件
 
-## Components of Docker engine
+以下是 Docker 引擎架構圖，幫助理解：
 
-Let’s start with the diagram of Docker Engine to understand better:
+![Docker 引擎架構](images/dockerengine.png)
 
-![Docker Engine Architecture](images/dockerengine.png)
+Docker 引擎採用用戶端-伺服器架構，包括三個組件：
 
-The docker engine follows a client-server architecture. It consists of 3 components:
+- _Docker 用戶端_
 
-- _Docker client_
-
-This is the component the user directly interacts with. When you execute docker commands which we saw earlier (push, pull, container ls, image ls) , we are actually using the docker client. A single docker client can communicate with multiple docker daemons.
+這是使用者直接互動的組件。執行先前看過的 Docker 指令（如 push、pull、container ls、image ls）時，實際上是使用 Docker 用戶端。單一用戶端可與多個 Docker 守護程序溝通。
 
 - _REST API_
 
-Provides an interface for the docker client and daemon to communicate.
+提供 Docker 用戶端與守護程序間的通訊介面。
 
-- _Docker Daemon (server)_
+- _Docker 守護程序 (server)_
 
-This is the main component of the docker engine. It builds images from dockerfile, fetches images from docker registry, pushes images to the registry, stops, starts containers etc. It also manages networking between containers.
+Docker 引擎的核心元件。它負責根據 Dockerfile 建構映像、從容器註冊伺服器拉取映像、將映像推送至註冊伺服器、啟動或停止容器等，並管理容器間的網路。
 
-## LAB
+## 實作練習
 
-The official [docker github](https://github.com/docker/labs) provides labs at several levels for learning Docker. We're linking one of the labs which we found great for people beginning from scratch. Please follow the labs in this order:
+官方的 [docker github](https://github.com/docker/labs) 提供多個等級的學習實作課程。我們推薦適合初學者的課程，請依序完成：
 
-1. [Setting up local environment for the labs](https://github.com/docker/labs/blob/master/beginner/chapters/setup.md)
+1. [本地環境設定](https://github.com/docker/labs/blob/master/beginner/chapters/setup.md)
 
-2. [Basics for using docker CLI](https://github.com/docker/labs/blob/master/beginner/chapters/alpine.md)
+2. [使用 Docker CLI 基礎](https://github.com/docker/labs/blob/master/beginner/chapters/alpine.md)
 
-3. [Creating and containerizing a basic Flask app](https://github.com/docker/labs/blob/master/beginner/chapters/webapps.md)
+3. [建立並容器化簡易 Flask 應用](https://github.com/docker/labs/blob/master/beginner/chapters/webapps.md)
 
-Here is another [beginner level lab](https://github.com/docker/awesome-compose/tree/master/react-express-mongodb) for dockerizing a MERN (Mongo + React + Express) application and it’s easy to follow along.
+此外，這個 [初學者實作練習](https://github.com/docker/awesome-compose/tree/master/react-express-mongodb) 介紹如何 Docker 化 MERN（Mongo + React + Express）應用，也非常適合跟著練習。
 
-## Advanced features of Docker
+## Docker 進階功能
 
-While we have covered the basics of containerization and how a standalone application can be dockerized, processes in the real world need to communicate with each other. This need is particularly prevalent in applications which follow a microservice architecture.  
+我們討論完基礎的容器化及如何 Docker 化獨立應用，現實情況中，流程間需要互相溝通，尤其在微服務架構中尤為常見。
 
-**Docker networks**
+**Docker 網路**
 
-Docker networks facilitate the interaction between containers running on the same hosts or even different hosts. There are several options provided through docker network command which specifies how the container interacts with the host and with other containers. The `host` option allows sharing of network stack with the host, `bridge` allows communication between containers running on the same host but not external to the host, `overlay` facilitates interaction between containers across hosts attached to the same network and `macvlan` which assigns a separate MAC address to a container for legacy containers are some important types of networks supported by Docker.  This however is outside the scope of this module. The official documentation on [docker networks](https://docs.docker.com/network/) itself is a good place to start.
+Docker 網路促進同主機或跨主機容器間的互動。透過 `docker network` 指令，您可選擇容器與主機及其他容器互動的方式。  
+例如，`host` 選項讓容器共用主機的網路堆疊；`bridge` 讓同主機上的容器間通訊，但不對外部開放；`overlay` 允許跨多主機的容器互動，前提是它們連接於同一網路；`macvlan` 則為容器分配獨立 MAC 位址，適用於傳統容器。  
+這部分主題超出本模組範圍，建議參考官方 [docker networks](https://docs.docker.com/network/) 文件作深入了解。
 
-**Volumes**
+**Volume（資料卷）**
 
-Apart from images, containers and networks, Docker also provides the option to create and mount volumes within containers. Generally, data within docker containers is non-persistent i.e once you kill the container the data is lost. Volumes are used for storing persistent data in containers. This [Docker lab](https://dockerlabs.collabnix.com/beginners/volume/creating-volume-mount-from-dockercli.html) is a great place to start playing with volumes.
+除了映像、容器和網路，Docker 也提供在容器內創建與掛載資料卷的選項。通常，容器內的資料是暫存的——容器停止後資料會消失。Volume 可用於保存持久資料。  
+如果您想練習使用 Volume，[這份 Docker 實作課程](https://dockerlabs.collabnix.com/beginners/volume/creating-volume-mount-from-dockercli.html) 是不錯的起點。
 
-[In the next section](https://linkedin.github.io/school-of-sre/level102/containerization_and_orchestration/orchestration_with_kubernetes/) we see how container deployments are orchestrated with Kubernetes.
+[下一章](https://linkedin.github.io/school-of-sre/level102/containerization_and_orchestration/orchestration_with_kubernetes/)將介紹如何使用 Kubernetes 來編排容器部署。

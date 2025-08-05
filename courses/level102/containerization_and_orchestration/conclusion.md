@@ -1,5 +1,5 @@
-# Conclusion
+# 結論
 
-In this sub-module we have toured the world of containers starting from why we use containers, how containers evolved from the virtual machine past (though they are, in no means, obsolete) and how they are different from virtual machines. We then saw how containers are implemented with emphasis on cgroups and namespaces along with some hands-on exercises. Finally we concluded our journey with container orchestration where we learnt a bit of Kubernetes with some practical examples.
+在本子模組中，我們探索了容器的世界，從為什麼我們使用容器開始，了解容器如何從虛擬機的過去演進（雖然虛擬機並未因此過時），以及它們與虛擬機的不同之處。接著，我們探討了容器的實作方式，特別著重於 cgroups 和 namespaces，並搭配了一些實作練習。最後，我們以容器編排結束這趟旅程，學習了一些 Kubernetes 的概念及實務範例。
 
-Hope this module gives you enough knowledge and interest to continue learning and applying these technologies in greater depth!
+希望本模組能提供你足夠的知識與興趣，持續深入學習並應用這些技術！

@@ -1,67 +1,63 @@
-# Fault Tolerance
+# 容錯能力
 
-Failures are not avoidable in any system and will happen all the time, hence we need to build systems that can tolerate failures or recover from them.
+系統中的故障是無法避免且持續會發生的，因此我們需要建立能容忍故障或能從故障中恢復的系統。
 
-- In systems, failure is the norm rather than the exception.
-- "Anything that can go wrong will go wrong”&mdash;Murphy’s Law
-- “Complex systems contain changing mixtures of failures latent within them”&mdash;How Complex Systems Fail.
+- 在系統中，故障是常態而非例外。
+- 「凡是可能出錯的事情終將出錯」——墨菲定律（Murphy’s Law）
+- 「複雜系統內含有不斷變化的潛在故障混合」——How Complex Systems Fail。
 
-### Fault Tolerance: Failure Metrics
+### 容錯能力：故障衡量指標
 
-Common failure metrics that get measured and tracked for any system.
+任何系統中常被衡量與追蹤的故障指標。
 
-**Mean time to repair (MTTR):** The average time to repair and restore a failed system. 
+**平均修復時間（MTTR，Mean time to repair）：** 修復並恢復故障系統的平均所需時間。
 
-**Mean time between failures (MTBF):** The average operational time between one device failure or system breakdown and the next. 
+**平均故障間隔時間（MTBF，Mean time between failures）：** 裝置故障或系統故障與下一次故障之間的平均運行時間。
 
-**Mean time to failure (MTTF):** The average time a device or system is expected to function before it fails. 
+**平均故障時間（MTTF，Mean time to failure）：** 裝置或系統在發生故障前的平均可正常運作時間。
 
-**Mean time to detect (MTTD):** The average time between the onset of a problem and when the organization detects it. 
+**平均偵測時間（MTTD，Mean time to detect）：** 問題發生與組織偵測到該問題的平均時間。
 
-**Mean time to investigate (MTTI):** The average time between the detection of an incident and when the organization begins to investigate its cause and solution. 
+**平均調查時間（MTTI，Mean time to investigate）：** 從偵測事件到組織開始調查事件原因與解決方案之間的平均時間。
 
-**Mean time to restore service (MTRS):** The average elapsed time from the detection of an incident until the affected system or component is again available to users.
+**平均恢復服務時間（MTRS，Mean time to restore service）：** 從事件偵測到受影響系統或組件重新可用於用戶的平均時間。
 
-**Mean time between system incidents (MTBSI):** The average elapsed time between the detection of two consecutive incidents. MTBSI can be calculated by adding MTBF and MTRS (MTBSI = MTBF + MTRS).
+**平均系統事件間隔時間（MTBSI，Mean time between system incidents）：** 兩次連續事件偵測的平均時間間隔。MTBSI 可由 MTBF 加上 MTRS 計算（MTBSI = MTBF + MTRS）。
 
-**Failure rate:** Another reliability metric, which measures the frequency with which a component or system fails. It is expressed as a number of failures over a unit of time.
+**故障率（Failure rate）：** 另一個可靠性指標，衡量元件或系統故障的頻率，以每單位時間內的故障數量表示。
 
-#### Refer
+#### 參考
 - [https://www.splunk.com/en_us/data-insider/what-is-mean-time-to-repair.html](https://www.splunk.com/en_us/data-insider/what-is-mean-time-to-repair.html)
 
-### Fault Tolerance: Fault Isolation Terms
-Systems should have a short circuit. Say in our content sharing system, if “Notifications” is not working, the site should gracefully handle that failure by removing the functionality instead of taking the whole site down. 
+### 容錯能力：故障隔離術語
+系統應該具備短路保護。舉例來說，在我們的內容分享系統裡，當「通知」功能失效時，網站應該能優雅地處理這個故障，移除該功能，而不是導致整個網站崩潰。
 
-Swimlane is one of the commonly used fault isolation methodologies. Swimlane adds a barrier to the service from other services so that failure on either of them won’t affect the other. Say we roll out a new feature ‘Advertisement’ in our content sharing app.
-We can have two architectures
+游泳道（Swimlane）是常用的故障隔離方法之一。游泳道為服務間增設防火牆，讓一方故障時不會影響另一方。舉例，我們在內容分享應用中推出新的「廣告」功能，我們可以有以下兩種架構。
 
 ![Swimlane](images/swimlane-1.jpg)
 
-If Ads are generated on the fly synchronously during each Newsfeed request, the faults in the Ads feature get propagated to the Newsfeed feature. Instead if we swimlane the “Generation of Ads” service and use a shared storage to populate Newsfeed App, Ads failures won’t cascade to Newsfeed, and worst case if Ads don’t meet SLA, we can have Newsfeed without Ads.
+若廣告在每次新聞動態請求時同步即時產生，廣告功能的故障將會傳播至新聞動態功能。反之，如果我們將「廣告產生服務」游泳道隔離，並使用共享儲存來填充新聞動態應用，廣告故障將不會波及新聞動態，最壞情況下廣告未達服務水準協議（SLA），我們仍可繼續提供無廣告的新聞動態。
 
-Let's take another example, we have come up with a new model for our Content sharing App. Here, we roll out an enterprise content sharing App where enterprises pay for the service and the content should never be shared outside the enterprise. 
+再舉一例，我們為內容分享應用設計了新模型，在此企業版內容分享應用中，企業付費使用，內容絕不會分享給企業外部。
 
 ![Swimlane-principles](images/swimlane-2.jpg)
 
-### Swimlane Principles
+### 游泳道原則
 
-**Principle 1:** Nothing is shared (also known as “share as little as possible”). The less that is shared within a swimlane, the more fault isolative the swimlane becomes. (as shown in Enterprise use-case)
+**原則一：** 不共享任何東西（也稱「盡可能少共享」）。游泳道內共享越少，故障隔離效果越佳。（如企業案例所示）
 
-**Principle 2:** Nothing crosses a swimlane boundary. Synchronous (defined by expecting a request—not the transfer protocol) communication never crosses a swimlane boundary; if it does, the boundary is drawn incorrectly. (as shown in Ads feature)
+**原則二：** 不跨越游泳道邊界。同步通訊（以期望請求之形式定義，而非傳輸協定）不得跨越游泳道邊界；若有，表示邊界劃分錯誤。（如廣告功能所示）
 
-### Swimlane Approaches
-**Approach 1:** Swimlane the money-maker. Never allow your cash register to be compromised by other systems. (Tier 1  vs Tier 2 in enterprise use case)
+### 游泳道方法
+**方法一：** 將賺錢核心隔離為游泳道。絕不允許收銀系統被其他系統影響。（企業案例中的第 1 層對第 2 層）
 
-**Approach 2:** Swimlane the biggest sources of incidents. Identify the recurring causes of pain and isolate them. (If Ads feature is in code yellow, swimlaning it is the best option.)
+**方法二：** 將主要的故障來源隔離為游泳道。辨識反覆發生的痛點並加以隔離。（若廣告功能呈現黃色警告，隔離廣告是最佳選擇）
 
-**Approach 3:** Swimlane natural barriers. Customer boundaries make good swimlanes. (Public vs Enterprise customers)
+**方法三：** 利用自然邊界隔離游泳道。客戶邊界是良好的游泳道劃分。（公開用戶對比企業用戶）
 
-
-#### Refer
+#### 參考
 - [https://learning.oreilly.com/library/view/the-art-of/9780134031408/ch21.html#ch21](https://learning.oreilly.com/library/view/the-art-of/9780134031408/ch21.html#ch21)
 
-
-### Applications in SRE role
-1. Work with the DC tech or cloud team to distribute infrastructure such that it's immune to switch or power failures by creating fault zones within a Data Center ([https://docs.microsoft.com/en-us/azure/virtual-machines/manage-availability#use-availability-zones-to-protect-from-datacenter-level-failures](
-https://docs.microsoft.com/en-us/azure/virtual-machines/manage-availability#use-availability-zones-to-protect-from-datacenter-level-failures)).
-2. Work with the partners and design interaction between services such that one service breakdown is not amplified in a cascading fashion to all upstreams.
+### 在 SRE 角色的應用
+1. 與資料中心技術團隊或雲端團隊合作，將基礎架構分佈在故障區域內，使其免受交換機或電力故障影響，建立資料中心內的容錯區域（[https://docs.microsoft.com/en-us/azure/virtual-machines/manage-availability#use-availability-zones-to-protect-from-datacenter-level-failures](https://docs.microsoft.com/en-us/azure/virtual-machines/manage-availability#use-availability-zones-to-protect-from-datacenter-level-failures)）。
+2. 與合作夥伴共同設計服務間交互，確保單一服務故障不會以級聯方式放大影響至所有上游服務。

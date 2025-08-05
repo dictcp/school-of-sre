@@ -1,33 +1,33 @@
-# Relational Databases
+# 關聯式資料庫
 
-### Prerequisites
-*   Complete [Linux course](https://linkedin.github.io/school-of-sre/level101/linux_basics/intro/)
-*   Install Docker (for lab section)
+### 先備知識
+*   完成 [Linux 課程](https://linkedin.github.io/school-of-sre/level101/linux_basics/intro/)
+*   安裝 Docker（用於實驗部分）
 
-### What to expect from this course
-You will have an understanding of what relational databases are, their advantages, and some MySQL specific concepts.
+### 這門課程的期望
+你將了解什麼是關聯式資料庫、它們的優點，以及一些 MySQL 的特定概念。
 
-### What is not covered under this course
-*   In-depth implementation details
+### 本課程不涵蓋的內容
+*   深入的實作細節
 
-*   Advanced topics like normalization, sharding
+*   進階主題如正規化、分片
 
-*   Specific tools for administration
+*   特定的管理工具
 
-### Introduction
-The main purpose of database systems is to manage data. This includes storage, adding new data, deleting unused data, updating existing data, retrieving data within a reasonable response time, other maintenance tasks to keep the system running, etc.
+### 介紹
+資料庫系統的主要目的是管理資料。這包括資料的存儲、新增資料、刪除不再使用的資料、更新現有資料、在合理反應時間內擷取資料，以及維護系統運作的其他維護任務等。
 
-### Pre-reads
-[RDBMS Concepts](https://beginnersbook.com/2015/04/rdbms-concepts/)
+### 預先閱讀
+[RDBMS 概念](https://beginnersbook.com/2015/04/rdbms-concepts/)
 
-### Course Contents
-- [Key Concepts](https://linkedin.github.io/school-of-sre/level101/databases_sql/concepts/)
-- [MySQL Architecture](https://linkedin.github.io/school-of-sre/level101/databases_sql/mysql/#mysql-architecture)
+### 課程內容
+- [關鍵概念](https://linkedin.github.io/school-of-sre/level101/databases_sql/concepts/)
+- [MySQL 架構](https://linkedin.github.io/school-of-sre/level101/databases_sql/mysql/#mysql-architecture)
 - [InnoDB](https://linkedin.github.io/school-of-sre/level101/databases_sql/innodb/)
-- [Backup and Recovery](https://linkedin.github.io/school-of-sre/level101/databases_sql/backup_recovery/)
-- [MySQL Replication](https://linkedin.github.io/school-of-sre/level101/databases_sql/replication/)
-- Operational Concepts
-    - [SELECT Query](https://linkedin.github.io/school-of-sre/level101/databases_sql/select_query/)
-    - [Query Performance](https://linkedin.github.io/school-of-sre/level101/databases_sql/query_performance/)
-- [Lab](https://linkedin.github.io/school-of-sre/level101/databases_sql/lab/)
-- [Further Reading](https://linkedin.github.io/school-of-sre/level101/databases_sql/conclusion/#further-reading)
+- [備份與還原](https://linkedin.github.io/school-of-sre/level101/databases_sql/backup_recovery/)
+- [MySQL 複寫](https://linkedin.github.io/school-of-sre/level101/databases_sql/replication/)
+- 運作概念
+    - [SELECT 查詢](https://linkedin.github.io/school-of-sre/level101/databases_sql/select_query/)
+    - [查詢效能](https://linkedin.github.io/school-of-sre/level101/databases_sql/query_performance/)
+- [實驗](https://linkedin.github.io/school-of-sre/level101/databases_sql/lab/)
+- [進一步閱讀](https://linkedin.github.io/school-of-sre/level101/databases_sql/conclusion/#further-reading)

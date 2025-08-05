@@ -1,25 +1,25 @@
-# Conclusion
+# 結論
 
-We have covered the basics of Linux operating systems and basic commands used in Linux.
-We have also covered the Linux server administration commands.
+我們已經涵蓋了 Linux 作業系統的基礎知識以及在 Linux 中常用的基本指令。  
+我們也介紹了 Linux 伺服器管理的指令。
 
-We hope that this course will make it easier for you to operate on the command line.
+希望這門課程能讓你更輕鬆地使用指令列操作。
 
-## Applications in SRE Role
+## 在 SRE 角色中的應用
 
-1. As a SRE, you will be required to perform some general tasks on these Linux servers. You will also be using the command line when you are troubleshooting issues.
-2. Moving from one location to another in the filesystem will require the help of `ls`, `pwd` and `cd` commands.
-3. You may need to search some specific information in the log files. `grep` command would be very useful here. I/O redirection will become handy if you want to store the output in a file or pass it as an input to another command.
-4. `tail` command is very useful to view the latest data in the log file.
-5. Different users will have different permissions depending on their roles. We will also not want everyone in the company to access our servers for security reasons. Users permissions can be restricted with `chown`, `chmod` and `chgrp` commands.
-6. `ssh` is one of the most frequently used commands for a SRE. Logging into servers and troubleshooting along with performing basic administration tasks will only be possible if we are able to login into the server.
-7. What if we want to run an Apache server or NGINX on a server? We will first install it using the package manager. Package management commands become important here.
-8. Managing services on servers is another critical responsibility of a SRE. `systemd`-related commands can help in troubleshooting issues. If a service goes down, we can start it using `systemctl start` command. We can also stop a service in case it is not needed.
-9. Monitoring is another core responsibility of a SRE. Memory and CPU are two important system-level metrics which should be monitored. Commands like `top` and `free` are quite helpful here.
-10. If a service throws an error, how do we find out the root cause of the error? We will certainly need to check logs to find out the whole stack trace of the error. The log file will also tell us the number of times the error has occurred along with time when it started.
+1. 作為 SRE，你需要在這些 Linux 伺服器上執行一些常見任務。在排解問題時，你也會使用指令列。
+2. 在檔案系統中從一個位置移動到另一個位置會需要使用 `ls`、`pwd` 和 `cd` 指令的協助。
+3. 你可能需要在日誌檔案中搜尋特定資訊，`grep` 指令非常好用。如果你想將輸出存到檔案，或者當作輸入傳給另一個指令，I/O 重導向會很實用。
+4. `tail` 指令非常適合用來查看日誌檔案中的最新資料。
+5. 不同使用者根據角色會有不同的權限。為了安全考量，我們也不希望公司所有人都能存取伺服器。使用者權限可以用 `chown`、`chmod` 和 `chgrp` 指令來限制。
+6. 對 SRE 而言，`ssh` 是最常使用的指令之一。登入伺服器並進行排錯及基本管理工作，必須先能成功登入伺服器。
+7. 如果想在伺服器上執行 Apache 或 NGINX，我們會先使用套件管理器安裝。套件管理指令在這方面就非常重要。
+8. 管理伺服器上的服務是 SRE 的另一項重要責任。`systemd` 相關指令能幫忙排錯。服務中斷時，我們可以用 `systemctl start` 指令啟動它，也可以在不需要時停止服務。
+9. 監控是 SRE 的核心職責之一。記憶體和 CPU 是兩個重要的系統層級指標，應該持續監控。像是 `top` 和 `free` 指令相當有幫助。
+10. 當服務拋出錯誤時，我們如何找出錯誤根本原因？肯定需要查看日誌來找出完整的錯誤堆疊軌跡。日誌檔也會告訴我們錯誤發生次數以及開始時間。
 
-## Useful Courses and Tutorials
+## 有用的課程與教學
 
-* [Edx basic linux commands course](https://courses.edx.org/courses/course-v1:LinuxFoundationX+LFS101x+1T2020/course/)
-* [Edx Red Hat Enterprise Linux Course](https://courses.edx.org/courses/course-v1:RedHat+RH066x+2T2017/course/)
+* [Edx 基本 Linux 指令課程](https://courses.edx.org/courses/course-v1:LinuxFoundationX+LFS101x+1T2020/course/)
+* [Edx 紅帽企業 Linux 課程](https://courses.edx.org/courses/course-v1:RedHat+RH066x+2T2017/course/)
 * [https://linuxcommand.org/lc3_learning_the_shell.php](https://linuxcommand.org/lc3_learning_the_shell.php)

@@ -1,58 +1,31 @@
-A resilient system is one that can keep functioning in the face of
-adversity. With our application, there can be numerous failures that act
-as adversities. There can be network level failures that take out entire
-data centres, there might be issues at the rack level or at the server
-level, or there might be something wrong with the cloud provider. We may also run out of capacity, or there might be a wrong code push that
-breaks the system. We will talk about a couple of such issues, and
-understand how we might design a system to work around such things. In
-some cases, a workaround might not be possible. However it is still
-valuable to know potential vulnerabilities to the system stability.
+一個具備彈性的系統，能夠在逆境中持續運作。對於我們的應用程式而言，可能會有許多失效事件發生視為逆境。可能會有網路層級的失效導致整個資料中心癱瘓，也可能是機櫃層級或伺服器層級的問題，或者雲端供應商出狀況。我們也可能會遇到容量不足，或者因為錯誤的程式碼推送導致系統故障。我們將討論一些此類問題，並了解如何設計系統，繞過這些問題。在某些情況下，可能無法找到變通方法，但了解系統穩定性可能的脆弱點仍然很有價值。
 
-Resilient architectures leverage system design patterns such as
-graceful degradation, quotas, timeouts and circuit breakers. Let us look
-at some of them in this section.
+彈性架構利用如優雅降級、配額限制、逾時與斷路器等系統設計模式。讓我們在此章節探討其中幾種。
 
-## Quotas
+## 配額限制
 
-A system may have a component or an endpoint that is consumed by
-multiple components and endpoints. It is important to have something in
-place that will prevent one consumer or client from overwhelming such a
-system. Quotas are one way to do this - we simply assign a specific
-quota for each component - by way of specifying requests per unit time.
-Anyone who breaches the quota is either warned or dropped, depending on
-the implementation. This way, one of our own systems misbehaving cannot
-result in denial of service to others. Quotas also help us prevent cascading failures.
+系統可能有某些元件或端點會被多個元件和端點使用。重要的是要有機制防止某個消費者或客戶端壓垮系統。配額限制是一種方法 — 我們為每個元件分配一個特定配額，指定每單位時間可送出的請求數。違反配額者會被警告或拒絕，視實作而定。這樣我們任何一個系統當機，就不會對其他系統造成拒絕服務。配額限制也有助於避免連鎖性失效。
 
-## Graceful Degradation
+## 優雅降級
 
-When a system with multiple dependencies encounters failure in one of
-the dependencies, gracefully degrading to minimum viable functionality
-would be a lot better than grinding the entire system to a halt. For
-example, let us assume there is an endpoint (an URL for a service or a specific function) in our application whose responsibility is to parse the location information in an user uploaded
-image from the image's metadata and provide suggestions for location
-tagging to the user. Rather than failing the entire upload, it is much
-better to skip over this functionality and still give the user an option
-to manually tag a location. Gracefully degrading is always better
-compared to total failures.
+當一個有多個相依元件的系統碰到其中一個元件失敗時，能夠優雅地降級至最小可用功能，比完全停擺要好很多。例如，假設我們應用程式有一個端點（服務 URL 或特定功能），負責從用戶上傳的圖片元資料中解析位置資訊，並向用戶提供位置標記建議。與其整個上傳過程失敗，不如直接跳過此功能，仍然讓用戶可以手動標記位置。相較於完全失效，優雅降級總是更好的選擇。
 
-## Timeouts
+## 逾時控制
 
-We sometimes call other services or resources like databases or API endpoints in our application. When calling such a resource from our application, it is important to always have a reasonable timeout. It doesn’t necessarily even have to be that the resource will fail for all requests. It just might be that a specific request falls in the high tail latency category. A reasonable time out is helpful to keep the user experience consistent - it is better to fail rather than to have frustratingly long delays, in some cases.
+我們有時會呼叫其他服務或資源，如資料庫或 API 端點。從應用程式呼叫此類資源時，設定合理的逾時十分重要。資源不一定會全部請求都失敗，可能只是某些請求屬於高延遲尾端。合理的逾時設定，有助保持使用者體驗穩定 — 有時候失敗比持續長時間等待更好。
 
-## Exponential back-offs
+## 指數退避
 
-When a service endpoint fails, retries are one way to see if it was a momentary failure. However, if the retry is also going to fail, there is no point in endlessly retrying. At large enough scale, the retries can compete with the new requests (which might very well be served as expected) and saturate the system. To avoid this, we can look at exponential back-off for retries. This essentially decreases the rate at which the clients retry, upon encountering consecutive failures on retries.
+當服務端點失敗時，重試是檢查是否暫時性失敗的方法之一，但如果重試也會失敗，無限重試毫無意義。在大規模系統中，重試可能與新請求競爭資源，造成系統飽和。為避免此情況，我們可使用指數退避，即在連續失敗的重試之間，逐漸增加等待時間，降低重試頻率。
 
-## Circuit breakers
+## 斷路器
 
-While exponential back off is one way to deal with retry storms, circuit breakers can be another. Circuit breakers can help failures from percolating the entire system. Else, an unmitigated failure that flows through the system may result in false alerts, worsening the mean time to detection(MTTD) and mean time to resolution(MTTR). For example, in case one of the in-memory cache nodes fails resulting in requests reaching the database post the initial timeouts for cache, it might end up overloading the database. If the initial connection between cache node failure and DB node failure is not made, then it might result in increased MTTD of the actual cause and consequently the MTTR.
+指數退避是一種處理重試風暴的方法，斷路器則是另一種。斷路器可以阻止失敗擴散至整個系統。否則，未被控制的失敗可能造成錯誤警報，增加偵測平均時間（MTTD）和修復平均時間（MTTR）。例如，當一個記憶體快取節點失效，導致請求超過快取的初始逾時後轉向資料庫，可能會使資料庫過載。如果沒有連接起快取節點失效與資料庫節點過載的關聯，可能會導致真實原因的 MTTD 增加，連帶影響 MTTR。
 
-## Self healing systems
+## 自我修復系統
 
-A traditionally load-balanced application with multiple instances might fail when more than a threshold of instances stop responding to requests - either because they are down, or suddenly there is a huge influx of requests, resulting in degraded performance. A self-healing system adds more instances in this scenario to replace the failed instances.
-Auto-scaling like this can also help when there is a sudden spike in query. If our application runs on a public cloud, it might simply be a matter of spinning up more [virtual machines](https://azure.microsoft.com/en-in/overview/what-is-a-virtual-machine/). If we are running on-premise out of our data center, then we will want to think about capacity planning much more carefully. Regardless of how we handle adding additional
-capacity - simply addition may not be enough. We should also think about additional potential failure modes that might be encountered. For example, the load balancing layer itself might need scaling up, to handle the influx of new backends.
+傳統採用負載平衡、多實例架構的應用，當超過一定數量的實例停止回應（可能因故障或突然湧入大量請求，導致效能衰退）時會失效。自我修復系統能在此情況下增加更多實例，取代失效的實例。自動擴展也能應付突然的查詢量激增。如果應用程式架設於公共雲端，通常只要啟動更多[虛擬機器](https://azure.microsoft.com/en-in/overview/what-is-a-virtual-machine/)即可；若是自建資料中心，則需要更謹慎的容量規劃。不論擴增方式如何，單純增加容量可能仍不足夠，還需考慮其他潛在的失效模式，例如負載平衡層本身也可能需要擴充，以因應後端服務的增加。
 
-## Continuous Deployment and Integration
+## 持續部署與整合
 
-A well designed system also needs to take into account the need for a proper staging setup that can mimic the production environment as closely as possible. There should also be a way for us to replay production traffic in the staging environment to test changes to production thoroughly.
+設計良好的系統，還須考慮建置一個能盡可能模擬生產環境的測試環境（staging）。應該有方式在測試環境中重放生產流量，徹底測試對生產環境的變更。

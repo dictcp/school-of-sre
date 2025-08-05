@@ -1,114 +1,113 @@
-### MySQL Replication
-Replication enables data from one MySQL host (termed as Primary) to be copied to another MySQL host (termed as Replica). MySQL Replication is asynchronous in nature by default, but it can be changed to semi-synchronous with some configurations.
+### MySQL 複寫
+複寫允許將一個 MySQL 主機（稱為主要主機 Primary）的資料複製到另一個 MySQL 主機（稱為副本 Replica）。MySQL 複寫預設為非同步（asynchronous），但透過一些設定可改為半同步（semi-synchronous）。
 
-Some common applications of MySQL replication are:
+MySQL 複寫的一些常見應用：
 
-- **Read-scaling** - as multiple hosts can replicate the data from a single primary host, we can set up as many replicas as we need and scale reads through them, i.e. application writes will go to a single primary host and the reads can balance between all the replicas that are there. Such a setup can improve the write performance as well, as the primary is dedicated to only updates and not reads.
-- **Backups using replicas** - the backup process can sometimes be a little heavy. But if we have replicas configured, then we can use one of them to get the backup without affecting the primary data at all.
-- **Disaster Recovery** - a replica in some other geographical region paves a proper path to configure disaster recovery.
+- **讀取擴充 (Read-scaling)** - 因多個主機可從單一主要主機複寫資料，我們可以設定任意數量的副本，並透過它們負載均衡讀取。例如應用程式的寫入全部導向主要主機，而讀取則分散在所有副本上。這種架構也能提升寫入效能，因主要主機只負責更新不需同時處理讀取。
+- **利用副本備份** - 備份過程有時候較為繁重，如果已設定副本，可以直接從其中一個副本備份資料，不會影響主要主機的資料。
+- **災難復原** - 在不同地理位置配置副本，有助建立健全的災難復原方案。
 
-MySQL supports different types of synchronizations as well:
+MySQL 支援不同類型的同步方式：
 
-- **Asynchronous** - this is the default synchronization method. It is one-way, i.e. one host serves as primary and one or more hosts as replica. We will discuss this method throughout the replication topic.
+- **非同步 (Asynchronous)** - 為預設同步方式。為單向同步，即一主多從。本章節將以此方式介紹複寫主題。
 
-![replication topologies](images/replication_topologies.png "Different Replication Scenarios")
+![複寫拓撲](images/replication_topologies.png "不同的複寫場景")
 
-- **Semi-Synchronous** - in this type of synchronization, a commit performed on the primary host is blocked until at least one replica acknowledges it. Post the acknowledgement from any one replica, the control is returned to the session that performed the transaction. This ensures strong consistency but the replication is slower than asynchronous.
-- **Delayed** - we can deliberately lag the replica in a typical MySQL replication by the number of seconds desired by the use case. This type of replication safeguards from severe human errors of dropping or corrupting the data on the primary, for example, in the above diagram for Delayed Replication, if a `DROP DATABASE` is executed by mistake on the primary, we still have 30 minutes to recover the data from R2 as that command has not been replicated on R2 yet.
+- **半同步 (Semi-Synchronous)** - 在此同步模式中，主要主機的提交操作會被阻塞，直到至少一個副本確認收到該提交。收到確認後，控制權返回執行該交易的 session。此方式確保強一致性，但複寫速度比非同步慢。
+- **延遲複寫 (Delayed)** - 可刻意延遲副本複寫的時間（以秒為單位），用以避免主要主機因人為錯誤而導致資料損毀的問題。例如，當主要主機誤執行 `DROP DATABASE`，延遲複寫的副本會有一段時間不會執行該命令，這時可以從副本恢復資料。
 
-**Pre-Requisites**
+**前置知識**
 
-Before we dive into setting up replication, we should know about the binary logs. Binary logs play a very important role in MySQL replication. Binary logs, or commonly known as *binlogs* contain events about the changes done to the database, like table structure changes, data changes via DML operations, etc. They are not used to log `SELECT` statements. For replication, the primary sends the information to the replicas using its `binlogs` about the changes done to the database, and the replicas make the same data changes. 
+在設定複寫之前，我們需要了解二進位日誌（binary logs）。二進位日誌是 MySQL 複寫中非常重要的部分。二進位日誌（常稱為 *binlogs*）紀錄對資料庫的變更事件，如表結構變更、DML 操作等資料變更。不會紀錄 `SELECT` 語句。主要主機將透過 `binlogs` 將變更資訊傳送給副本，副本再根據這些資訊改變自身資料。
 
-With respect to MySQL replication, the binary log format can be of two types that decides the main type of replication:
+關於 MySQL 複寫，二進位日誌格式可分二種：
 
-- Statement-Based Replication or SBR
-- Row-Based Replication or RBR
+- 陳述式複寫（Statement-Based Replication，SBR）
+- 列式複寫（Row-Based Replication，RBR）
 
-**Statement-Based Binlog Format**
+**陳述式二進位日誌格式**
 
-Originally, the replication in MySQL was based on SQL statements getting replicated and executed on the replica from the primary. This is called statement-based logging. The `binlog` contains the exact SQL statement run by the session. 
+最初，MySQL 複寫依據 SQL 陳述式來複製並在副本上執行，稱為陳述式紀錄。`binlog` 紀錄所執行的完整 SQL 陳述式。
 
-![SBR update example](images/sbr_example_update_1.png "SBR update example")
+![SBR 更新範例](images/sbr_example_update_1.png "SBR 更新範例")
 
-So, if we run the above statements to insert 3 records and the update 3 in a single update statement, they will be logged exactly the same as when we executed them.
+若執行上圖所示插入 3 筆資料及更新 3 筆的陳述式，`binlog` 會如實記錄相同內容。
 
 ![SBR binlog](images/sbr_binlog_view_1.png "SBR binlog")
 
-**Row-Based Binlog Format**
+**列式二進位日誌格式**
 
-The row-based is the default one in the latest MySQL releases. This is a lot different from the Statement format as here, row events are logged instead of statements. By that we mean, in the above example one update statement affected 3 records, but `binlog` had only one `UPDATE` statement; if it is a row-based format, `binlog` will have an event for each record updated.
+最新的 MySQL 版本預設使用列式格式。與陳述式不同，此格式紀錄的是列事件（row events）而非完整 SQL 陳述式。上述更新 3 筆資料的例子，若為列式格式，`binlog` 會有三筆獨立的更新事件。
 
-![RBR update example](images/rbr_example_update_1.png "RBR update example")
+![RBR 更新範例](images/rbr_example_update_1.png "RBR 更新範例")
 
 ![RBR binlog](images/rbr_binlog_view_1.png "RBR binlog")
 
+**陳述式 vs 列式二進位日誌**
 
-**Statement-Based v/s Row-Based binlogs**
+以下比較兩者的操作差異：
 
-Let’s have a look at the operational differences between statement-based and row-based binlogs. 
+| 陳述式                         | 列式                                                   |
+|-------------------------------|--------------------------------------------------------|
+| 紀錄執行的 SQL 陳述式           | 根據 SQL 陳述式紀錄列事件                                |
+| 佔用磁碟空間較少                | 佔用磁碟空間較多                                       |
+| 使用 binlogs 還原較快           | 使用 binlogs 還原較慢                                  |
+| 若陳述式含有內建函數（如 `sysdate()`, `uuid()`），副本輸出可能與主要不同，導致不一致 | 執行內容皆轉成含實際值的列事件，使用此類函式不會有問題      |
+| 僅紀錄陳述式，不會產生其他列事件 | 當使用 `INSERT INTO SELECT` 複製整張表時會產生大量事件    |
 
-| Statement-Based              | Row-Based                                                          |
-|------------------------------|--------------------------------------------------------------------|
-| Logs SQL statements as executed | Logs row events based on SQL statements executed |
-| Takes lesser disk space | Takes more disk space | 
-| Restoring using binlogs is faster | Restoring using binlogs is slower |
-| When used for replication, if any statement has a predefined function that has its own value, like `sysdate()`, `uuid()` etc, the output could be different on the replica which makes it inconsistent. | Whatever is executed becomes a row event with values, so there will be no problem if such functions are used in SQL statements. |
-| Only statements are logged so no other row events are generated. | A lot of events are generated when a table is copied into another using `INSERT INTO SELECT`. |
+**注意**：另一種 `binlog` 格式稱為 **Mixed**，預設為陳述式，必要時切換成列式。當 MySQL 判斷陳述式紀錄不安全時，會發出警告並改用列式紀錄。
 
-**Note**: There is another type of `binlog` format called **Mixed**. With mixed logging, statement-based is used by default but it switches to row-based in certain cases. If MySQL cannot guarantee that statement-based logging is safe for the statements executed, it issues a warning and switches to row-based for those statements.
+本章節複寫教學皆以列式 (Row) 當作二進位日誌格式。
 
-We will be using binary log format as Row for the entire replication topic.
+**複寫運作流程**
 
-**Replication in Motion**
+![複寫工作流程](images/replication_function.png "複寫運作流程")
 
-![replication in motion](images/replication_function.png "Replication in motion")
+圖示描述典型 MySQL 複寫機制：
 
-The above figure indicates how a typical MySQL replication works.
+1. `Replica_IO_Thread` 負責從主要主機的二進位日誌取得事件到副本主機。
+2. 副本主機產生中繼日誌（relay logs），內容為主要主機的二進位日誌複本。如果主要主機是列式格式，中繼日誌亦同。
+3. `Replica_SQL_Thread` 將中繼日誌套用到副本 MySQL 服務。
+4. 若副本啟用 `log-bin`，將自行產生二進位日誌。若同時啟用 `log-slave-updates`，副本也會記錄從主要主機接收到的更新，用於連鎖複寫 (chain replication)。
 
-1. `Replica_IO_Thread` is responsible to fetch the binlog events from the primary binary logs to the replica.
-2. On the Replica host, relay logs are created which are exact copies of the binary logs. If the binary logs on primary are in row format, the relay logs will be the same.
-3. `Replica_SQL_Thread` applies the relay logs on the replica MySQL server.
-4. If `log-bin` is enabled on the replica, then the replica will have its own binary logs as well. If `log-slave-updates` is enabled, then it will have the updates from the primary logged in the binlogs as well.
+#### 複寫設定
+本節將示範如何設定基本的非同步列式複寫。複寫在兩台全新主機上進行，主機上無任何資料。複寫設定有兩種方式：
 
-#### Setting up Replication
-In this section, we will set up a simple asynchronous replication. The binlogs will be in row-based format. The replication will be set up on two fresh hosts with no prior data present. There are two different ways in which we can set up replication. 
+- **基於 binlog** - 副本維護目前讀取的主機二進位日誌檔名及位置，各副本可同時讀取同一 binlog 的不同部分。
+- **基於 GTID** - 每個交易有唯一的全域交易識別碼（GTID），副本只需追蹤已執行的 GTID 集合即可保持與主要主機同步。典型 GTID 格式為 `server_uuid:#`。
 
-- **Binlog based** - Each replica keeps a record of the binlog coordinates on the primary - current binlog and position in the binlog till where it has read and processed. So, at a time different replicas might be reading different parts of the same binlog.
-- **GTID based** - Every transaction gets an identifier called global transaction identifier or GTID. There is no need to keep the record of binlog coordinates, as long as the replica has all the GTIDs executed on the primary, it is consistent with the primary. A typical GTID is the `server_uuid:#` positive integer.
+下述範例將以 GTID 為基礎完成設定，但也會提及 binlog 方式。
 
-We will set up a GTID-based replication in the following section but will also discuss binlog-based replication setup as well.
+**主要主機設定**
 
-**Primary Host Configurations**
-
-The following config parameters should be present in the primary `my.cnf` file for setting up GTID-based replication.
+`my.cnf` 需包含以下參數：
 
 ```
-server-id - a unique ID for the mysql server
-log-bin - the binlog location
-binlog-format - ROW | STATEMENT (we will use ROW)
+server-id - 唯一的 MySQL 伺服器 ID
+log-bin - 開啟二進位日誌並指定位置
+binlog-format - 設定為 ROW（列式）或 STATEMENT（陳述式），本章使用 ROW
 gtid-mode - ON
-enforce-gtid-consistency - ON (allows execution of only those statements which can be logged using GTIDs)
+enforce-gtid-consistency - ON（只允許可被 GTID 紀錄的語句）
 ```
 
-**Replica Host Configurations**
+**副本主機設定**
 
-The following config parameters should be present in the replica `my.cnf` file for setting up replication.
+`my.cnf` 需包含下列參數：
 
 ```
-server-id - different than the primary host
-log-bin - (optional, if you want replica to log its own changes as well)
-binlog-format - depends on the above
+server-id - 與主要主機不同
+log-bin -（可選）若想紀錄副本自身更新
+binlog-format - 根據主要主機設定
 gtid-mode - ON
 enforce-gtid-consistency - ON
-log-slave-updates - ON (if binlog is enabled, then we can enable this. This enables the replica to log the changes coming from the primary along with its own changes. Helps in setting up chain replication)
+log-slave-updates - ON（若開啟 log-bin，推薦開啟以支援連鎖複寫）
 ```
 
-**Replication User**
+**複寫用戶**
 
-Every replica connects to the primary using a `mysql` user for replicating. So there must be a `mysql` user account for the same on the primary host. Any user can be used for this purpose provided it has `REPLICATION SLAVE` privilege. If the sole purpose is replication, then we can have a user with only the required privilege.
+副本透過 MySQL 使用者連接主要主機以執行複寫，其帳號必須擁有 `REPLICATION SLAVE` 權限。建議新建專用於複寫的帳戶。
 
-On the primary host:
+在主要主機執行：
 
 ```shell
 mysql> CREATE USER repl_user@<replica_IP> IDENTIFIED BY 'xxxxx';
@@ -116,9 +115,9 @@ mysql> CREATE USER repl_user@<replica_IP> IDENTIFIED BY 'xxxxx';
 mysql> GRANT REPLICATION SLAVE ON *.* TO repl_user@'<replica_IP>';
 ```
 
-**Obtaining Starting position from Primary**
+**取得複寫起始位置**
 
-Run the following command on the primary host:
+於主要主機執行：
 
 ```shell
 mysql> SHOW MASTER STATUS\G
@@ -131,56 +130,61 @@ Executed_Gtid_Set: e17d0920-d00e-11eb-a3e6-000d3aa00f87:1-3
 1 row in set (0.00 sec)
 ```
 
-If we are working with binary log-based replication, the top two output lines are the most important ones. That tells the current binlog on the primary host and till what position it has written. For fresh hosts we know that no data is written, so we can directly set up replication using the very first `binlog` file and position 4. If we are setting up a replication from a backup, then that changes the way we obtain the starting position. For GTIDs, the `executed_gtid_set` is the value where primary is right now. Again, for a fresh setup, we don’t have to specify anything about the starting point and it will start from the transaction id 1, but when we set up from a backup, the backup will contain the GTID positions till where backup has been taken.
+若為 binlog 複寫，前兩行為重要資訊，指明目前的 binlog 檔名與位置。全新主機可從第一個 binlog 檔案位置 4 開始設定。若是從備份復原，起始位置依備份設定而定。
 
-**Setting up Replica**
+使用 GTID 複寫則關注 `Executed_Gtid_Set` 欄位，指明目前已執行的 GTID 範圍。全新環境不需指定起點，即從第一個交易開始。
 
-The replication setup must know about the primary host, the user and password to connect, the binlog coordinates (for binlog-based replication) or the GTID auto-position parameter.
-The following command is used for setting up:
+**設定副本**
+
+必須讓副本知道主要主機位址、連線帳密，以及起始 binlog 位置或 GTID auto-position。
+
+GTID 複寫設定示範：
 
 ```SQL
 CHANGE MASTER TO
 master_host = '<primary host IP>',
-master_port = <primary host port - default=3306>,
+master_port = <primary host port - 預設為 3306>,
 master_user = 'repl_user',
 master_password = 'xxxxx',
 master_auto_position = 1;
 ```
 
-**Note**: The `CHANGE MASTER TO` command has been replaced with `CHANGE REPLICATION SOURCE TO` from Mysql 8.0.23 onwards, also all the *master* and *slave* keywords are replaced with *source* and *replica*.
+**注意**：MySQL 8.0.23 起，`CHANGE MASTER TO` 改名為 `CHANGE REPLICATION SOURCE TO`，且所有 *master* 與 *slave* 關鍵字改為 *source* 與 *replica*。
 
-If it is binlog-based replication, then instead of `master_auto_position`, we need to specify the binlog coordinates.
+若為 binlog 複寫，需指定 binlog 檔案與位置：
 
 ```
 master_log_file = 'mysql-bin.000001',
 master_log_pos = 4
 ```
 
-**Starting Replication and Check Status**
+**啟動複寫並檢查狀態**
 
-Now that everything is configured, we just need to start the replication on the replica via the following command
+設定好後，啟動複寫：
 
 ```SQL
 START SLAVE;
 ```
 
-OR from MySQL 8.0.23 onwards,
+或 MySQL 8.0.23 之後：
 
 ```SQL
 START REPLICA;
 ```
 
-Whether or not the replication is running successfully, we can determine by running the following command:
+確認複寫狀態：
 
 ```SQL
 SHOW SLAVE STATUS\G
 ```
 
-OR from MySQL 8.0.23 onwards,
+或 MySQL 8.0.23 之後：
 
 ```SQL
 SHOW REPLICA STATUS\G
 ```
+
+執行輸出範例：
 
 ```shell
 mysql> SHOW REPLICA STATUS\G
@@ -248,40 +252,40 @@ Source_SSL_Verify_Server_Cert: No
 1 row in set (0.00 sec)
 ```
 
-Some of the parameters are explained below:
+重要參數說明：
 
-| Parameters               | Description                                                |
-|--------------------------|------------------------------------------------------------|
-| Relay_Source_Log_File    | the primary’s file where replica is currently reading from |
-| Execute_Source_Log_Pos   | for the above file on which position is the replica reading currently from. These two parameters are of utmost importance when binlog based replication is used    |
-| Replica_IO_Running       | IO thread of replica is running or not                         |
-| Replica_SQL_Running      | SQL thread of replica is running or not                       |
-| Seconds_Behind_Source    | the difference of seconds when a statement was executed on Primary and then on Replica. This indicates how much replication lag is there |
-| Source_UUID              | the uuid of the primary host |
-| Retrieved_Gtid_Set       | the GTIDs fetched from the primary host by the replica to be executed |
-| Executed_Gtid_Set        | the GTIDs executed on the replica. This set remains the same for the entire cluster if the replicas are in sync |
-| Auto_Position            | it directs the replica to fetch the next GTID automatically|
+| 參數                       | 說明                                                        |
+|----------------------------|-------------------------------------------------------------|
+| Relay_Source_Log_File       | 副本目前讀取的主要主機 binlog 檔案                           |
+| Exec_Source_Log_Pos         | 此檔案中副本目前讀取的位置，binlog 複寫時非常重要           |
+| Replica_IO_Running          | IO 執行緒是否正在運行                                        |
+| Replica_SQL_Running         | SQL 執行緒是否正在運行                                       |
+| Seconds_Behind_Source       | 副本落後於主要主機的秒數，表示複寫時延                        |
+| Source_UUID                 | 主要主機的 UUID                                            |
+| Retrieved_Gtid_Set          | 副本已從主機取得待執行的 GTID 集合                           |
+| Executed_Gtid_Set           | 副本已執行的 GTID 集合，集群同步時應保持一致                 |
+| Auto_Position               | 指示副本自動抓取下一筆 GTID                                  |
 
-**Create a Replica for the already setup cluster**
+**為已建叢集新增副本**
 
-The steps discussed in the previous section talks about the setting up replication on two fresh hosts. When we have to set up a replica for a host which is already serving applications, then the backup of the primary is used, either fresh backup taken for the replica (should only be done if the traffic it is serving is less) or use a recently taken backup.
+之前說明的複寫設定適用於兩台全新主機。當主機已執行應用服務，須從備份建立副本，方法如下：
 
-If the size of the databases on the MySQL primary server is small, less than 100G recommended, then `mysqldump` can be used to take backup along with the following options.
+若主要主機資料庫小於約 100G，建議使用 `mysqldump` 備份，搭配下列參數：
 
 ```shell
 mysqldump -uroot -p -hhost_ip -P3306 --all-databases --single-transaction --master-data=1 > primary_host.bkp
 ```
 
-- `--single-transaction` - this option starts a transaction before taking the backup which ensures it is consistent. As transactions are isolated from each other, so no other writes affect the backup.
-- `--master-data` - this option is required if binlog-based replication is desired to be set up. It includes the binary log file and log file position in the backup file.
+- `--single-transaction`：以交易方式備份，確保一致性，備份期間寫入不會影響結果。
+- `--master-data`：備份檔中包含二進位日誌檔名和位置，設置 binlog 複寫時需用。
 
-When GTID mode is enabled and `mysqldump` is executed, it includes the GTID executed to be used to start the replica after the backup position. The contents of the `mysqldump` output file will have the following
+啟用 GTID 後，`mysqldump` 會在備份檔中包含可用以啟動副本的 GTID 資訊。
 
-![GTID info in mysqldump](images/mysqldump_gtid_text.png "GTID info in mysqldump")
+![mysqldump 含 GTID 示意](images/mysqldump_gtid_text.png "mysqldump 含 GTID 示意")
 
-It is recommended to comment these before restoring otherwise they could throw errors. Also, using `master-data=2` will automatically comment the `master_log_file` line.
+建議還原時先把 GTID 註解掉，避免錯誤。使用 `master-data=2` 則會自動註解。
 
-Similarly, when taking backup of the host using `xtrabackup`, the file `xtrabckup_info` file contains the information about binlog file and file position, as well as the GTID executed set.
+使用 `xtrabackup` 備份時，會在 `xtrabackup_info` 檔案中紀錄 binlog 檔名、位置及執行的 GTID 集合。
 
 ```
 server_version = 8.0.25
@@ -298,7 +302,9 @@ compressed = N
 encrypted = N
 ```
 
-Now, after setting MySQL server on the desired host, restore the backup taken from any one of the above methods. If the intended way is binlog-based replication, then use the binlog file and position info in the following command:
+在新主機安裝 MySQL 服務後，還原備份。
+
+若採 binlog 複寫，執行：
 
 ```
 CHANGE REPLICATION SOURCE TO 
@@ -310,24 +316,24 @@ source_log_file = ‘mysql-bin.000007’,
 source_log_pos = ‘196’;
 ```
 
-If the replication needs to be set via GITDs, then run the below command to tell the replica about the GTIDs already executed. On the Replica host, run the following commands:
+若使用 GTID 複寫，告訴副本已執行 GTID 如下：
 
 ```
 RESET MASTER;
 
-set global gtid_purged = ‘e17d0920-d00e-11eb-a3e6-000d3aa00f87:1-5’
+SET GLOBAL gtid_purged = ‘e17d0920-d00e-11eb-a3e6-000d3aa00f87:1-5’;
 
 CHANGE REPLICATION SOURCE TO
 source_host = ‘primary_ip’,
 source_port = 3306,
 source_user = ‘repl_user’,
 source_password = ‘xxxxx’,
-source_auto_position = 1
+source_auto_position = 1;
 ```
 
-The reset master command resets the position of the binary log to initial. It can be skipped if the host is a freshly installed MySQL, but we restored a backup so it is necessary. The `gtid_purged` global variable lets the replica know the GTIDs that have already been executed, so that the replication can start after that. Then in the change source command, we set the `auto-position` to 1 which automatically gets the next GTID to proceed.
+`RESET MASTER` 將二進位日誌位置重置。若主機是全新安裝可省略，但還原備份時建議執行。`gtid_purged` 讓副本知道已執行 GTID 範圍，`auto_position=1` 則自動從下一個 GTID 開始。
 
-#### Further Reading
+#### 延伸閱讀
 
-- [More applications of Replication](https://dev.mysql.com/doc/refman/8.0/en/replication-solutions.html)
-- [Automtaed Failovers using MySQL Orchestrator](https://github.com/openark/orchestrator/tree/master/docs)
+- [更多複寫應用](https://dev.mysql.com/doc/refman/8.0/en/replication-solutions.html)
+- [MySQL Orchestrator 自動故障轉移](https://github.com/openark/orchestrator/tree/master/docs)

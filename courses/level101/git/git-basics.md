@@ -1,59 +1,59 @@
 # Git
 
-## Prerequisites
+## 先決條件
 
-1. Have Git installed [https://git-scm.com/downloads](https://git-scm.com/downloads)
-2. Have taken any git high-level tutorial or following LinkedIn learning courses
+1. 已安裝 Git [https://git-scm.com/downloads](https://git-scm.com/downloads)
+2. 已學習過任何 git 高階教程或正在跟隨 LinkedIn Learning 課程
       - [https://www.linkedin.com/learning/git-essential-training-the-basics/](https://www.linkedin.com/learning/git-essential-training-the-basics/)
       - [https://www.linkedin.com/learning/git-branches-merges-and-remotes/](https://www.linkedin.com/learning/git-branches-merges-and-remotes/)
-      - [The Official Git Docs](https://git-scm.com/doc)
+      - [官方 Git 文件](https://git-scm.com/doc)
 
-## What to expect from this course
+## 從這門課程中可以期待什麼
 
-As an engineer in the field of computer science, having knowledge of version control tools becomes almost a requirement. While there are a lot of version control tools that exist today like SVN, Mercurial, etc, Git perhaps is the most used one and this course we will be working with Git. While this course does not start with Git 101 and expects basic knowledge of git as a prerequisite, it will reintroduce the git concepts known by you with details covering what is happening under the hood as you execute various `git` commands. So that next time you run a `git` command, you will be able to press `enter` more confidently!
+作為計算機科學領域的工程師，具有版本控制工具的知識幾乎是必備的。雖然市面上存在許多版本控制工具，例如 SVN、Mercurial 等，但 Git 或許是最常用的一個，而本課程將使用 Git。雖然本課程不會從 Git 101 開始，並預期學員已有基本的 git 知識，課程會重新介紹你已知的 git 概念，並詳細說明在執行各種 `git` 命令時底層發生了什麼。這樣，下次你執行 `git` 命令時，就能更加自信地按下 `enter`！
 
-## What is not covered under this course
+## 本課程未涵蓋的內容
 
-Advanced usage and specifics of internal implementation details of Git.
+Git 的進階使用與內部實作細節。
 
-## Course Contents
+## 課程內容
 
- 1. [Git Basics](https://linkedin.github.io/school-of-sre/level101/git/git-basics/#git-basics)
- 2. [Working with Branches](https://linkedin.github.io/school-of-sre/level101/git/branches/)
- 3. [Git with Github](https://linkedin.github.io/school-of-sre/level101/git/github-hooks/#git-with-github)
+ 1. [Git 基礎](https://linkedin.github.io/school-of-sre/level101/git/git-basics/#git-basics)
+ 2. [使用分支](https://linkedin.github.io/school-of-sre/level101/git/branches/)
+ 3. [Git 與 Github](https://linkedin.github.io/school-of-sre/level101/git/github-hooks/#git-with-github)
  4. [Hooks](https://linkedin.github.io/school-of-sre/level101/git/github-hooks/#hooks)
 
-## Git Basics
+## Git 基礎
 
-Though you might be aware already, let's revisit why we need a version control system. As the project grows and multiple developers start working on it, an efficient method for collaboration is warranted. Git helps the team collaborate easily and also maintains the history of the changes happening with the codebase.
+即使你可能已經知道，讓我們再回顧為什麼我們需要版本控制系統。隨著專案成長，多名開發者開始協作，一個高效的協作方式就變得必要。Git 讓團隊能輕鬆協作，同時也維護程式碼庫變更的歷史。
 
-### Creating a Git Repo
+### 建立 Git 倉庫
 
-Any folder can be converted into a git repository. After executing the following command, we will see a `.git` folder within the folder, which makes our folder a git repository. **All the magic that git does, `.git` folder is the enabler for the same.**
+任何資料夾都可以轉換成 git 倉庫。執行以下命令後，我們會看到資料夾內多了一個 `.git` 資料夾，這就是使我們的資料夾成為 git 倉庫的關鍵。**git 所有的魔法，都是由 `.git` 資料夾促成。**
 
 ```bash
-# creating an empty folder and changing current dir to it
+# 建立空資料夾並切換到該目錄
 $ cd /tmp
 $ mkdir school-of-sre
 $ cd school-of-sre/
 
-# initialize a git repo
+# 初始化 git 倉庫
 $ git init
 Initialized empty Git repository in /private/tmp/school-of-sre/.git/
 ```
 
-As the output says, an empty git repo has been initialized in our folder. Let's take a look at what is there.
+輸出顯示我們的資料夾內已初始化空白 git 倉庫。讓我們來看看內容：
 
 ```bash
 $ ls .git/
 HEAD        config      description hooks       info        objects     refs
 ```
 
-There are a bunch of folders and files in the `.git` folder. As I said, all these enable git to do its magic. We will look into some of these folders and files. But for now, what we have is an empty git repository.
+`.git` 內有許多資料夾與檔案。正如我所說，這些讓 git 能魔法般運作。我們會介紹這些資料夾和檔案。不過現在，我們擁有的是一個空的 git 倉庫。
 
-### Tracking a File
+### 追蹤檔案
 
-Now as you might already know, let us create a new file in our repo (we will refer to the folder as _repo_ now.) And see `git status`:
+如你所知，先在倉庫（以下用 _repo_ 稱呼此資料夾）建立新檔案，並查看 `git status`：
 
 ```bash
 $ echo "I am file 1" > file1.txt
@@ -70,7 +70,7 @@ Untracked files:
 nothing added to commit but untracked files present (use "git add" to track)
 ```
 
-The current git status says `No commits yet` and there is one untracked file. Since we just created the file, git is not tracking that file. We explicitly need to ask git to track files and folders. (Also checkout [gitignore](https://git-scm.com/docs/gitignore)) And how we do that is via `git add` command as suggested in the above output. Then, we go ahead and create a commit.
+目前 git 狀態顯示「No commits yet」且有一個未追蹤檔案。因為我們剛建立檔案，git 尚未追蹤它。我們必須明確告訴 git 追蹤此檔案。（也可以參考 [gitignore 文件](https://git-scm.com/docs/gitignore)）方法是透過 `git add` 命令，如上面輸出建議。然後，我們進行提交。
 
 ```bash
 $ git add file1.txt
@@ -90,15 +90,15 @@ $ git commit -m "adding file 1"
 create mode 100644 file1.txt
 ```
 
-Notice how after adding the file, `git status` says `Changes to be committed:`. What it means is whatever is listed there, will be included in the next commit. Then, we go ahead and create a commit, with an attached message via `-m`.
+注意加入檔案後，`git status` 會顯示`Changes to be committed:`。這表示列表中所列的檔案將包含在下一次提交中。接著，我們透過 `-m` 參數附加訊息，完成提交。
 
-### More About a Commit
+### 關於提交（Commit）更多資訊
 
-Commit is a snapshot of the repo. Whenever a commit is made, a snapshot of the current state of repo (the folder) is taken and saved. Each commit has a unique ID. (`df2fb7a` for the commit we made in the previous step). As we keep adding/changing more and more contents and keep making commits, all those snapshots are stored by git. Again, all this magic happens inside the `.git` folder. This is where all this snapshot or versions are stored _in an efficient manner._
+Commit 是 repo 的一個快照。每當執行提交時，都會將目前 repo（此資料夾）狀態拍照並且保存。每個提交都有唯一 ID（例如前面步驟中我們產生的 commit ID 為 `df2fb7a`）。隨著我們持續新增/更改檔案並提交，git 儲存所有這些快照。所有魔法都是發生在 `.git` 資料夾中，所有快照版本都以高效率方式儲存在裡面。
 
-### Adding More Changes
+### 添加更多變更
 
-Let us create one more file and commit the change. It would look the same as the previous commit we made.
+我們再建立一個檔案並提交變更，其操作與之前類似：
 
 ```bash
 $ echo "I am file 2" > file2.txt
@@ -109,11 +109,11 @@ $ git commit -m "adding file 2"
 create mode 100644 file2.txt
 ```
 
-A new commit with ID `7f3b00e` has been created. You can issue `git status` at any time to see the state of the repository.
+這次提交產生一個新 commit ID 為 `7f3b00e`。你可以隨時使用 `git status` 查看倉庫狀態。
 
-       **IMPORTANT: Note that commit IDs are long string (SHA) but we can refer to a commit by its initial few (8 or more) characters too. We will interchangeably using shorter and longer commit IDs.**
+       **重要：請注意 commit ID 是很長的字串（SHA），但我們也可用它們的前幾個字元（8 個或更多）來參考。我們會交替使用較短和完整的 commit ID。**
 
-Now that we have two commits, let's visualize them:
+現在我們有兩個 commit，來視覺化它們：
 
 ```bash
 $ git log --oneline --graph
@@ -121,17 +121,17 @@ $ git log --oneline --graph
 * df2fb7a adding file 1
 ```
 
-`git log`, as the name suggests, prints the log of all the git commits. Here you see two additional arguments, `--oneline` prints the shorter version of the log, ie: the commit message only and not the person who made the commit and when. `--graph` prints it in graph format.
+`git log` 如其名，列出所有 git 提交記錄。這裡用了兩個參數，`--oneline` 會列出簡短版本，只顯示 commit 訊息，不包含提交者和時間。`--graph` 則以圖形化方式呈現。
 
-**Now at this moment, the commits might look like just one in each line but all commits are stored as a tree like data structure internally by git. That means there can be two or more children commits of a given commit. And not just a single line of commits. We will look more into this part when we get to the Branches section. For now, this is our commit history:**
+**目前看起來提交都是一行一筆，不過 git 內部是以樹狀資料結構儲存所有 commit。意思是單一 commit 可以有兩個或以上的子 commit，不會只有一條直線的 commit 歷史。我們會在分支章節深入探討。現在，我們的 commit 歷史是：**
 
 ```bash
    df2fb7a ===> 7f3b00e
 ```
 
-### Are commits really linked?
+### commit 真的是相互連結的嗎？
 
-As I just said, the two commits we just made are linked via tree like data structure and we saw how they are linked. But let's actually verify it. Everything in git is an object. Newly created files are stored as an object. Changes to file are stored as an objects and even commits are objects. To view contents of an object, we can use the following command with the object's ID. We will take a look at the contents of the second commit:
+正如前面所說，我們的兩個 commit 是以樹狀結構互連，並知道如何連結。現在我們來驗證它。git 中的一切都是物件。新建立的檔案是以物件儲存，檔案的變更也是物件，連提交本身也是物件。要查看物件內容，可以用該物件的 ID 執行以下命令。我們來看第二個提交的內容：
 
 ```bash
 $ git cat-file -p 7f3b00e
@@ -143,25 +143,25 @@ committer Sanket Patel <spatel1@linkedin.com> 1603273316 -0700
 adding file 2
 ```
 
-Take a note of `parent` attribute in the above output. It points to the commit id of the first commit we made. So this proves that they are linked! Additionally, you can see the second commit's message in this object. As I said all this magic is enabled by `.git` folder and the object to which we are looking at also is in that folder.
+請注意輸出中 `parent` 屬性，它指向我們前一個提交的 commit ID。這證明兩者確實連結！另外你也看到該 commit 的訊息。所有這些魔法都由 `.git` 資料夾驅動，而此物件也儲存在裡面。
 
 ```bash
 $ ls .git/objects/7f/3b00eaa957815884198e2fdfec29361108d6a9
 .git/objects/7f/3b00eaa957815884198e2fdfec29361108d6a9
 ```
 
-It is stored in `.git/objects/` folder. All the files and changes to them as well are stored in this folder.
+物件被儲存在 `.git/objects/` 資料夾。所有檔案及變更皆存在此資料夾。
 
-### The Version Control part of Git
+### Git 的版本控制部分
 
-We already can see two commits (versions) in our git log. One thing a version control tool gives you is ability to browse back and forth in history. For example: some of your users are running an old version of code and they are reporting an issue. In order to debug the issue, you need access to the old code. The one in your current repo is the latest code. In this example, you are working on the second commit (`7f3b00e`) and someone reported an issue with the code snapshot at commit (`df2fb7a`). This is how you would get access to the code at any older commit.
+從 git log 已可查看兩個提交（兩個版本）。版本控制工具最重要的特點之一是可以在歷史中前後切換。例如：部分用戶在使用舊版程式碼時發現問題並回報。要除錯問題，你必須拿到舊版程式碼。你目前 repo 是最新版本。在此例中，你正在第二個 commit（`7f3b00e`）上工作，而有人報告第一個 commit (`df2fb7a`) 的程式碼有問題。此時你可以透過以下方法取得舊版本的程式碼：
 
 ```bash
-# Current contents, two files present
+# 目前目錄中有兩個檔案
 $ ls
 file1.txt file2.txt
 
-# checking out to (an older) commit
+# 切換到舊的 commit
 $ git checkout df2fb7a
 Note: checking out 'df2fb7a'.
 
@@ -176,34 +176,37 @@ do so (now or later) by using -b with the checkout command again. Example:
 
 HEAD is now at df2fb7a adding file 1
 
-# checking contents, can verify it has old contents
+# 查看目錄，確認為舊狀態檔案
 $ ls
 file1.txt
 ```
 
-So this is how we would get access to old versions/snapshots. All we need is a _reference_ to that snapshot. Upon executing `git checkout ...`, what git does for you is use the `.git` folder, see what was the state of things (files and folders) at that version/reference and replace the contents of current directory with those contents. The then-existing content will no longer be present in the local dir (repo) but we can and will still get access to them because they are tracked via `git commit` and `.git` folder has them stored/tracked.
+這就是如何取得舊版本/快照。你只需要該快照的 _參考_。執行 `git checkout ...` 時，git 會透過 `.git` 資料夾查看該版本檔案狀態，並將當前目錄中內容替換成該版本快照。當時存在的檔案會不再顯示於本地，但因為被 `git commit` 追蹤且儲存在 `.git`，仍然可取得。
 
-### Reference
+### 參考（References）
 
-I mention in the previous section that we need a _reference_ to the version. By default, git repo is made of tree of commits. And each commit has a unique IDs. But the unique ID is not the only thing we can reference commits via. There are multiple ways to reference commits. For example: `HEAD` is a reference to current commit. _Whatever commit your repo is checked out at, `HEAD` will point to that._ `HEAD~1` is reference to previous commit. So while checking out previous version in section above, we could have done `git checkout HEAD~1`.
+前面提過，我們需要一個 _參考_ 指向某個版本。預設 git 倉庫是由 commit 樹組成，每個 commit 有唯一 ID，但這不是唯一能用來參考 commit 的方式。還有多種方式參考 commit。例：
 
-Similarly, `master` is also a reference (to a branch). Since git uses tree like structure to store commits, there of course will be branches. And the default branch is called `master`. Master (or any branch reference) will point to the latest commit in the branch. Even though we have checked out to the previous commit in out repo, `master` still points to the latest commit. And we can get back to the latest version by `checkout` at `master` reference
+- `HEAD` 是目前 commit 的參考。_不論你的 repo checked out 在哪個 commit，HEAD 都會指向它。_
+- `HEAD~1` 是上一個 commit 的參考。因此在前面切換上一個版本時，可用 `git checkout HEAD~1`。
+
+同樣地，`master` 也是一個參考（分支名稱）。由於 git 以樹狀結構儲存提交，當然會有分支。預設分支叫做 `master`。master（或其他分支名稱）會指向該分支的最新 commit。即使我們切換過去看舊 commit，`master` 仍指向最新 commit。我們可以透過切換回 `master` 取得最新版本。
 
 ```bash
 $ git checkout master
 Previous HEAD position was df2fb7a adding file 1
 Switched to branch 'master'
 
-# now we will see latest code, with two files
+# 現在可以看到兩個檔案的最新程式碼
 $ ls
 file1.txt file2.txt
 ```
 
-Note, instead of `master` in above command, we could have used commit's ID as well.
+註：上述指令中，也可用 commit ID 取代 master。
 
-### References and The Magic
+### 參考與魔法
 
-Let's look at the state of things. Two commits, `master` and `HEAD` references are pointing to the latest commit
+讓我們來看目前狀態。兩個 commit，`master` 與 `HEAD` 都指向最新 commit。
 
 ```bash
 $ git log --oneline --graph
@@ -211,27 +214,27 @@ $ git log --oneline --graph
 * df2fb7a adding file 1
 ```
 
-The magic? Let's examine these files:
+魔法在哪？我們來檢查這些檔案：
 
 ```bash
 $ cat .git/refs/heads/master
 7f3b00eaa957815884198e2fdfec29361108d6a9
 ```
 
-Viola! Where `master` is pointing to is stored in a file. **Whenever git needs to know where master reference is pointing to, or if git needs to update where master points, it just needs to update the file above.** So when you create a new commit, a new commit is created on top of the current commit and the master file is updated with the new commit's ID.
+瞧！`master` 指向的 commit ID 就存放在一個檔案中。**當 git 需要知道 master 指向哪裡，或要更新 master 指向的 commit，只要讀取或寫入此檔案即可。**新增提交時，git 在當前 commit 上加入新 commit，並更新 master 檔案內容為新 commit ID。
 
-Similary, for `HEAD` reference:
+同理，`HEAD` 參考：
 
 ```bash
 $ cat .git/HEAD
 ref: refs/heads/master
 ```
 
-We can see `HEAD` is pointing to a reference called `refs/heads/master`. So `HEAD` will point where ever the `master` points.
+`HEAD` 指向另一個參考 `refs/heads/master`。因此 `HEAD` 所指即是 `master` 指向的位置。
 
-### Little Adventure
+### 小小冒險
 
-We discussed how git will update the files as we execute commands. But let's try to do it ourselves, by hand, and see what happens.
+我們討論過 git 執行命令時會修改這些檔案。但我們自己手動操作看看會怎樣。
 
 ```bash
 $ git log --oneline --graph
@@ -239,18 +242,18 @@ $ git log --oneline --graph
 * df2fb7a adding file 1
 ```
 
-Now, let's change `master` to point to the previous/first commit.
+現在，把 `master` 指向改為第一個 commit。
 
 ```bash
 $ echo df2fb7a61f5d40c1191e0fdeb0fc5d6e7969685a > .git/refs/heads/master
 $ git log --oneline --graph
 * df2fb7a (HEAD -> master) adding file 1
 
-# RESETTING TO ORIGINAL
+# 恢復原本指向
 $ echo 7f3b00eaa957815884198e2fdfec29361108d6a9 > .git/refs/heads/master
 $ git log --oneline --graph
 * 7f3b00e (HEAD -> master) adding file 2
 * df2fb7a adding file 1
 ```
 
-We just edited the `master` reference file and now we can see only the first commit in git log. Undoing the change to the file brings the state back to original. Not so much of magic, is it?
+我們剛剛編輯了 `master` 參考的檔案，因此 `git log` 只顯示了第一筆提交。還原檔案後狀態回到原本。其實也沒什麼神奇的。

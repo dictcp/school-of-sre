@@ -1,58 +1,44 @@
-# Command Line Basics
+# 指令列基礎
 
-## Lab Environment Setup
+## 實驗環境設定
 
-One can use an online Bash interpreter to run all the commands that are provided as examples in this course. This will also help you in getting a hands-on experience of various Linux commands.
+您可以使用線上 Bash 直譯器來執行課程中提供的範例指令。這將協助您實際操作並體驗各種 Linux 指令。
 
-[REPL](https://repl.it/languages/bash) is one of the popular online Bash interpreters for running Linux commands. We will be using it for running all the commands mentioned in this course.
+[REPL](https://repl.it/languages/bash) 是著名的線上 Bash 直譯器之一，我們將使用它來執行本課程中提到的所有指令。
 
-## What is a Command
+## 什麼是指令
 
-A command is a program that tells the operating system to perform
-specific work. Programs are stored as files in Linux. Therefore, a
-command is also a file which is stored somewhere on the disk.
+指令是告訴作業系統執行特定工作的程式。程式在 Linux 中是以檔案形式儲存的。因此，指令也是儲存在磁碟某處的檔案。
 
-Commands may also take additional arguments as input from the user.
-These arguments are called command line arguments. Knowing how to use
-the commands is important and there are many ways to get help in Linux,
-especially for commands. Almost every command will have some form of
-documentation, most commands will have a command-line argument `-h` or 
-`--help` that will display a reasonable amount of documentation. But the
-most popular documentation system in Linux is called `man` pages&mdash;short
-for manual pages.
+指令也可能會接受使用者的額外參數作為輸入，這些參數稱為指令列參數（command line arguments）。學會使用指令很重要，且在 Linux 中有許多方式可以查詢指令的使用說明。幾乎每個指令都會有某種文件說明，多數指令會有 `-h` 或 `--help` 參數，輸入後會顯示相當程度的文件。而 Linux 中最受歡迎的文件系統是稱為 `man` 頁面的手冊。
 
-Using `--help` to show the documentation for `ls` command.
+以下範例示範用 `--help` 顯示 `ls` 指令的說明：
 
 ![](images/linux/commands/image19.png)
 
-## File System Organization
+## 檔案系統組織
 
-The Linux file system has a hierarchical (or tree-like) structure with
-its highest-level directory called `root` (denoted by `/`). Directories
-present inside the root directory stores files related to the system.
-These directories in turn can either store system files or application
-files or user-related files.
+Linux 檔案系統呈現階層（或樹狀）結構，其最高層目錄稱為 `root`（用 `/` 符號表示）。根目錄下的目錄儲存與系統相關的檔案。這些目錄可用來存放系統檔案、應用程式檔案或使用者相關檔案。
 
 ![](images/linux/commands/image17.png)
 
-| Directory  | Description                                                                    |
-|------------|--------------------------------------------------------------------------------| 
-| bin        | The executable program of most commonly used commands reside in `bin` directory|
-| dev        | This directory contains files related to devices on the system                 |
-| etc        | This directory contains all the system configuration files                     |
-| home       | This directory contains user-related files and directories                     |       
-| lib        | This directory contains all the library files                                  |
-| mnt        | This directory contains files related to mounted devices on the system         |
-| proc       | This directory contains files related to the running processes on the system   |
-| root       | This directory contains root user-related files and directories                | 
-| sbin       | This directory contains programs used for system administration                |
-| tmp        | This directory is used to store temporary files on the system                  |
-| usr        | This directory is used to store application programs on the system             |
+| 目錄      | 說明                                                          |
+|-----------|----------------------------------------------------------------|
+| bin       | 儲存大多數常用指令的可執行程式                               |
+| dev       | 儲存與系統裝置相關的檔案                                     |
+| etc       | 儲存所有系統設定檔                                           |
+| home      | 儲存使用者相關的檔案與目錄                                   |       
+| lib       | 儲存所有函式庫檔案                                           |
+| mnt       | 儲存與系統掛載裝置相關的檔案                                 |
+| proc      | 儲存與系統運行程序相關的檔案                                 |
+| root      | 儲存 root 使用者相關的檔案與目錄                             | 
+| sbin      | 儲存系統管理所用程式                                         |
+| tmp       | 用來存放系統暫存檔案                                         |
+| usr       | 用來存放系統中的應用程式                                     |
 
-## Commands for Navigating the File System
+## 用於瀏覽檔案系統的指令
 
-There are three basic commands which are used frequently to navigate the
-file system:
+有三個基本指令常用於瀏覽檔案系統：
 
 - ls
 
@@ -60,52 +46,41 @@ file system:
 
 - cd
 
-We will now try to understand what each command does and how to use
-these commands. You should also practice the given examples on the
-online Bash shell.
+接著我們將理解每個指令的功能與使用方式。請您也在線上 Bash 終端練習範例。
 
-### pwd (print working directory)
+### pwd（列印目前目錄）
 
-At any given moment of time, we will be standing in a certain directory.
-To get the name of the directory in which we are standing, we can use
-the `pwd` command in Linux.
+在任一時刻，我們都身處某個目錄。若要取得目前所在的目錄名稱，可使用 Linux 中的 `pwd` 指令。
 
 ![](images/linux/commands/image2.png)
 
-We will now use the `cd` command to move to a different directory and then
-print the working directory.
+我們接著用 `cd` 指令移動到不同目錄，再印出目前目錄。
 
 ![](images/linux/commands/image20.png)
 
-### cd (change directory)
+### cd（切換目錄）
 
-The `cd` command can be used to change the working directory. Using the
-command, you can move from one directory to another.
+`cd` 指令用來切換工作目錄，您可以使用此指令從一個目錄移動到另一個目錄。
 
-In the below example, we are initially in the `root` directory. We have
-then used the `cd` command to change the directory.
+以下範例中，我們原本在 `root` 目錄，接著用 `cd` 指令移動目錄。
 
 ![](images/linux/commands/image3.png)
 
-### ls (list files and directories)**
+### ls（列出檔案和目錄）
 
-The `ls` command is used to list the contents of a directory. It will list
-down all the files and folders present in the given directory.
+`ls` 指令用來列出特定目錄的內容。它會列出該目錄底下所有檔案與資料夾。
 
-If we just type `ls` in the shell, it will list all the files and
-directories present in the current directory.
+若直接在終端輸入 `ls`，會列出目前目錄下所有檔案與目錄。
 
 ![](images/linux/commands/image7.png)
 
-We can also provide the directory name as argument to `ls` command. It
-will then list all the files and directories inside the given directory.
+您也可以提供目錄名稱給 `ls` 指令，會列出該目錄下所有檔案與目錄。
 
 ![](images/linux/commands/image4.png)
 
-## Commands for Manipulating Files
+## 用於操作檔案的指令
 
-There are five basic commands which are used frequently to manipulate
-files:
+有五個基本指令常用於操作檔案：
 
 - touch
 
@@ -117,17 +92,13 @@ files:
 
 - rm
 
-We will now try to understand what each command does and how to use
-these commands. You should also practice the given examples on the
-online Bash shell.
+我們將理解每個指令的功能與使用方式。請您也在線上 Bash 終端練習範例。
 
-### touch (create new file)
+### touch（建立新檔案）
 
-The `touch` command can be used to create an empty new file.
-This command is very useful for many other purposes, but we will discuss
-the simplest use case of creating a new file.
+`touch` 指令用來建立空白的新檔案。此指令還有其他用途，這裡只講最簡單的新檔案建立。
 
-General syntax of using `touch` command:
+`touch` 指令的一般語法：
 
 ```shell
 touch <file_name>
@@ -135,12 +106,11 @@ touch <file_name>
 
 ![](images/linux/commands/image9.png)
 
-### mkdir (create new directories)
+### mkdir（建立新目錄）
 
-The `mkdir` command is used to create directories. You can use `ls` command
-to verify that the new directory is created.
+`mkdir` 指令用於建立目錄。您可以用 `ls` 指令驗證新目錄是否建立。
 
-General syntax of using `mkdir` command:
+`mkdir` 指令的一般語法：
 
 ```shell
 mkdir <directory_name>
@@ -148,99 +118,69 @@ mkdir <directory_name>
 
 ![](images/linux/commands/image11.png)
 
-### rm (delete files and directories)
+### rm（刪除檔案與目錄）
 
-The `rm` command can be used to delete files and directories. It is very
-important to note that this command permanently deletes the files and
-directories. It's almost impossible to recover these files and
-directories once you have executed `rm` command on them successfully. Do
-run this command with care.
+`rm` 指令用於刪除檔案與目錄。請注意，此指令會永久刪除檔案與目錄，且刪除後幾乎無法回復，請務必小心使用。
 
-General syntax of using `rm` command:
+`rm` 指令的一般語法：
 
 ```shell
 rm <file_name>
 ```
 
-Let's try to understand the `rm` command with an example. We will try to
-delete the file and directory we created using `touch` and `mkdir` command
-respectively.
+以下範例示範用 `rm` 指令刪除先前用 `touch` 跟 `mkdir` 建立的檔案與目錄。
 
 ![](images/linux/commands/image18.png)
 
-### cp (copy files and directories)
+### cp（複製檔案與目錄）
 
-The `cp` command is used to copy files and directories from one location
-to another. Do note that the `cp` command doesn't do any change to the
-original files or directories. The original files or directories and
-their copy both co-exist after running `cp` command successfully.
+`cp` 指令用於從一處複製檔案或目錄到另一處。請注意，`cp` 執行後並不改變原始檔案或目錄，原始檔案與複本並存。
 
-General syntax of using `cp` command:
+`cp` 指令的一般語法：
 
 ```shell
 cp <source_path> <destination_path>
 ```
 
-We are currently in the `/home/runner` directory. We will use the `mkdir`
-command to create a new directory named `test_directory`. We will now
-try to copy the `_test_runner.py` file to the directory we created just
-now.
+我們目前位於 `/home/runner` 目錄。用 `mkdir` 建立名為 `test_directory` 的新目錄。接著嘗試將 `_test_runner.py` 檔複製到此目錄。
 
 ![](images/linux/commands/image23.png)
 
-Do note that nothing happened to the original `_test_runner.py` file.
-It's still there in the current directory. A new copy of it got created
-inside the `test_directory`.
+請注意，原始的 `_test_runner.py` 檔案依然存在目前目錄，新的副本出現在 `test_directory`。
 
 ![](images/linux/commands/image14.png)
 
-We can also use the `cp` command to copy the whole directory from one
-location to another. Let's try to understand this with an example.
+`cp` 也可以用來複製整個目錄，以下範例說明此操作。
 
 ![](images/linux/commands/image12.png)
 
-We again used the `mkdir` command to create a new directory called
-`another_directory`. We then used the `cp` command along with an
-additional argument `-r` to copy the `test_directory`.
+我們再次用 `mkdir` 建立 `another_directory`。接著用 `cp` 搭配 `-r` 參數（遞迴）複製 `test_directory` 到這個新目錄。
 
-**mv (move files and directories)**
+### mv（移動檔案與目錄）
 
-The `mv` command can either be used to move files or directories from one
-location to another or it can be used to rename files or directories. Do
-note that moving files and copying them are very different. When you
-move the files or directories, the original copy is lost.
+`mv` 指令可以用來將檔案或資料夾從一處移動到另一處，也能用來重新命名檔案或目錄。請注意，移動後原始檔案或目錄會不見。
 
-General syntax of using `mv` command:
+`mv` 指令的一般語法：
 
 ```shell
 mv <source_path> <destination_path>
 ```
 
-In this example, we will use the `mv` command to move the
-`_test_runner.py` file to `test_directory`. In this case, this file
-already exists in `test_directory`. The `mv` command will just replace it.
-**Do note that the original file doesn't exist in the current directory
-after `mv` command ran successfully.**
+以下範例用 `mv` 將 `_test_runner.py` 檔案移動到 `test_directory`。此目錄中已存在同名檔，`mv` 指令會覆蓋它。**成功移動後，原始目錄中不再存在該檔。**
 
 ![](images/linux/commands/image26.png)
 
-We can also use the `mv` command to move a directory from one location to
-another. In this case, we do not need to use the `-r` flag that we did
-while using the `cp` command. Do note that the original directory will not
-exist if we use `mv` command.
+我們也可以使用 `mv` 移動目錄，這時不用像用 `cp` 時需要 `-r` 參數。**成功移動後，原始目錄不再存在該目錄。**
 
-One of the important uses of the `mv` command is to rename files and
-directories. Let's see how we can use this command for renaming.
+`mv` 指令的一大用途是重新命名檔案或目錄。以下示範如何改名。
 
-We have first changed our location to `test_directory`. We then use the
-`mv` command to rename the `_test_runner.py` file to `test.py`.
+先移到 `test_directory` 目錄，接著用 `mv` 將 `_test_runner.py` 改名為 `test.py`。
 
 ![](images/linux/commands/image29.png)
 
-## Commands for Viewing Files
+## 用於檢視檔案的指令
 
-There are five basic commands which are used frequently to view the
-files:
+有五個基本指令常用於檢視檔案內容：
 
 - cat
 
@@ -252,108 +192,79 @@ files:
 
 - less
 
-We will now try to understand what each command does and how to use
-these commands. You should also practice the given examples on the
-online Bash shell.
+我們將了解每個指令功能與使用方式。請您也在線上 Bash 終端練習範例。
 
-We will create a new file called `numbers.txt` and insert numbers from 1
-to 100 in this file. Each number will be in a separate line.
+我們先建立一個名為 `numbers.txt` 的新檔案，並在檔案中輸入 1 到 100 的數字，每個數字占一行。
 
 ![](images/linux/commands/image21.png)
 
-Do not worry about the above command now. It's an advanced command which
-is used to generate numbers. We have then used a redirection operator to
-push these numbers to the file. We will be discussing I/O redirection in the
-later sections.
-
+目前不用擔心上方指令為何，它是產生數字的進階用法，我們之後會介紹 I/O 重新導向。
 
 ### cat
 
-The most simplest use of `cat` command is to print the contents of the file on
-your output screen. This command is very useful and can be used for many
-other purposes. We will study about other use cases later.
+`cat` 指令最簡單的功能就是將檔案內容列印到螢幕。此指令非常實用，還有其他許多用法，我們之後再說明。
 
 ![](images/linux/commands/image1.png)
 
-You can try to run the above command and you will see numbers being
-printed from 1 to 100 on your screen. You will need to scroll up to view
-all the numbers.
+您可嘗試執行，螢幕會顯示 1 至 100 的數字，需向上捲動才能看到全部。
 
 ### head
 
-The `head` command displays the first 10 lines of the file by default. We
-can include additional arguments to display as many lines as we want
-from the top.
+`head` 指令預設會顯示檔案前 10 行。也能搭配其他參數指定想顯示的行數。
 
-In this example, we are only able to see the first 10 lines from the
-file when we use the `head` command.
+以下範例秀出原本用 `head` 指令看到的前 10 行內容。
 
 ![](images/linux/commands/image15.png)
 
-By default, `head` command will only display the first 10 lines. If we
-want to specify the number of lines we want to see from start, use the
-`-n` argument to provide the input.
+預設是 10 行，若要指定顯示行數，請用 `-n` 參數。
 
 ![](images/linux/commands/image16.png)
 
 ### tail
 
-The `tail` command displays the last 10 lines of the file by default. We
-can include additional arguments to display as many lines as we want
-from the end of the file.
+`tail` 指令預設顯示檔案最後 10 行。也能使用其他參數指定想要顯示的結尾行數。
 
 ![](images/linux/commands/image22.png)
 
-By default, the `tail` command will only display the last 10 lines. If we
-want to specify the number of lines we want to see from the end, use `-n`
-argument to provide the input.
+預設是最後 10 行，若要指定行數，請用 `-n` 參數。
 
 ![](images/linux/commands/image10.png)
 
-In this example, we are only able to see the last 5 lines from the file
-when we use the `tail` command with explicit `-n` option.
-
+以下範例用 `tail` 搭配 `-n 5` 只看最後 5 行。
 
 ### more
 
-The `more` command displays the contents of a file or a command output, 
-displaying one screen at a time in case the file is large (Eg: log files).
-It also allows forward navigation and limited backward navigation in the file.
+`more` 指令用來顯示檔案或指令輸出，一次顯示一頁內容，適用於大型檔案或日誌檔。它支援前進與有限的後退瀏覽。
 
 ![](images/linux/commands/image33.png)
 
-The `more` command displays as much as can fit on the current screen and waits for user input to advance. Forward navigation can be done by pressing `Enter`, which advances the output by one line and `Space`, which advances the output by one screen.
+`more` 顯示當前頁面內容後會等待使用者輸入，按 `Enter` 向下滾動一行，按空白鍵則滾動一頁。
 
 ### less
 
-The `less` command is an improved version of `more`. It displays the contents of a file or a command output, one page at a time.
-It allows backward navigation as well as forward navigation in the file and also has search options. We can use `arrow keys` for advancing backward or forward by one line. For moving forward by one page, press `Space` and for moving backward by one page, press `b` on your keyboard.
-You can go to the beginning and the end of a file instantly.
+`less` 指令是 `more` 的增強版本，同樣一頁一頁顯示檔案或指令輸出。
 
+能支援前後任意瀏覽及搜尋功能。使用`方向鍵`可上下滾動一行，按空白鍵滾動一頁，按 `b` 則滾動回前一頁，也可以快速跳到檔案開頭或結尾。
 
-## Echo Command in Linux
+## Linux 中的 Echo 指令
 
-The `echo` command is one of the simplest commands that is used in the
-shell. This command is equivalent to `print` in other
-programming languages.
+`echo` 是 Shell 中最簡單的指令之一，類似其他程式語言中的 `print`。
 
-The `echo` command prints the given input string on the screen.
+`echo` 指令會將輸入內容列印在螢幕上。
 
 ![](images/linux/commands/image34.png)
 
-## Text Processing Commands
+## 文字處理指令
 
-In the previous section, we learned how to view the content of a file.
-In many cases, we will be interested in performing the below operations:
+上一節學了如何查看檔案內容，實務中常希望：
 
-- Print only the lines which contain a particular word(s)
+- 只列印包含特定字的行
 
-- Replace a particular word with another word in a file
+- 用另一個字取代檔案中某個字
 
-- Sort the lines in a particular order
+- 依特定順序排序文件內容
 
-There are three basic commands which are used frequently to process
-texts:
+有三個基本指令常用來處理文字：
 
 - grep
 
@@ -361,109 +272,82 @@ texts:
 
 - sort
 
-We will now try to understand what each command does and how to use
-these commands. You should also practice the given examples on the
-online Bash shell.
+接著了解指令功能與用法，並在線上 Bash 平台練習範例。
 
-We will create a new file called `numbers.txt` and insert numbers from 1
-to 10 in this file. Each number will be in a separate line.
+我們先建立新檔 `numbers.txt`，放入 1~10 的數字，每行一筆。
 
 ![](images/linux/commands/image8.png)
 
 ### grep
 
-The `grep` command in its simplest form can be used to search particular
-words in a text file. It will display all the lines in a file that
-contains a particular input. The word we want to search is provided as
-an input to the `grep` command.
+`grep` 指令最簡單用法是搜尋檔案中的特定字詞，會列出所有包含此字的行。
 
-General syntax of using `grep` command:
+`grep` 指令一般語法：
 
 ```shell
-grep <word_to_search> <file_name>
+grep <要搜尋的字> <檔案名稱>
 ```
 
-In this example, we are trying to search for a string "1" in this file.
-The `grep` command outputs the lines where it found this string.
+以下範例搜尋字串 "1" 在檔案中出現的行。
 
 ![](images/linux/commands/image36.png)
 
 ### sed
 
-The `sed` command in its simplest form can be used to replace a text in a
-file.
+`sed` 指令最簡單用法是用來取代檔案中文字。
 
-General syntax of using the `sed` command for replacement:
+`sed` 用來取代的語法：
 
 ```shell
-sed 's/<text_to_replace>/<replacement_text>/' <file_name>
+sed 's/<要取代的字>/<取代後文字>/' <檔案名稱>
 ```
 
-Let's try to replace each occurrence of "1" in the file with "3" using
-`sed` command.
+以下用法示範將檔案中的 "1" 替換成 "3"。
 
 ![](images/linux/commands/image31.png)
 
-The content of the file will not change in the above
-example. To do so, we have to use an extra argument `-i` so that the
-changes are reflected back in the file.
+以上範例並不會改變檔案本身內容，若要使更動寫回檔案，需加上 `-i` 選項。
 
 ### sort
 
-The `sort` command can be used to sort the input provided to it as an
-argument. By default, it will sort in increasing order.
+`sort` 指令用於排序輸入資料，預設依遞增（字典序）排列。
 
-Let's first see the content of the file before trying to sort it.
+先看排序前的檔案內容。
 
 ![](images/linux/commands/image27.png)
 
-Now, we will try to sort the file using the `sort` command. The `sort`
-command sorts the content in lexicographical order.
+接著用 `sort` 指令對檔案內容排序。
 
 ![](images/linux/commands/image32.png)
 
-The content of the file will not change in the above
-example.
+上述範例並不會改變檔案內容。
 
-## I/O Redirection
+## I/O 重新導向
 
-Each open file gets assigned a file descriptor. A file descriptor is an
-unique identifier for open files in the system. There are always three
-default files open, `stdin` (the keyboard), `stdout` (the screen), and
-`stderr` (error messages output to the screen). These files can be
-redirected.
+每個開啟的檔案會被指派一個檔案描述字（file descriptor），用來系統唯一標示開啟的檔案。預設有三個檔案持續開啟：`stdin`（鍵盤輸入）、`stdout`（畫面輸出）、`stderr`（錯誤訊息輸出至畫面）。這些可被重新導向。
 
-Everything is a file in Linux -
+Linux 中一切皆檔案 -  
 [https://unix.stackexchange.com/questions/225537/everything-is-a-file](https://unix.stackexchange.com/questions/225537/everything-is-a-file)
 
-Till now, we have displayed all the output on the screen which is the
-standard output. We can use some special operators to redirect the
-output of the command to files or even to the input of other commands.
-I/O redirection is a very powerful feature.
+目前我們的輸出都打在螢幕上（標準輸出）。可用特殊符號將指令輸出重導向檔案，或甚至重導向其他指令輸入。I/O 重新導向是強大功能。
 
-In the below example, we have used the `>` operator to redirect the
-output of `ls` command to `output.txt` file.
+以下範例用 `>` 將 `ls` 指令輸出導向檔案 `output.txt`。
 
 ![](images/linux/commands/image30.png)
 
-In the below example, we have redirected the output from `echo` command to
-a file.
+以下範例把 `echo` 指令輸出導向檔案。
 
 ![](images/linux/commands/image13.png)
 
-We can also redirect the output of a command as an input to another
-command. This is possible with the help of pipes.
+可用管線（pipe）把一指令輸出傳給另一指令輸入。
 
-In the below example, we have passed the output of `cat` command as an
-input to `grep` command using pipe (`|`) operator.
+以下範例將 `cat` 輸出傳給 `grep` 指令，使用管線符號 `|`。
 
 ![](images/linux/commands/image6.png)
 
-In the below example, we have passed the output of `sort` command as an
-input to `uniq` command using pipe (`|`) operator. The `uniq` command only
-prints the unique numbers from the input.
+以下範例用管線傳送 `sort` 輸出，給 `uniq` 輸入。`uniq` 只會印出不重複的數字。
 
 ![](images/linux/commands/image28.png)
 
-I/O redirection -
+I/O 重新導向說明 -  
 [https://tldp.org/LDP/abs/html/io-redirection.html](https://tldp.org/LDP/abs/html/io-redirection.html)

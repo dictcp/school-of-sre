@@ -1,34 +1,34 @@
-### MySQL architecture
+### MySQL 架構
 
-![alt_text](images/mysql_architecture.png "MySQL architecture diagram")
+![alt_text](images/mysql_architecture.png "MySQL 架構圖")
 
-MySQL architecture enables you to select the right storage engine for your needs, and abstracts away all implementation details from the end users (application engineers and [DBA](https://en.wikipedia.org/wiki/Database_administrator)) who only need to know a consistent stable API.
+MySQL 架構讓您可以根據需求選擇合適的儲存引擎，並且對終端使用者（應用程式工程師及[資料庫管理員 (DBA)](https://en.wikipedia.org/wiki/Database_administrator)）抽象化所有實作細節，只需了解一致且穩定的 API。
 
-Application layer:
+應用層：
 
-*   Connection handling: each client gets its own connection which is cached for the duration of access
-*   Authentication: server checks (username, password, host) info of client and allows/rejects connection
-*   Security: server determines whether the client has privileges to execute each query (check with `SHOW PRIVILEGES` command)
+*   連線處理：每個客戶端獲得一個獨立連線，並於存取期間快取
+*   認證：伺服器會檢查客戶端的（使用者名稱、密碼、主機）資訊，決定允許或拒絕連線
+*   安全性：伺服器決定客戶端是否有權限執行每個查詢（可使用 `SHOW PRIVILEGES` 指令查詢）
 
-Server layer:
+伺服器層：
 
-*   Services and utilities: backup/restore, replication, cluster, etc
-*   SQL interface: clients run queries for data access and manipulation
-*   SQL parser: creates a parse tree from the query (lexical/syntactic/semantic analysis and code generation)
-*   Optimizer: optimizes queries using various algorithms and data available to it (table-level stats), modifies queries, order of scanning, indexes to use, etc. (check with `EXPLAIN` command)
-*   Caches and buffers: cache stores query results, buffer pool (InnoDB) stores table and index data in [LRU](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)) fashion
+*   服務與工具：備份/還原、複寫、叢集等
+*   SQL 介面：客戶端執行資料存取和操作的查詢
+*   SQL 解析器：從查詢中建立語法樹（詞法/語法/語意分析及程式碼生成）
+*   優化器：利用各種演算法及可用資料（表層統計資訊）優化查詢，修改查詢內容、掃描順序、使用索引等（可使用 `EXPLAIN` 指令查詢）
+*   快取與緩衝區：快取用於儲存查詢結果，緩衝池（InnoDB）以[最近最少使用 (LRU)](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU))方式儲存表與索引資料
 
-Storage engine options:
+儲存引擎選項：
 
-*   InnoDB: most-widely used, transaction support, ACID compliant, supports row-level locking, crash recovery and multi-version concurrency control. Default since MySQL 5.5+.
-*   MyISAM: fast, does not support transactions, provides table-level locking, great for read-heavy workloads, mostly in web and data warehousing. Default upto MySQL 5.1.
-*   Archive: optimised for high speed inserts, compresses data as it is inserted, does not support transactions, ideal for storing and retrieving large amounts of seldom referenced historical, archived data
-*   Memory: tables in memory. Fastest engine, supports table-level locking, does not support transactions, ideal for creating temporary tables or quick lookups, data is lost after a shutdown
-*   CSV: stores data in CSV files, great for integrating into other applications that use this format
-*   … etc.
+*   InnoDB：使用最廣泛，支援交易，符合 ACID，支援列鎖定、崩潰復原及多版本併發控制，MySQL 5.5+ 預設引擎。
+*   MyISAM：速度快，不支援交易，提供表級鎖定，適合讀取密集型工作負載，常用於網站及資料倉儲，MySQL 5.1 以前預設。
+*   Archive：優化高速插入，插入時壓縮資料，不支援交易，適合儲存及檢索大量少被訪問的歷史存檔資料。
+*   Memory：資料表存在記憶體中，速度最快，支援表級鎖定，不支援交易，適合建立暫存表或快速查詢，資料在系統關機後會遺失。
+*   CSV：將資料儲存為 CSV 檔案，適合整合使用此格式的其他應用程式。
+*   … 等等。
 
-It is possible to migrate from one storage engine to another. But this migration locks tables for all operations and is not online, as it changes the physical layout of the data. It takes a long time and is generally not recommended. Hence, choosing the right storage engine at the beginning is important.
+可以從一種儲存引擎遷移到另一種，但此遷移會鎖定資料表的所有操作而非線上進行，因為它會改變資料的物理排列。遷移耗時且通常不建議，因此在開始時選擇合適的儲存引擎非常重要。
 
-General guideline is to use InnoDB unless you have a specific need for one of the other storage engines.
+一般建議除非有特殊需求，否則使用 InnoDB。
 
-Running `mysql> SHOW ENGINES;` shows you the supported engines on your MySQL server.
+執行 `mysql> SHOW ENGINES;` 可查看您 MySQL 伺服器支援的引擎清單。

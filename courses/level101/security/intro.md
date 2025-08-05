@@ -1,26 +1,26 @@
-# Security
+# 安全性
 
-## Prerequisites
+## 先決條件
 
-1. [Linux Basics](https://linkedin.github.io/school-of-sre/level101/linux_basics/intro/)
+1. [Linux 基礎](https://linkedin.github.io/school-of-sre/level101/linux_basics/intro/)
 
-2. [Linux Networking](https://linkedin.github.io/school-of-sre/level101/linux_networking/intro/)
-
-
-## What to expect from this course
-
-The course covers fundamentals of information security along with touching on subjects of system security, network & web security. This course aims to get you familiar with the basics of information security in day-to-day operations and then as an SRE develop the mindset of ensuring that security takes a front-seat while developing solutions. The course also serves as an introduction to common risks and best practices along with practical ways to find out vulnerable systems and loopholes which might become compromised if not secured.
+2. [Linux 網路](https://linkedin.github.io/school-of-sre/level101/linux_networking/intro/)
 
 
-## What is not covered under this course
+## 本課程預期學習內容
 
-The courseware is not an ethical hacking workshop or a very deep dive into the fundamentals of the problems. The course does not deal with hacking or breaking into systems but rather an approach on how to ensure you don’t get into those situations and also to make you aware of different ways a system can be compromised.
+本課程涵蓋資訊安全的基本原理，並涉及系統安全、網路與網頁安全等主題。此課程旨在讓您熟悉日常操作中資訊安全的基礎，並作為 SRE，培養在開發解決方案時優先考量安全性的思維。課程也作為常見風險與最佳實踐的入門介紹，並提供實務方法來發現可能遭受損害的系統與漏洞，避免未妥善保護而被攻破。
 
 
-## Course Contents
+## 本課程未涵蓋內容
 
-1. [Fundamentals](https://linkedin.github.io/school-of-sre/level101/security/fundamentals/)
-2. [Network Security](https://linkedin.github.io/school-of-sre/level101/security/network_security/)
-3. [Threats, Attacks & Defence](https://linkedin.github.io/school-of-sre/level101/security/threats_attacks_defences/)
-4. [Writing Secure Code & More](https://linkedin.github.io/school-of-sre/level101/security/writing_secure_code/)
-5. [Conclusion](https://linkedin.github.io/school-of-sre/level101/security/conclusion/)
+本教材並非道德駭客工作坊，也非深入探討問題基本原理的課程。課程不涉及駭入或入侵系統，而是提供一種確保您不會陷入此類情況的做法，並讓您了解系統可能遭受攻擊的不同方式。
+
+
+## 課程內容
+
+1. [基礎知識](https://linkedin.github.io/school-of-sre/level101/security/fundamentals/)
+2. [網路安全](https://linkedin.github.io/school-of-sre/level101/security/network_security/)
+3. [威脅、攻擊與防禦](https://linkedin.github.io/school-of-sre/level101/security/threats_attacks_defences/)
+4. [安全程式碼撰寫與更多](https://linkedin.github.io/school-of-sre/level101/security/writing_secure_code/)
+5. [結論](https://linkedin.github.io/school-of-sre/level101/security/conclusion/)

@@ -1,93 +1,94 @@
-## Introduction
+## 介紹
 
-Now we finally arrive at the most awaited part: running and managing containers at scale. So far, we have seen how Docker facilitates managing the life-cycle of containers and provides improved portability of applications. Docker does provide a solution for easing the deployment of containers on a large scale ( you can check out Docker Swarm, if interested) which integrates well with Docker containers. However, Kubernetes has become the de-facto tool for orchestrating the management of microservices (as containers) in large distributed environments. 
+現在，我們終於來到了最令人期待的部分：大規模運行和管理容器。到目前為止，我們已經看到 Docker 如何便利容器的生命週期管理並提升應用程式的可攜性。Docker 確實提供了一個解決方案來簡化大規模容器部署（如果有興趣，可以查看 Docker Swarm），它與 Docker 容器整合良好。然而，Kubernetes 已經成為在大型分散式環境中編排管理微服務（以容器形式）的事實標準工具。
 
-Let’s see the points of interest for us, SREs, to use container orchestration tools and Kubernetes in particular.
+讓我們看看對我們 SRE 們來說，使用容器編排工具，特別是 Kubernetes 的重點。
 
-## Motivation to use Kubernetes
+## 使用 Kubernetes 的動機
 
-- _Ease of usage_
+- _易用性_
 
-Though there is a steep learning curve associated with Kubernetes, once learnt , can be used as  a one stop tool to manage your microservices. With a single command it is possible to deploy full fledged production ready environments. The desired state of an application needs to be recorded as a YAML manifest and Kubernetes manages the application for you.
+雖然 Kubernetes 學習曲線較陡，但一旦學會，就可以作為一站式工具來管理微服務。只需一行命令，即可部署完整的、具備生產條件的環境。應用程式的期望狀態需以 YAML 清單紀錄，而 Kubernetes 會為你管理應用。
 
-- _Ensure optimum usage of resources_
+- _確保資源最佳化利用_
 
-We can specify limits on resources used by each container in a deployment. We can also specify our choice of nodes where Kubernetes can schedule nodes to be deployed (e.g microservices with high CPU consumption can be instructed to be deployed in high compute nodes).
+我們可以對每個部署中的容器使用的資源設置限制，也可以指定 Kubernetes 部署節點的篩選條件（例如，CPU 使用率高的微服務可指示部署在計算能力強的節點上）。
 
-- _Fault tolerance_
+- _容錯能力_
 
-Self-healing is built into basic resource types of Kubernetes. This removes the headache of designing a fault tolerant application system from scratch. This applies especially to stateless applications.
+Kubernetes 基本資源類型內建自我修復功能，不須從零設計容錯系統，特別適用於無狀態應用。
 
-- _Infrastructure agnostic_
+- _基礎設施無關性_
 
-Kubernetes does not have vendor lock-in. It can be set up in multiple cloud environments or in on-prem data centers. 
+Kubernetes 不綁定供應商，可在多種雲端環境或內部資料中心設置。
 
-- _Strong community support and documentation_
+- _強大的社群支持和文件_
 
-Kubernetes is open-source and many technologies like operators, service mesh etc. have been built by the community to manage and monitor Kubernetes-orchestrated applications better.
+Kubernetes 是開源的，社群已打造多項技術，如 operators、service mesh 等，用以更好地管理與監控 Kubernetes 編排的應用。
 
-- _Extensible and customisable_
+- _可擴充與自訂_
 
-We can build our custom resource definitions which fit our use case for managing applications and use Kubernetes to manage them (with custom controllers).
+我們可以建立符合需求的自訂資源定義，並使用 Kubernetes（搭配自訂控制器）來管理。
 
-You can check out [this article](https://hackernoon.com/why-and-when-you-should-use-kubernetes-8b50915d97d8) if you are more interested in this topic.
+如想深入了解，請參考[這篇文章](https://hackernoon.com/why-and-when-you-should-use-kubernetes-8b50915d97d8)。
 
-## Architecture of Kubernetes
+## Kubernetes 架構
 
-Here’s a diagram (from [the official Kubernetes documentation](https://kubernetes.io/docs/concepts/overview/components/)) containing different components which make Kubernetes work:
+以下是來自[官方 Kubernetes 文件](https://kubernetes.io/docs/concepts/overview/components/)的示意圖，包含 Kubernetes 運作所依賴的各組件：
 
 ![Kubernetes Architecture](images/kubernetes.png)
 
-Kubernetes components can be divided into two parts: [control plane components](https://kubernetes.io/docs/concepts/overview/components/#control-plane-components) and [data plane components](https://kubernetes.io/docs/concepts/overview/components/#node-components). 
+Kubernetes 組件可分成兩個部分：[控制平面組件](https://kubernetes.io/docs/concepts/overview/components/#control-plane-components)與[資料平面組件](https://kubernetes.io/docs/concepts/overview/components/#node-components)。
 
-A Kubernetes cluster consists of 1 or more host machines (called nodes) where the containers managed by Kubernetes are run. This constitutes the data plane (or node plane). 
+Kubernetes 叢集由 1 台或多台主機（稱為節點）組成，容器在此被 Kubernetes 管理與執行，這構成資料平面（或節點平面）。
 
-The brain of Kubernetes which responds to events from the node plane (e.g create a pod, replicas mismatch) and does the main orchestration is called the control plane. All control plane components are typically installed in a master node. This master node does not run any user containers.
+Kubernetes 的大腦是控制平面，負責回應節點平面事件（如建立 pod、調整副本數）並做主要編排。所有控制平面組件通常安裝於主節點，該節點不執行任何用戶容器。
 
-The Kubernetes components themselves are run as containers wrapped in Pods (which is the most basic kubernetes resource object).
+Kubernetes 組件本身皆以容器形式包裝在 Pods 中（Pods 是 Kubernetes 最基本的資源物件）。
 
-- Control plane components:
+- 控制平面組件：
   - kube-apiserver
   - etcd
   - kube-scheduler
   - kube-controller-manager
-- Node plane components
+- 節點平面組件：
   - kubelet
   - kube-proxy
 
-This workflow might help you understand the working on components better:
+以下的工作流程有助於你更好理解組件運作：
 
-- An SRE installs `kubectl` in their local machine. This is the client which interacts with the Kubernetes control plane (and hence the cluster).
+- SRE 在本機安裝 `kubectl`，這是與 Kubernetes 控制平面（也就是叢集）互動的客戶端。
 
-- They create a YAML file, called manifest which specifies the desired state of the resource (e.g a deployment names “frontend” needs 3 pods to always be running)
+- SRE 建立 YAML 檔案，稱為清單(manifest)，指定所需的資源狀態（例如，名為 “frontend” 的部署需要 3 個 Pod 始終運行）。
 
-- When they issue a command to create objects based in the YAML file, the kubectl CLI tool sends a rest API request to the `kube-apiserver`.
+- 當下達基於該 YAML 檔案建立物件的指令時，kubectl CLI 會向 `kube-apiserver` 發送 REST API 請求。
 
-- If the manifest is valid, it is stored as key value pairs in the `etcd` server on the control plane.
+- 若清單有效，該狀態將以鍵值對形式儲存於控制平面的 `etcd` 伺服器。
 
-- `kube-scheduler` chooses which nodes to put the containers on (basically schedules them)
+- `kube-scheduler` 選擇要將容器分配到哪些節點（也就是進行排程）。
 
-- There are controller processes (managed by `kube-controller` manager) which makes sure the current state of the cluster is equivalent to the desired state (here, 3 pods are indeed running in the cluster -> all is fine).
+- 由 `kube-controller-manager` 管理的控制器流程確保叢集的當前狀態與所需狀態一致（例如，確保 3 個 Pod 都在運行）。
 
-- On the node plane side, `kubelet` makes sure that pods are locally kept in running state.
+- 在節點平面端，`kubelet` 確保本地的 Pods 保持運行狀態。
 
 
-## LAB
+## 實驗室
 
-### Prerequisites
+### 先決條件
 
-The best way to start this exercise is to use a [Play with kubernetes lab](https://labs.play-with-k8s.com/). 
+開始練習的最佳方式是使用[Play with Kubernetes 實驗室](https://labs.play-with-k8s.com/)。
 
-The environment gets torn down after 4 hours. So make sure that you save your files if you want to resume them. For persistent kubernetes clusters, you can set it up either in your local (using [minikube](https://minikube.sigs.k8s.io/docs/start/)) or you can create a [kubernetes cluster in Azure](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal), GCP or any other cloud provider.
+該環境在 4 小時後會自動清除。若想繼續使用，請務必先保存你的檔案。若要建立持久化的 Kubernetes 叢集，可以在本地安裝（使用 [minikube](https://minikube.sigs.k8s.io/docs/start/)）或在 Azure、GCP 或其他雲端供應商建立[Kubernetes 叢集](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal)。
 
-Knowledge of YAML is nice to have for understanding the manifest files.
+了解 YAML 會有助於理解清單檔。
 
-### Hands-on
+### 實作練習
 
-#### Lab 1:
+#### 實驗室 1：
 
-We are going to create an object called Pod which is the most basic unit for running a container in Kubernetes. Here, we will create a pod called ‘nginx-pod” which contains an nginx container called “web”. We will also expose port 80 in the container so that we can interact with the nginx container.
-Save the below manifest in a file called nginx-pod.yaml
+我們將建立一個稱作 Pod 的物件，Pod 是 Kubernetes 執行容器的最基本單位。這裡，我們將建立一個名為 ‘nginx-pod’ 的 Pod，內含一個名為 “web” 的 nginx 容器，同時開放容器的 80 端口供互動使用。
+
+請將以下的清單儲存為 nginx-pod.yaml：
 
 ``` yaml
 apiVersion: v1                  #[1]
@@ -106,53 +107,52 @@ spec:                           #[6]
          protocol: TCP          #[13]
 ```
 
-Let’s very briefly understand what’s here:
+簡要說明：
 
-- `#[2]` - kind: The “kind” of object that’s being created. Here it is a Pod
-- `#[1]` - apiVersion: The apiVersion of the “Pod” resource. There could be minor changes in the values or keys in the yaml file if the version varies.
-- `#[3]` - metadata: The metadata section of the file where pod labels and name is given
-- `#[6]` - spec: This is the main part where the things inside the pod are defined
+- `#[2]` - kind：指定建立物件的種類，這裡是 Pod。
+- `#[1]` - apiVersion：該 Pod 資源的 API 版本，版本差異可能引起 YAML 格式細微改變。
+- `#[3]` - metadata：檔案的元資料區段，包含 Pod 名稱與標籤。
+- `#[6]` - spec：主要定義 Pod 內部內容。
 
-These are not random key value pairs! They have to be interpretable by the kubeapiserver. You can check which key value pairs are optional/mandatory using `kubectl explain pod` command. Do try it out!
+這些並非隨意的鍵值對！必須為 kube-apiserver 可辨識。可用 `kubectl explain pod` 查看各鍵是否為必要或可選。歡迎實驗看看！
 
-* Apply the manifest using the command `kubectl apply -f nginx-pod.yaml`. This creates the “nginx-pod” pod in the kubernetes cluster.
+* 使用指令 `kubectl apply -f nginx-pod.yaml` 來套用清單，於 Kubernetes 叢集中建立 “nginx-pod”。
 
 ![](images/kube1.png)
 
-* Verify that the pod is in running state using `kubectl get pod`.
+* 確認 Pod 狀態為 Running，使用 `kubectl get pod`。
 
 ![](images/kube2.png)
 
-It shows that nginx-pod is in Running state. 1/1 indicates that out of 1 out of 1 container(s) inside the pod is healthy.
+顯示 nginx-pod 處於 Running 狀態。1/1 表示一個容器中全部容器健康。
 
-* To check if the container running in “nginx-pod” is indeed “web” we do the `kubectl describe pod/nginx-pod` command. This gives a lengthy output with a detailed description of the pod and the events  that happened since the pod was created. This command is very useful for debugging.  The part we are concerned here is this:
+* 若想查看 nginx-pod 中執行的容器確實叫做 “web”，請執行 `kubectl describe pod/nginx-pod`。此指令輸出詳細的 Pod 描述及自建立以來的事件，對除錯十分重要。關鍵部分如下：
 
 ![](images/kube3.png)
 
-You can see “web” under the Containers section with Image as nginx. This is what we are looking for.
+可看到 Containers 區段下名稱為 “web”，映像檔為 nginx。
 
-* How do we access the welcome page of nginx “web” container? In the describe command you can see the IP address of the pod.  Each pod is assigned an IP address on creation.
+* 如何存取 nginx “web” 容器的歡迎頁？可在描述中找到 Pod IP。每個 Pod 建立時會分配 IP。
 
 ![](images/kube4.png)
 
-Here, this is 10.244.1.3 
+此例為 10.244.1.3。
 
-* Issue a curl request from the host `curl 10.244.1.3:80`. You will get the welcome page!
+* 從主機執行 `curl 10.244.1.3:80`，即可取得歡迎頁！
 
-* Let’s say we want to use a specific tag of nginx (say 1.20.1) in the same pod i.e we want to modify some property of the pod. You can try editing nginx-pod.yaml (image: nginx:1.20.1 in #[9])and reapplying (step 2.). It will create a new container in the same pod with the new image.
+* 若想使用指定 nginx 版本標籤（例如 1.20.1）取代同一 Pod，編輯 nginx-pod.yaml 中 `#[9]` 行為 `image: nginx:1.20.1`，再重新套用。系統會在同一 Pod 內建立新容器映像。
 
-  A container is created within the pod but the pod is the same. You can verify by checking the pod start time in describe command. It would show a much older time.
+  注意，容器在 Pod 內新增，但 Pod 是同一個物件。可透過 describe 查看 Pod 起始時間驗證，應該顯示較早時間。
 
+若要修改 1000 個 nginx Pods 的映像為 1.20.1，或同時創建 1000 個 nginx Pods，當然可以寫腳本，但 Kubernetes 提供了稱為 “deployment” 的資源類型，更方便管理大量部署。
 
-What if we want to change the image to 1.20.1 for 1000 nginx pods? Stepping a little back, what if we want to create 1000 nginx pods. Of course, we can write a script but Kubernetes already offers a resource type called “deployment” to manage large scale deployments better.
- 
 ---
- 
-#### Lab 2:
 
-We’ll go a step further to see how we can create more than a single instance of the nginx pod at the same time. 
+#### 實驗室 2：
 
-* We will first create Save the below manifest in a file called _nginx-deploy.yaml_
+讓我們更進一步，了解如何同時建立多個 nginx Pod。
+
+* 將以下清單儲存為 _nginx-deploy.yaml_：
 
 ``` yaml
 apiVersion: apps/v1
@@ -180,50 +180,49 @@ spec:
          protocol: "TCP"
 ```
 
-You can see that it is similar to a pod definition till spec (`#[1]` has Deployment as kind, api version is also different). 
+你會發現它與 Pod 定義相似，直到 `spec` 部分（`#[1]` 指定為 Deployment，API 版本也不同）。注意 `#[4]` 下的元資料和規格與實驗室 1 中 Pod 的對應部分幾乎一樣（可回頭確認），意味著我們正部署三個與實驗室 1 類似的 nginx Pods。
 
-Another thing interesting observation is the metadata and spec parts under `#[4]` is almost the same as the _metadata_ and _spec_ section under the Pod definition in Lab 1 (do go up and cross check this). What this implies is that we are deploying 3 nginx pods similar to Lab1.
-Also, the labels in matchLabels should be the same as labels under `#[4]`.
+`matchLabels` 中的標籤須與 `#[4]` 下的標籤一致。
 
-* Now apply the manifest using `kubectl apply -f nginx-deploy.yaml`
+* 執行：`kubectl apply -f nginx-deploy.yaml`。
 
 ![](images/kube5.png)
 
-
-Verify that 3 pods are indeed created.
+確認三個 Pod 確實被建立。
 
 ![](images/kube6.png)
 
-If you’re curious, check the output of `kubectl get deploy` and `kubectl describe deploy nginx-deployment`.
+若有興趣，可查看 `kubectl get deploy` 與 `kubectl describe deploy nginx-deployment`。
 
-* Delete one of the 3 pods using `kubectl delete pod <pod name>`. After a few seconds again do `kubectl get pod`.
+* 使用 `kubectl delete pod <pod 名稱>` 刪除其中一個 Pod，數秒後再執行 `kubectl get pod`。
 
 ![](images/kube7.png)
 
-You can see that a new pod is spawned to keep the total number of pods as 3 (see AGE 15s compared to others created 27 minutes ago)! This is a demonstration of how Kubernetes does fault tolerance.
+你會看到 Kubernetes 自動產生新的 Pod，以維持三個 Pod 的副本數（AGE 為 15 秒，較其他 27 分鐘前創建的 Pod 新）。這展示了 Kubernetes 的容錯能力。
 
-This is a property of Kubernetes deployment object (kill the pod from Lab1, it won’t be respawned :) )
+（同樣，Lab 1 中的單一 Pod 被刪除則不會自動重建，因為沒有 Deployment 管理！）
 
-* Let’s say we want to increase the number of pods to 10. Try out `kubectl scale deploy  --replicas=10 nginx-deployment`.
+* 想要將 Pod 數量增加到 10，可嘗試執行：`kubectl scale deploy --replicas=10 nginx-deployment`。
 
 ![](images/kube8.png)
 
-You can see that 3/10 pods are older than the rest. This means Kubernetes has added 7 extra pods to scale the deployment to 10. This shows how simple it is to scale up and scale down containers using Kubernetes. 
+你會看到 3/10 是較舊 Pod，Kubernetes 新增 7 個以擴展部署。這說明了 Kubernetes 擴縮容器的簡易性。
 
-* Let’s put all these pods behind a ClusterIP service. Execute `kubectl expose deployment nginx-deployment --name=nginx-service`. 
+* 接著，將這些 Pod 組成一個 ClusterIP 服務。執行：`kubectl expose deployment nginx-deployment --name=nginx-service`。
 
 ![](images/kube9.png)
 
-Curl the IP corresponding to 10.96.114.184. This curl request reaches one of the 10 pods in the deployment “nginx-deployment” in a round robin fashion. What happens when we execute the `expose` command is that a kubernetes `Service` is created of type Cluster IP so that all the pods behind this service are accessible through a single local IP (10.96.114.184, here).
+使用 curl 對應 10.96.114.184 執行請求，將會輪詢分配到 “nginx-deployment” 中的 10 個 Pod 之一。透過 `expose` 指令，Kubernetes 建立了一個型態為 ClusterIP 的 `Service`，讓多個 Pod 可以透過單一內部 IP 被訪問。
 
-It is possible to have a public IP instead (i.e an actual external load balancer) by creating a Service of type [LoadBalancer](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/). Do feel free to play around with it!
+也可建立型態為 [LoadBalancer](https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/) 的 Service 以取得公開 IP（類似外部負載均衡器），歡迎嘗試。
 
-The above exercises a pretty good exposure to using Kubernetes to manage large scale deployments. Trust me, the process is very similar to the above for operating 1000 deployments and containers too! While a Deployment object is good enough for managing stateless applications, Kubernetes provides other resources like Job, Daemonset, Cronjob, Statefulset etc. to manage special use cases. 
+以上練習已是使用 Kubernetes 管理大規模部署的基礎示例。操作 1000 個部署與容器的流程也極為相似。若要管理無狀態應用，Deployment 已足夠，但 Kubernetes 也提供 Job、Daemonset、CronJob、Statefulset 等資源以應對特殊需求。
 
-**eAdditional labs:**
-https://kubernetes.courselabs.co/ (Huge number of free follow-along exercises to play with Kubernetes)
+**額外實驗室：**  
+https://kubernetes.courselabs.co/ （大量免費跟隨練習，深入體驗 Kubernetes）
 
-## Advanced topics
-Most often than not, microservices orchestrated with Kubernetes contain dozens of instances of resources like deployment, services and configs. The manifests for these applications can be auto- generated with Helm templates and passed on as Helm charts. Similar to how we have PiPy for python packages there are remote repositories like Bitnami where Helm charts (e.g for setting up a production-ready Prometheus or Kafka with a single click) can be downloaded and used. [This is a good place to begin](https://www.digitalocean.com/community/tutorials/an-introduction-to-helm-the-package-manager-for-kubernetes).
+## 進階主題
 
-Kubernetes provides the flexibility to create our custom resources (similar to Deployment or the Pod which we saw). For instance, if you want to create 5 instances of a resource with kind as  SchoolOfSre you can! The only thing is that you have to write your custom resource for it. You can also build a custom operator for your custom resource to take certain actions on the resource instance. You can check [here](https://www.redhat.com/en/topics/containers/what-is-a-kubernetes-operator) for more information.
+在多數情況下，以 Kubernetes 編排的微服務包含數十個 Deployment、Service 與 Config 等資源。這些應用的清單可用 Helm 範本自動生成，並打包成 Helm Charts。類似 Python 的 PyPi，遠端倉庫如 Bitnami 提供大量 Helm Charts（比如一鍵部署生產級 Prometheus 或 Kafka），可直接下載使用。[這裡是入門好起點](https://www.digitalocean.com/community/tutorials/an-introduction-to-helm-the-package-manager-for-kubernetes)。
+
+Kubernetes 也允許建立自訂資源（類似我們看到的 Deployment 或 Pod）。舉例，若你想建立五個名為 SchoolOfSre 的自訂資源實例，完全可行！但你需要撰寫自訂資源定義。此外，也可打造自訂 Operator 來對資源實例執行特定動作。更多資訊請參考[這裡](https://www.redhat.com/en/topics/containers/what-is-a-kubernetes-operator)。

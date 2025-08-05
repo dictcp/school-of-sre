@@ -1,20 +1,20 @@
-# Git with GitHub
+# 使用 Git 與 GitHub
 
-Till now all the operations we did were in our local repo while git also helps us in a collaborative environment. GitHub is one place on the Internet where you can centrally host your git repos and collaborate with other developers.
+到目前為止，我們所做的所有操作都是在本地的倉庫中進行，而 Git 也幫助我們在協作環境中工作。GitHub 是網際網路上的一個地方，你可以在那裡集中託管你的 Git 倉庫，並與其他開發者協作。
 
-Most of the workflow will remain the same as we discussed, with addition of couple of things:
+大多數工作流程會與之前討論的一樣，附加了幾件事：
 
- 1. Pull: to pull latest changes from GitHub (the central) repo
- 2. Push: to push your changes to GitHub repo so that it's available to all people
+ 1. Pull（拉取）：從 GitHub（中央）倉庫拉取最新的變更
+ 2. Push（推送）：將你的變更推送到 GitHub 倉庫，讓所有人都可以取得
 
-GitHub has written nice guides and tutorials about this and you can refer to them here:
+GitHub 已經撰寫了很棒的指南與教學，你可以參考：
 
 - [GitHub Hello World](https://guides.github.com/activities/hello-world/)
 - [Git Handbook](https://guides.github.com/introduction/git-handbook/)
 
-## Hooks
+## Hooks（掛勾）
 
-Git has another nice feature called hooks. Hooks are basically scripts which will be called when a certain event happens. Here is where hooks are located:
+Git 有另一個很棒的功能叫做 hooks（掛勾）。Hooks 基本上是當特定事件發生時會被調用的腳本。hooks 位於這裡：
 
 ```bash
 $ ls .git/hooks/
@@ -22,20 +22,20 @@ applypatch-msg.sample     fsmonitor-watchman.sample pre-applypatch.sample     pr
 commit-msg.sample         post-update.sample        pre-commit.sample         pre-rebase.sample         prepare-commit-msg.sample
 ```
 
-Names are self-explanatory. These hooks are useful when you want to do certain things when a certain event happens. If you want to run tests before pushing code, you would want to setup `pre-push` hooks. Let's try to create a pre commit hook.
+名稱不言自明。當特定事件發生時，如果你想執行某些動作，這些 hooks 就很有用。比如你想在推送程式碼前先執行測試，你可以設定 `pre-push` hook。現在讓我們試著創建一個 pre-commit hook。
 
 ```bash
 $ echo "echo this is from pre commit hook" > .git/hooks/pre-commit
 $ chmod +x .git/hooks/pre-commit
 ```
 
-We basically create a file called `pre-commit` in hooks folder and make it executable. Now if we make a commit, we should see the message getting printed.
+我們基本上是在 hooks 資料夾中創建一個名為 `pre-commit` 的檔案，並賦予它執行權限。現在如果我們做 commit，應該會看到顯示該訊息。
 
 ```bash
 $ echo "sample file" > sample.txt
 $ git add sample.txt
 $ git commit -m "adding sample file"
-this is from pre commit hook     # <===== THE MESSAGE FROM HOOK EXECUTION
+this is from pre commit hook     # <===== 來自 hook 執行的訊息
 [master 9894e05] adding sample file
 1 file changed, 1 insertion(+)
 create mode 100644 sample.txt

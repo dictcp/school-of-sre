@@ -1,151 +1,52 @@
 ##
 
-# Observability
+# 可觀察性
 
-Engineers often use observability when referring to building reliable
-systems. *Observability* is a term derived from control theory, it is a
-measure of how well internal states of a system can be inferred from
-knowledge of its external outputs. Service infrastructures used on a
-daily basis are becoming more and more complex; proactive monitoring
-alone is not sufficient to quickly resolve issues causing application
-failures. With monitoring, you can keep known past failures from
-recurring, but with a complex service architecture, many unknown factors
-can cause potential problems. To address such cases, you can make the
-service observable. An observable system provides highly granular
-insights into the implicit failure modes. In addition, an observable
-system furnishes ample context about its inner workings, which unlocks
-the ability to uncover deeper systemic issues.
+工程師在談論建立可靠系統時，經常會使用「可觀察性（Observability）」這個詞。*可觀察性*源自控制理論，是指透過對系統外部輸出的了解，可以推斷系統內部狀態的能力。現今日常使用的服務基礎架構越來越複雜；單靠主動監控已不足以快速解決導致應用失效的問題。透過監控，你可以防止已知的過往失誤重複發生，但在複雜的服務架構下，許多未知因素可能導致潛在問題。為了解決這類情況，可以讓服務具備可觀察性。一個具備可觀察性的系統能夠提供對隱含失效模式的高度細粒度洞察。此外，具備可觀察性的系統還會提供大量關於內部運作的上下文資訊，從而促使你得以發現更深層的系統問題。
 
-Monitoring enables failure detection; observability helps in gaining a
-better understanding of the system. Among engineers, there is a common
-misconception that monitoring and observability are two different
-things. Actually, observability is the superset to monitoring; that is,
-monitoring improves service observability. The goal of observability is
-not only to detect problems, but also to understand where the issue is
-and what is causing it. In addition to metrics, observability has two
-more pillars: logs and traces, as shown in Figure 9. Although these
-three components do not make a system 100 percent observable, these are
-the most important and powerful components that give a better
-understanding of the system. Each of these pillars has its flaws, which
-are described in [Three Pillars with Zero
-Answers](https://medium.com/lightstephq/three-pillars-with-zero-answers-2a98b36358b8).
+監控可協助偵測故障；而可觀察性則幫助更加深入了解系統。在工程師中間，常有一個誤解，認為監控和可觀察性是兩個不同的概念。實際上，可觀察性是監控的超集合，也就是說，監控提升了服務的可觀察性。可觀察性的目標不只是偵測問題，更在於了解問題在哪裡及其原因。除了指標（metrics）外，可觀察性還有另外兩大支柱：日誌（logs）和追蹤（traces），如圖9所示。雖然這三個組件並不會讓系統達到百分之百的可觀察性，但它們是提供更好系統理解的最重要且強大的組件。每個支柱都有其缺陷，詳情請參考[Three Pillars with Zero Answers](https://medium.com/lightstephq/three-pillars-with-zero-answers-2a98b36358b8)。
 
-![Three pillars of observability](images/image7.png) <p align="center"> Figure 9: 
-Three pillars of observability </p>
+![三大可觀察性支柱](images/image7.png) <p align="center"> 圖9：三大可觀察性支柱 </p>
 
-Because we have covered metrics already, let's look at the other two
-pillars (logs and traces).
+既然我們已經探討過指標，接下來來看看另外兩個支柱（日誌與追蹤）。
 
-#### Logs 
+#### 日誌
 
-Logs (often referred to as *events*) are a record of activities
-performed by a service during its run time, with a corresponding
-timestamp. Metrics give abstract information about degradations in a
-system, and logs give a detailed view of what is causing these
-degradations. Logs created by the applications and infrastructure
-components help in effectively understanding the behavior of the system
-by providing details on application errors, exceptions, and event
-timelines. Logs help you to go back in time to understand the events
-that led to a failure. Therefore, examining logs is essential to
-troubleshooting system failures.
+日誌（通常稱作*事件*）是服務運行期間所執行活動的紀錄，並帶有相應的時間戳。指標提供系統退化的抽象資訊，而日誌提供導致這些退化的詳細原因。由應用程式和基礎設施元件產生的日誌，有助於有效理解系統行為，包含應用錯誤、異常及事件時間線等細節。日誌讓你能回溯時間，了解導致錯誤的事件。因此，檢查日誌是故障排查的重要步驟。
 
-Log processing involves the aggregation of different logs from
-individual applications and their subsequent shipment to central
-storage. Moving logs to central storage helps to preserve the logs, in
-case the application instances are inaccessible, or the application
-crashes due to a failure. After the logs are available in a central
-place, you can analyze the logs to derive sensible information from
-them. For audit and compliance purposes, you archive these logs on the
-central storage for a certain period of time. Log analyzers fetch useful
-information from log lines, such as request user information, request
-URL (feature), and response headers (such as content length) and
-response time. This information is grouped based on these attributes and
-made available to you through a visualization tool for quick
-understanding.
+日誌處理包含將不同應用程式的日誌聚合，並將其發送至集中式儲存。搬移日誌到中央儲存能保存日誌，以防應用實例無法存取或因故障崩潰。當日誌集中保存後，可進一步分析日誌，從中擷取有意義的資訊。為了稽核和合規目的，在中央儲存中會保存一定期間的日誌。日誌分析器可以從日誌行中擷取有用資訊，如請求用戶資料、請求的 URL（功能）與回應標頭（如內容長度）及回應時間。這些資訊會根據屬性分組，並透過視覺化工具快速提供理解結果。
 
-You might be wondering how this log information helps. This information
-gives a holistic view of activities performed on all the involved
-entities. For example, let's say someone is performing a DoS (denial of
-service) attack on a web application. With the help of log processing,
-you can quickly look at top client IPs derived from access logs and
-identify where the attack is coming from.
+你可能會好奇這些日誌資訊有何助益。這些資料提供全貌，呈現所有相關實體的活動。例如，假設有人對一個 Web 應用發起拒絕服務攻擊（DoS）。透過日誌處理，你可以快速從訪問日誌中檢視最多的客戶端 IP，從而辨識攻擊來源。
 
-Similarly, if a feature in an application is causing a high error rate
-when accessed with a particular request parameter value, the results of
-log analysis can help you to quickly identify the misbehaving parameter
-value and take further action.
+同理，如果應用的某個功能在以特定請求參數值訪問時導致高錯誤率，日誌分析結果可以幫助你快速找出異常的參數值並採取後續措施。
 
-![Log processing and analysis using ELK stack](images/image4.jpg) 
-<p align="center"> Figure 10: Log processing and analysis using ELK stack </p>
+![使用 ELK 堆疊進行日誌處理與分析](images/image4.jpg) 
+<p align="center"> 圖10：使用 ELK 堆疊進行日誌處理與分析 </p>
 
-Figure 10 shows a log processing platform using ELK (Elasticsearch,
-Logstash, Kibana), which provides centralized log processing. Beats is a
-collection of lightweight data shippers that can ship logs, audit data,
-network data, and so on over the network. In this use case specifically,
-we are using Filebeat as a log shipper. Filebeat watches service log
-files and ships the log data to Logstash. Logstash parses these logs and
-transforms the data, preparing it to store on Elasticsearch. Transformed
-log data is stored on Elasticsearch and indexed for fast retrieval.
-Kibana searches and displays log data stored on Elasticsearch. Kibana
-also provides a set of visualizations for graphically displaying
-summaries derived from log data.
+圖10展示使用 ELK（Elasticsearch、Logstash、Kibana）的日誌處理平台，提供集中式日誌處理。Beats 是一組輕量級的資料發送器，可將日誌、稽核資料、網路資料等透過網路傳輸。本實例中，我們使用 Filebeat 作為日誌發送器，監控服務日誌檔並將資料送往 Logstash。Logstash 解析日誌並轉換資料，使其適合儲存於 Elasticsearch。轉換後的日誌資料存放在 Elasticsearch，並建立索引以便快速檢索。Kibana 則搜尋並顯示 Elasticsearch 中的日誌資料，並提供一組視覺化工具，圖形化呈現從日誌資料彙整的摘要。
 
-Storing logs is expensive. And extensive logging of every event on the
-server is costly and takes up more storage space. With an increasing
-number of services, this cost can increase proportionally to the number
-of services.
+儲存日誌成本不低。並且對伺服器上所有事件做廣泛日誌記錄，會造成高昂成本及佔用大量儲存空間。隨著服務數量增加，此成本會按比例上升。
 
-#### Tracing
+#### 追蹤
 
-So far, we covered the importance of metrics and logging. Metrics give
-an abstract overview of the system, and logging gives a record of events
-that occurred. Imagine a complex distributed system with multiple
-microservices, where a user request is processed by multiple
-microservices in the system. Metrics and logging give you some
-information about how these requests are being handled by the system,
-but they fail to provide detailed information across all the
-microservices and how they affect a particular client request. If a slow
-downstream microservice is leading to increased response times, you need
-to have detailed visibility across all involved microservices to
-identify such microservice. The answer to this need is a request tracing
-mechanism.
+到目前為止，我們已談過指標與日誌的重要性。指標提供系統的抽象概覽，日誌記錄了發生的事件。試想一個包含多個微服務的複雜分散式系統，一個使用者請求需要在系統內多個微服務間處理。指標和日誌能給你部分有關如何處理這些請求的資訊，但無法提供跨微服務的詳細資料，及其如何影響特定的客戶請求。如果一個下游微服務反應遲緩導致回應時間增加，你就需要詳細的可見性橫跨所有相關微服務，以辨識該微服務。這就需要請求追蹤機制。
 
-A trace is a series of spans, where each span is a record of events
-performed by different microservices to serve the client's request. In
-simple terms, a trace is a log of client-request serving derived from
-various microservices across different physical machines. Each span
-includes span metadata such as trace ID and span ID, and context, which
-includes information about transactions performed.
+追蹤由一系列 span 組成，每個 span 紀錄不同微服務為回應客戶請求所執行的事件。簡單來說，追蹤是從多個微服務跨不同物理主機收集而來的客戶請求服務日誌。每個 span 包含 span 的元資料（如 trace ID 與 span ID），以及上下文資訊，包含交易相關資料。
 
-![Trace and spans for a URL shortener request](images/image3.jpg) 
-<p align="center"> Figure 11: Trace and spans for a URL shortener request </p>
+![URL 縮短服務請求的追蹤與 span](images/image3.jpg) 
+<p align="center"> 圖11：URL 縮短服務請求的追蹤與 span </p>
 
-Figure 11 is a graphical representation of a trace captured on the [URL
-shortener](https://linkedin.github.io/school-of-sre/level101/python_web/url-shorten-app/)
-example we covered earlier while learning Python.
+圖11是先前我們在 Python 學習範例中的 [URL 縮短服務](https://linkedin.github.io/school-of-sre/level101/python_web/url-shorten-app/)追蹤的圖形展示。
 
-Similar to monitoring, the tracing infrastructure comprises a few
-modules for collecting traces, storing them, and accessing them. Each
-microservice runs a tracing library that collects traces in the
-background, creates in-memory batches, and submits the tracing backend.
-The tracing backend normalizes received trace data and stores it on
-persistent storage. Tracing data comes from multiple different
-microservices; therefore, trace storage is often organized to store data
-incrementally and is indexed by trace identifier. This organization
-helps in the reconstruction of trace data and in visualization. Figure
-12 illustrates the anatomy of the distributed system.
+與監控類似，追蹤基礎架構包含多個模組用於收集追蹤、儲存追蹤和存取追蹤。每個微服務執行追蹤庫，在背景收集追蹤，建立記憶體內批次並提交給追蹤後端。追蹤後端會正規化接收到的追蹤資料並存入持久儲存。追蹤資料來自多個微服務，因此追蹤儲存通常以遞增方式儲存並依照追蹤識別碼建立索引。此管理方式有助於重建追蹤資料並進行視覺化。圖12說明了分散式系統追蹤的構造。
 
-![Anatomy of distributed tracing](images/image5.jpg)
-<p align="center"> Figure 12: Anatomy of distributed tracing </p>
+![分散式追蹤架構](images/image5.jpg)
+<p align="center"> 圖12：分散式追蹤架構 </p>
 
-Today a set of tools and frameworks are available for building
-distributed tracing solutions. Following are some of the popular tools:
+目前已有一套工具與框架可用來打造分散式追蹤解決方案。以下是一些熱門工具：
 
--   [OpenTelemetry](https://opentelemetry.io/): Observability
-     framework for cloud-native software
+-   [OpenTelemetry](https://opentelemetry.io/)：雲原生軟體的可觀察性框架
 
--   [Jaeger](https://www.jaegertracing.io/): Open-source
-     distributed tracing solution
+-   [Jaeger](https://www.jaegertracing.io/)：開源分散式追蹤方案
 
--   [Zipkin](https://zipkin.io/): Open-source distributed tracing
-     solution
+-   [Zipkin](https://zipkin.io/)：開源分散式追蹤方案

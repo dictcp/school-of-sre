@@ -1,220 +1,225 @@
-# Part III: Threats, Attacks & Defense
+# 第三部分：威脅、攻擊與防禦
 
-## DNS Protection
+## DNS 保護
 
-### Cache Poisoning Attack
+### 暫存污染攻擊
 
-- Since DNS responses are cached, a quick response can be provided for repeated translations.
-DNS negative queries are also cached, e.g., misspelt words, and all cached data periodically times out.
-Cache poisoning is an issue in what is known as pharming. This term is used to describe a hacker’s attack in which a website’s traffic is redirected to a bogus website by forging the DNS mapping. In this case, an attacker attempts to insert a fake address record for an Internet domain into the DNS.
-If the server accepts the fake record, the cache is poisoned and subsequent requests for the address of the domain are answered with the address of a server controlled by the attacker. As long as the fake entry is cached by the server, browsers or e-mail servers will automatically go to the address provided by the compromised DNS server. 
-The typical time-to-live (TTL) for cached entries is a couple of hours, thereby permitting ample time for numerous users to be affected by the attack.
+- 由於 DNS 回應會被暫存，可以針對重複的轉譯提供更快速的回應。DNS 的負查詢也會被暫存，例如拼字錯誤的詞彙，且所有暫存資料會定期過期。
+- 暫存污染問題出現在所謂的「藥劑農業（pharming）」攻擊中。此術語用於描述駭客透過偽造 DNS 映射，將網站流量重新導向到偽造網站的攻擊。在此情況下，攻擊者試圖在 DNS 中插入一條假的網域地址記錄。
+- 若伺服器接受了假的記錄，暫存即遭污染，後續對該網域地址的請求將回傳由攻擊者控制的伺服器地址。只要該假條目被伺服器暫存，瀏覽器或電子郵件伺服器將自動導向遭竄改的 DNS 伺服器提供的地址。
+- 暫存條目的典型存活時間（TTL）為幾個小時，足以影響大量使用者。
 
-### DNSSEC (Security Extension)
+### DNSSEC（安全擴展）
 
-- The long-term solution to these DNS problems is authentication. If a resolver cannot distinguish between valid and invalid data in a response, then add source authentication to verify that the data received in response is equal to the data entered by the zone administrator.
-- DNS Security Extensions (DNSSEC) protects against data spoofing and corruption and provides mechanisms to authenticate servers and requests, as well as mechanisms to establish authenticity and integrity.
-- When authenticating DNS responses, each DNS zone signs its data using a private key. It is recommended that this signing be done offline and in advance. The query for a particular record returns the requested resource record set (RRset) and signature (RRSIG) of the requested resource record set. The resolver then authenticates the response using a public key, which is pre-configured or learned via a sequence of key records in the DNS hierarchy.
-- The goals of DNSSEC are to provide authentication and integrity for DNS responses without confidentiality or DDoS protection.
+- 長遠解決 DNS 問題的方法是認證。若解析器無法分辨有效或無效的回應資料，則需加入來源認證來驗證所接收資料與區域管理者所輸入資料一致。
+- DNS 安全擴展（DNSSEC）防範資料偽造與破壞，且提供認證伺服器和請求機制，以及確保真實性與完整性的機制。
+- 在認證 DNS 回應時，每個 DNS 區域會以私鑰對資料簽章。建議預先離線進行此簽章。查詢特定記錄會回傳請求的資源記錄集（RRset）以及其簽章（RRSIG）。解析器再利用預先設定或透過 DNS 階層鍵記錄學習的公鑰進行認證。
+- DNSSEC 的目標是提供 DNS 回應的認證與完整性，不包含機密性或 DDoS 防護。
 
 ### BGP
 
-- BGP stands for border gateway protocol. It is a routing protocol that exchanges routing information among multiple Autonomous Systems (AS)
-    - An Autonomous System is a collection of routers or networks with the same network policy usually under single administrative control.
-- BGP tells routers which hop to use in order to reach the destination network.
-- BGP is used for both communicating information among routers in an AS (interior) and between multiple ASes (exterior).
+- BGP 即邊界閘道協定（Border Gateway Protocol），是一種在多個自治系統（AS）間交換路由資訊的路由協定。
+    - 自治系統指擁有相同網路政策且通常由單一行政機構控制的一組路由器或網路。
+- BGP 指示路由器如何選擇下一跳以達到目標網路。
+- BGP 用於自治系統內部路由器間（內部）及多自治系統之間（外部）的資訊傳遞。
 
   ![image23](images/image23.png)
 
-## How BGP Works
+## BGP 運作原理
 
-- BGP is responsible for finding a path to a destination router & the path it chooses should be the shortest and most reliable one.
-- This decision is done through a protocol known as Link state. With the link-state protocol, each router broadcasts to all other routers in the network the state of its links and IP subnets. Each router then receives information from the other routers and constructs a complete topology view of the entire network. The next-hop routing table is based on this topology view.
-- The link-state protocol uses a famous algorithm in the field of computer science, Dijkstra’s shortest path algorithm:
-    - We start from our router considering the path cost to all our direct neighbours.
-    - The shortest path is then taken
-    - We then re-look at all our neighbours that we can reach and update our link state table with the cost information. We then continue taking the shortest path until every router has been visited.
+- BGP 負責尋找到達目的地路由器的路徑，且選擇的路徑應為最短且最可靠者。
+- 此決策透過一種稱為連結狀態（Link state）的協定完成。在連結狀態協定中，每個路由器向所有其他路由器廣播其連結與 IP 子網狀態，各路由器收到資料後建立完整的網路拓撲視圖，下一跳路由表基於此視圖。
+- 連結狀態協定使用電腦科學領域著名的 Dijkstra 最短路徑演算法：
+    - 從本路由器出發，先考量到直連鄰居的路徑成本。
+    - 接著選擇最短路徑。
+    - 然後重新檢視可到達的鄰居，更新連結狀態表的成本資訊，持續依此方式直到所有路由器皆被遍歷。
 
-## BGP Vulnerabilities
+## BGP 弱點
 
-- By corrupting the BGP routing table, we are able to influence the direction traffic flows on the Internet! This action is known as BGP hijacking.
-- Injecting bogus route advertising information into the BGP-distributed routing database by malicious sources, accidentally or routers can disrupt Internet backbone operations. 
-- Blackholing traffic:
-  - Blackhole route is a network route, i.e., routing table entry, that goes nowhere and packets matching the route prefix are dropped or ignored. Blackhole routes can only be detected by monitoring the lost traffic.
-  - Blackhole routes are the best defence against many common viral attacks where the traffic is dropped from infected machines to/from command & control hosts.
-  - Infamous BGP Injection attack on Youtube
+- 透過破壞 BGP 路由表，我們即可影響 internet 上的流量路徑！此行為稱為 BGP 劫持。
+- 惡意來源、錯誤或路由器注入虛假路由廣告資訊至 BGP 分散式路由資料庫，可能干擾 Internet 主幹運作。
+- 黑洞流量：
+  - 黑洞路由為通往「無處」的網路路由，符合此路由前綴的封包會被丟棄或忽略。黑洞路由僅能透過監控流失流量偵測。
+  - 黑洞路由是對抗病毒攻擊的最佳防禦手段，病毒會讓流量從被感染機器往返指揮控制主機時被丟棄。
+  - 著名的 BGP 注入攻擊曾發生在 Youtube。
 
-- Ex: In 2008, Pakistan decided to block YouTube by creating a BGP route that led into a black hole. Instead, this routing information got transmitted to a Hong Kong ISP and from there accidentally got propagated to the rest of the world meaning millions were routed through to this black hole and therefore unable to access YouTube.
-- Potentially, the greatest risk to BGP occurs in a denial-of-service attack in which a router is flooded with more packets than it can handle. Network overload and router resource exhaustion happen when the network begins carrying an excessive number of BGP messages, overloading the router control processors, memory, routing table and reducing the bandwidth available for data traffic.
-- Refer: <https://medium.com/bugbountywriteup/bgp-the-weak-link-in-the-internet-what-is-bgp-and-how-do-hackers-exploit-it-d899a68ba5bb>
-- Router flapping is another type of attack. Route flapping refers to repetitive changes to the BGP routing table, often several times a minute. Withdrawing and re-advertising at a high-rate can cause a serious problem for routers since they propagate the announcements of routes. If these route flaps happen fast enough, e.g., 30-50 times per second, the router becomes overloaded, which eventually prevents convergence on valid routes. The potential impact for Internet users is a slowdown in message delivery, and in some cases, packets may not be delivered at all.
+- 範例：2008 年巴基斯坦企圖封鎖 YouTube，創建一條導向黑洞的 BGP 路由，卻意外被香港 ISP 傳播到全球，數百萬人皆因而被導入黑洞，無法存取 YouTube。
+- BGP 最大風險是阻斷攻擊，其中路由器被大量封包淹沒，導致資源耗盡。當網路承載過多 BGP 訊息，會使路由器控制處理器、記憶體、路由表過載，減少資料流量頻寬。
+- 參考資料：<https://medium.com/bugbountywriteup/bgp-the-weak-link-in-the-internet-what-is-bgp-and-how-do-hackers-exploit-it-d899a68ba5bb>
+- 路由振蕩（router flapping）也是一種攻擊，指 BGP 路由表在短時間多次變更（例如每秒 30-50 次），撤回和重新公告路由。快速變動會造成路由器過載，阻礙收斂有效路由，對使用者來說導致訊息傳送延遲或封包遺失。
 
-BGP Security
+### BGP 安全措施
 
-- Border Gateway Protocol Security recommends the use of BGP peer authentication since it is one of the strongest mechanisms for preventing malicious activity.
-    - The authentication mechanisms are Internet Protocol Security (IPsec) or BGP MD5.
-- Another method, known as prefix limits, can be used to avoid filling router tables. In this approach, routers should be configured to disable or terminate a BGP peering session, and issue warning messages to administrators when a neighbour sends in excess of a preset number of prefixes.
-- IETF is currently working on improving this space
+- 建議使用 BGP 對等認證（peer authentication）作為防止惡意行為的強力機制。
+    - 認證機制包括網路協定安全性（IPsec）或 BGP MD5 驗證。
+- 另一方法為前綴限制（prefix limits），防止路由表填滿。路由器可設定在鄰居超過預設路由前綴數量時，停用或終止 BGP 對等連線並發出警示。
+- IETF 正積極改進此領域技術。
 
-## Web-Based Attacks
+## 網頁攻擊
 
-### HTTP Response Splitting Attacks
+### HTTP 回應分割攻擊
 
-- HTTP response splitting attack may happen where the server script embeds user data in HTTP response headers without appropriate sanitation.
-- This typically happens when the script embeds user data in the redirection URL of a redirection response (HTTP status code 3xx), or when the script embeds user data in a cookie value or name when the response sets a cookie.
-- HTTP response splitting attacks can be used to perform web cache poisoning and cross-site scripting (XSS) attacks.
-- HTTP response splitting is the attacker’s ability to send a single HTTP request that forces the webserver to form an output stream, which is then interpreted by the target as two HTTP responses instead of one response.
+- HTTP 回應分割攻擊發生在伺服器腳本未妥善淨化即嵌入用戶資料至 HTTP 回應標頭時。
+- 常見於將用戶資料嵌入重定向回應（HTTP 狀態碼 3xx）的 URL 中，或在回應設定 Cookie 時將用戶資料嵌入 Cookie 名稱或值。
+- HTTP 回應分割可被用於網頁緩存投毒及跨網站腳本（XSS）攻擊。
+- 攻擊者藉由單一 HTTP 請求強迫網頁伺服器產生兩個 HTTP 回應輸出流，目標將此視為兩份回應而非一份。
 
-### Cross-Site Request Forgery (CSRF or XSRF)
+### 跨站請求偽造（CSRF 或 XSRF）
 
-- A Cross-Site Request Forgery attack tricks the victim’s browser into issuing a command to a vulnerable web application.
-- Vulnerability is caused by browsers automatically including user authentication data, session ID, IP address, Windows domain credentials, etc. with each request.
-- Attackers typically use CSRF to initiate transactions such as transfer funds, login/logout user, close account, access sensitive data, and change account details.
-- The vulnerability is caused by web browsers that automatically include credentials with each request, even for requests caused by a form, script, or image on another site. CSRF can also be dynamically constructed as part of a payload for a cross-site scripting attack.
-- All sites relying on automatic credentials are vulnerable. Popular browsers cannot prevent cross-site request forgery. Logging out of high-value sites as soon as possible can mitigate CSRF risk. It is recommended that a high-value website must require a client to manually provide authentication data in the same HTTP request used to perform any operation with security implications. Limiting the lifetime of session cookies can also reduce the chance of being used by other malicious sites.
-- OWASP recommends website developers include a required security token in HTTP requests associated with sensitive business functions in order to mitigate CSRF attacks.
+- 跨站請求偽造攻擊誘騙受害者瀏覽器向脆弱網站發出指令。
+- 脆弱性源自瀏覽器會自動包含用戶認證資料、會話 ID、IP 位址、Windows 網域憑證等資訊於每次請求中。
+- 攻擊者常藉 CSRF 發起交易如轉帳、用戶登入/登出、關閉帳戶、存取敏感資料及更改帳戶細節。
+- 瀏覽器自動包含憑證導致此脆弱性，且 CSRF 可與跨站腳本結合產生動態載荷。
+- 所有依賴自動憑證的網站皆易受攻擊。流行瀏覽器無法完全防範 CSRF，盡快登出高價值網站可緩解風險。建議高價值網站要求用戶在同一 HTTP 請求中手動提供認證資料，並限制會話 Cookie 的有效期限以降低風險。
+- OWASP 建議網站開發者為敏感操作請求加入必需的安全 token 以防 CSRF。
 
-### Cross-Site Scripting (XSS) Attacks
+### 跨站腳本（XSS）攻擊
 
-- Cross-Site Scripting occurs when dynamically generated web pages display user input, such as login information, that is not properly validated, allowing an attacker to embed malicious scripts into the generated page and then execute the script on the machine of any user that views the site.
-- If successful, Cross-Site Scripting vulnerabilities can be exploited to manipulate or steal cookies, create requests that can be mistaken for those of a valid user, compromise confidential information, or execute malicious code on end-user systems.
-- Cross-Site Scripting (XSS or CSS) attacks involve the execution of malicious scripts on the victim’s browser. The victim is simply a user’s host and not the server. XSS results from a failure to validate user input by a web-based application.
+- 跨站腳本發生於動態產生的網頁顯示未經妥善驗證的用戶輸入資料，如登入資訊，攻擊者據此植入惡意腳本並於任何瀏覽此頁的用戶瀏覽器上執行。
+- 成功利用 XSS 漏洞可操弄或竊取 Cookie，偽造有效用戶請求，洩露機密資訊，甚至執行惡意程式碼。
+- XSS 攻擊發生於受害者瀏覽器端，因網頁應用未完成用戶輸入驗證造成。
 
-### Document Object Model (DOM) XSS Attacks
+### DOM XSS 攻擊
 
-- The Document Object Model (DOM) based XSS does not require the webserver to receive the XSS payload for a successful attack. The attacker abuses the runtime by embedding their data on the client-side. An attacker can force the client (browser) to render the page with parts of the DOM controlled by the attacker. 
-- When the page is rendered and the data is processed by the page, typically by a client-side HTML-embedded script such as JavaScript, the page’s code may insecurely embed the data in the page itself, thus delivering the cross-site scripting payload. There are several DOM objects which can serve as an attack vehicle for delivering malicious script to victims browser.
+- 基於文件物件模型（DOM）的 XSS 不需網頁伺服器收到 XSS 負載；攻擊者直接在客戶端嵌入資料操控 DOM。
+- 當頁面渲染並處理客戶端 HTML 內嵌腳本比如 JavaScript 時，頁面程式碼若不安全地嵌入此資料，即釋放跨站腳本負載。多個 DOM 物件可用作攻擊載具。
 
-### Clickjacking
+### 點擊劫持
 
-- The technique works by hiding malicious link/scripts under the cover of the content of a legitimate site.
-- Buttons on a website actually contain invisible links, placed there by the attacker. So, an individual who clicks on an object they can visually see is actually being duped into visiting a malicious page or executing a malicious script.
-- When mouseover is used together with clickjacking, the outcome is devastating. Facebook users have been hit by a clickjacking attack, which tricks people into “liking” a particular Facebook page, thus enabling the attack to spread since Memorial Day 2010.
-- There is not yet effective defence against clickjacking, and disabling JavaScript is the only viable method.
+- 此技巧將惡意連結或腳本藏於正當網站內容之下。
+- 網站按鈕實際上隱藏著看不見的連結，使用者點擊可視對象時，實則被欺騙前往惡意頁面或執行惡意腳本。
+- Facebook 用戶曾遭遇點擊劫持，誘使用戶點選「按讚」特定頁面，助長惡意攻擊自 2010 年陣亡紀念日後擴散。
+- 尚未有有效防禦方法，唯一可行的方式是禁用 JavaScript。
 
-## DataBase Attacks & Defenses
+## 資料庫攻擊與防禦
 
-### SQL injection Attacks
+### SQL 注入攻擊
 
-- It exploits improper input validation in database queries.
-- A successful exploit will allow attackers to access, modify, or delete information in the database.
-- It permits attackers to steal sensitive information stored within the backend databases of affected websites, which may include such things as user credentials, email addresses, personal information, and credit card numbers.
+- 利用資料庫查詢的輸入驗證不足。
+- 成功攻擊能允許入侵者存取、修改或刪除資料庫中資訊。
+- 可偷取後端資料庫中敏感資料，如用戶憑證、電子郵件地址、個人訊息及信用卡號。
 
 ```SQL
 SELECT USERNAME,PASSWORD from USERS where USERNAME='<username>' AND PASSWORD='<password>';
 ```
-Here, the username & password is the input provided by the user. Suppose an attacker gives the input as ` OR '1'='1' ` in both fields. Therefore the SQL query will look like:
+此處 username 與 password 是使用者輸入。若攻擊者在兩欄位輸入 ` OR '1'='1' `，SQL 查詢將成為：
 
 ```SQL
 SELECT USERNAME,PASSWORD from USERS where USERNAME='' OR '1'='1' AND PASSOWRD='' OR '1'='1';
 ```
-This query results in a true statement & the user gets logged in. This example depicts the most basic type of SQL injection.
+此查詢結果永遠為真，使用者直接登入。此為最基本的 SQL 注入範例。
 
+### 抵禦 SQL 注入攻擊
 
-### SQL Injection Attack Defenses
-
-- SQL injection can be protected by filtering the query to eliminate malicious syntax, which involves the employment of some tools in order to (a) scan the source code.
-- In addition, the input fields should be restricted to the absolute minimum, typically anywhere from 7-12 characters, and validate any data, e.g., if a user inputs an age, make sure the input is an integer with a maximum of 3 digits.
+- 可藉由過濾查詢以消除惡意語法，比如利用工具掃描原始碼。
+- 輸入欄位應限制在最小，通常 7-12 字元以內，並驗證資料型態，如輸入年齡必須為最多 3 位數字的整數。
 
 ## VPN
 
-A virtual private network (VPN) is a service that offers a secure, reliable connection over a shared public infrastructure such as the Internet. Cisco defines a VPN as an encrypted connection between private networks over a public network. To date, there are three types of VPNs:
+虛擬私有網路（VPN）是一種服務，透過公用網路（例如 Internet）提供安全可靠的連線。Cisco 定義 VPN 為私有網路間透過加密的連結。至今 VPN 分為三種：
 
-- Remote access
-- Site-to-site
-- Firewall-based
+- 遠端存取
+- 站對站
+- 防火牆基礎
 
-## Security Breach
+## 資安事件
 
-In spite of the most aggressive steps to protect computers from attacks, attackers sometimes get through. Any event that results in a violation of any of the confidentiality, integrity, or availability (CIA) security tenets is a security breach.
+儘管采取最強烈的防護措施，攻擊者仍可能突破。任何違反機密性（Confidentiality）、完整性（Integrity）或可用性（Availability，稱 CIA）安全原則的事件，都屬於資安漏洞。
 
-### Denial of Service Attacks
+### 拒絕服務攻擊（DoS）
 
-- Denial-of-service (DoS) attacks result in downtime or inability of a user to access a system. DoS attacks impact the availability of tenet of information systems security. A DoS attack is a coordinated attempt to deny service by occupying a computer to perform large amounts of unnecessary tasks. This excessive activity makes the system unavailable to perform legitimate operations
-- Two common types of DoS attacks are as follows:
-  - Logic attacks&mdash;Logic attacks use software flaws to crash or seriously hinder the performance of remote servers. You can prevent many of these attacks by installing the latest patches to keep your software up to date.
-  - Flooding attacks&mdash;Flooding attacks overwhelm the victim computer’s CPU, memory, or network resources by sending large numbers of useless requests to the machine.
-- Most DoS attacks target weaknesses in the overall system architecture rather than a software bug or security flaw
-- One popular technique for launching a packet flood is a SYN flood.
-- One of the best defences against DoS attacks is to use intrusion prevention system (IPS) software or devices to detect and stop the attack.
+- DoS 攻擊造成系統停機或使用者無法存取。DoS 攻擊影響資訊系統的可用性安全原則。此為協調式企圖阻擋服務，透過讓電腦處理大量無必要工作使系統無法提供合法服務。
+- 兩種常見 DoS 攻擊如下：
+  - 邏輯攻擊 — 利用軟體缺陷使遠端伺服器崩潰或嚴重效能下降。安裝最新的補丁有助防範。
+  - 淹沒攻擊 — 透過發送大量無用請求，淹沒目標主機的 CPU、記憶體或網路資源。
+- 多數 DoS 攻擊瞄準系統架構弱點，而非軟體錯誤或安全缺陷。
+- 常見封包淹沒技術為 SYN 淹沒攻擊。
+- 最佳防禦為使用入侵防護系統（IPS）軟體或設備以偵測並阻止攻擊。
 
-### Distributed Denial-of-Service Attacks
+### 分散式拒絕服務攻擊（DDoS）
 
-- DDoS attacks differ from regular DoS attacks in their scope. In a DDoS attack, attackers hijack hundreds or even thousands of Internet computers, planting automated attack agents on those systems. The attacker then instructs the agents to bombard the target site with forged messages. This overloads the site and blocks legitimate traffic. The key here is strength in numbers. The attacker does more damage by distributing the attack across multiple computers.
+- DDoS 與一般 DoS 不同在規模。攻擊者操控數百甚至數千台網路電腦，植入自動攻擊代理，指示代理轟炸目標站點，導致站點過載阻擋合法流量。此攻擊重點為數量優勢。
 
+### 竊聽
 
-### Wiretapping
+- 雖然竊聽多與語音電話相關，攻擊者同樣能竊聽資料通訊。
+- 攻擊者可竊聽電話線及資料傳輸線路。竊聽可分主動（攻擊者修改線路資料）及被動（攻擊者僅監聽而非更動）。被動竊聽亦可複製資料為日後攻擊做準備。
+- 主動竊聽包含：
+    - 線中竊聽 — 未更改合法傳送訊息，但於合法用戶暫停時插入額外訊息。
+    - 順帶入侵竊聽 — 攔截並修改原始訊息，將訊息導向另一臺充當主機的電腦。
 
-- Although the term wiretapping is generally associated with voice telephone communications, attackers can also use wiretapping to intercept data communications.
+### 後門
 
-- Attackers can tap telephone lines and data communication lines. Wiretapping can be active, where the attacker makes modifications to the line. It can also be passive, where an unauthorized user simply listens to the transmission without changing the contents. Passive intrusion can include the copying of data for a subsequent active attack.
-- Two methods of active wiretapping are as follows:
-    - Between-the-lines wiretapping—This type of wiretapping does not alter the messages sent by the legitimate user but inserts additional messages into the communication line when the legitimate user pauses.
-    - Piggyback-entry wiretapping—This type of wiretapping intercepts and modifies the original message by breaking the communications line and routing the message to another computer that acts as a host.
+- 軟體開發者有時在程式中埋藏稱為後門的隱藏存取途徑，讓開發或維護人員能輕鬆存取系統，繞過安全控制。
+- 問題是後門不一定能長期隱藏，駭客若發現便能繞過密碼、加密等安全措施。合法用戶從前門登入（帳號密碼），攻擊者則利用後門繞過。
 
-### Backdoors
+## 惡意攻擊
 
-- Software developers sometimes include hidden access methods, called backdoors, in their programs. Backdoors give developers or support personnel easy access to a system without having to struggle with security controls. The problem is that backdoors don’t always stay hidden. When an attacker discovers a backdoor, he or she can use it to bypass existing security controls such as passwords, encryption, and so on. Where legitimate users log on through front doors using a user ID and password, attackers use backdoors to bypass these normal access controls.
+### 生日攻擊
 
-## Malicious Attacks
-
-### Birthday Attack
-
-- Once an attacker compromises a hashed password file, a birthday attack is performed. A birthday attack is a type of cryptographic attack that is used to make a brute-force attack of one-way hashes easier. It is a mathematical exploit that is based on the birthday problem in probability theory.
-- Further Reading:
+- 攻擊者入侵哈希密碼檔案後，執行生日攻擊。此種密碼攻擊透過數理機率（生日問題）加快單向雜湊的暴力破解。
+- 延伸閱讀：
     - <https://www.sciencedirect.com/topics/computer-science/birthday-attack>
     - <https://www.internetsecurity.tips/birthday-attack/>
 
-### Brute-Force Password Attacks
+### 暴力破解密碼攻擊
 
-- In a brute-force password attack, the attacker tries different passwords on a system until one of them is successful. Usually, the attacker employs a software program to try all possible combinations of a likely password, user ID, or security code until it locates a match. This occurs rapidly and in sequence. This type of attack is called a brute-force password attack because the attacker simply hammers away at the code. There is no skill or stealth involved&mdash;just brute force that eventually breaks the code.
-- Further Reading:
+- 攻擊者透過嘗試大量密碼組合，直至成功登入。通常利用程式快速連續嘗試可能的密碼、帳號或安全碼，直到配對成功。
+- 無技巧，僅靠蠻力反覆嘗試，故稱暴力破解。
+- 延伸閱讀：
     - <https://owasp.org/www-community/attacks/Brute_force_attack>
     - <https://owasp.org/www-community/controls/Blocking_Brute_Force_Attacks>
 
-### Dictionary Password Attacks
+### 字典密碼攻擊
 
-- A dictionary password attack is a simple attack that relies on users making poor password choices. In a dictionary password attack, a simple password-cracker program takes all the words from a dictionary file and attempts to log on by entering each dictionary entry as a password.
-- Further Reading:
+- 依賴使用者密碼選擇差做作簡單攻擊。破解程式將字典檔中每一詞條嘗試作為密碼登入。
+- 延伸閱讀：
     - <https://capec.mitre.org/data/definitions/16.html>
 
-### Replay Attacks
+### 重放攻擊
 
-- Replay attacks involve capturing data packets from a network and retransmitting them to produce an unauthorized effect. The receipt of duplicate, authenticated IP packets may disrupt service or have some other undesired consequence. Systems can be broken through replay attacks when attackers reuse old messages or parts of old messages to deceive system users. This helps intruders to gain information that allows unauthorized access into a system.
-- Further reading:
+- 攻擊者攔截網路封包並重複傳送，用以達成未經授權目的。接收重複之經驗證 IP 封包可能破壞服務或產生非預期結果。
+- 攻擊者藉重放舊訊息或部分訊息欺騙系統用戶取得資料並非法存取系統。
+- 延伸閱讀：
   - <https://study.com/academy/lesson/replay-attack-definition-examples-prevention.html>
 
-### Man-in-the-Middle Attacks
+### 中間人攻擊（MitM）
 
-- A man-in-the-middle attack takes advantage of the multihop process used by many types of networks. In this type of attack, an attacker intercepts messages between two parties before transferring them on to their intended destination.
-- Web spoofing is a type of man-in-the-middle attack in which the user believes a secure session exists with a particular web server. In reality, the secure connection exists only with the attacker, not the webserver. The attacker then establishes a secure connection with the webserver, acting as an invisible go-between. The attacker passes traffic between the user and the webserver. In this way, the attacker can trick the user into supplying passwords, credit card information, and other private data.
-- Further Reading:
+- 利用多跳方式的網路特性，攻擊者攔截雙方訊息並再轉發至目的地。
+- 網頁欺騙為 MitM 一環，使用者以為與網站建立安全連線，實際與攻擊者而非伺服器。攻擊者亦與伺服器建立安全連線，充當隱形中介，騙取密碼、信用卡等私密資訊。
+- 延伸閱讀：
     - <https://owasp.org/www-community/attacks/Man-in-the-middle_attack>
 
-### Masquerading
+### 偽裝攻擊
 
-- In a masquerade attack, one user or computer pretends to be another user or computer. Masquerade attacks usually include one of the other forms of active attacks, such as IP address spoofing or replaying. Attackers can capture authentication sequences and then replay them later to log on again to an application or operating system. For example, an attacker might monitor usernames and passwords sent to a weak web application. The attacker could then use the intercepted credentials to log on to the web application and impersonate the user.
-- Further Reading: 
+- 攻擊者假冒他人用戶或電腦。常與其他主動攻擊如 IP 位址偽造、重放結合。
+- 入侵者可截取認證序列，後續重放第二次登入應用程式或作業系統。範例：監控用戶名與密碼取得後，冒名登入網頁。
+- 延伸閱讀：
     - <https://dl.acm.org/doi/book/10.5555/2521792>
     - <https://ieeexplore.ieee.org/document/1653228>
 
+### 竊聽攻擊
 
-### Eavesdropping
+- 又稱封包監聽，當主機網路介面設為混雜模式，能截取周圍網路所有封包以供分析。
+- 混雜模式使網路設備即使封包位址不匹配也能攔截並讀取封包。
+- 能透過硬體與軟體監控並分析傳輸媒介上的所有封包而不被用戶察覺。
+- 典型監聽目標為衛星、無線、行動等傳輸型態。
 
-- Eavesdropping, or sniffing, occurs when a host sets its network interface on promiscuous mode and copies packets that pass by for later analysis. Promiscuous mode enables a network device to intercept and read each network packet (of course given some conditions) given sec, even if the packet’s address doesn’t match the network device. It is possible to attach hardware and software to monitor and analyze all packets on that segment of the transmission media without alerting any other users. Candidates for eavesdropping include satellite, wireless, mobile, and other transmission methods.
+### 社交工程
 
-### Social Engineering
+- 攻擊者利用欺騙手法，誘騙授權用戶執行未授權行為以侵入 IT 基礎設施。
+- 幾乎所有社交工程皆倚賴人類普遍樂於助人之特性。
 
-- Attackers often use a deception technique called social engineering to gain access to resources in an IT infrastructure. In nearly all cases, social engineering involves tricking authorized users into carrying out actions for unauthorized users. The success of social engineering attacks depends on the basic tendency of people to want to be helpful.
+### 電話駭客（Phreaking）
 
-### Phreaking
+- 指一群研究、試驗或探索電話系統、電話設備及公共電話網路相連系統的次文化活動。
+- 電話駭客技巧在於利用電話系統漏洞與缺陷。
 
-- Phone phreaking, or simply phreaking, is a slang term that describes the activity of a subculture of people who study, experiment with, or explore telephone systems, telephone company equipment, and systems connected to public telephone networks. Phreaking is the art of exploiting bugs and glitches that exist in the telephone system.
+### 網路釣魚（Phishing）
 
-### Phishing
+- 一種詐騙手法，攻擊者試圖誘使受害者提供私人敏感資料，如信用卡號、密碼、出生日期、銀行帳號、ATM 密碼及社會安全號。
 
-- Phishing is a type of fraud in which an attacker attempts to trick the victim into providing private information such as credit card numbers, passwords, dates of birth, bank account numbers, automated teller machine (ATM) PINs, and Social Security numbers.
+### 域名欺騙（Pharming）
 
-### Pharming
-
-- Pharming is another type of attack that seeks to obtain personal or private financial information through domain spoofing. A pharming attack doesn’t use messages to trick victims into visiting spoofed websites that appear legitimate, however. Instead, pharming “poisons” a domain name on the domain name server (DNS), a process known as DNS poisoning. The result is that when a user enters the poisoned server’s web address into his or her address bar, that user navigates to the attacker’s site. The user’s browser still shows the correct website, which makes pharming difficult to detect—and therefore more serious. Where phishing attempts to scam people one at a time with an email or instant message, pharming enables scammers to target large groups of people at one time through domain spoofing.
+- 另一種透過域名偽裝取得個人或財務資料的攻擊。不同於以訊息誘使訪客前往偽造網站的釣魚，域名欺騙利用 DNS 伺服器的 DNS 污染（DNS poisoning），當用戶輸入偽造伺服器網址時，瀏覽器實際導向攻擊者網站。瀏覽器仍顯示正確網域，使其難以察覺因而更嚴重。
+- 釣魚是個別誘騙電子郵件或即時訊息，而域名欺騙能同時攻擊多數使用者。

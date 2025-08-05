@@ -1,62 +1,62 @@
-## Jenkins based CI/CD Pipeline
+## 基於 Jenkins 的 CI/CD 管線
 
-Jenkins is an open-source continuous integration server for orchestrating the CI/CD pipelines. It supports integration with several components, infrastructure such as git, cloud etc. that helps in complete software development life cycle.
+Jenkins 是一個開源的持續整合伺服器，用於協調 CI/CD 管線。它支援整合多種元件、基礎架構如 git、雲端等，有助於完整的軟體開發生命週期。
 
-In this hands-on lab, let us:
-* Create a build pipeline (CI) for a simple java application.
-* Adding Test stage to build pipeline
+在此實作實驗中，我們將：
+* 為一個簡單的 Java 應用程式建立建置管線 (CI)。
+* 將測試階段加入建置管線。
 
-This hands-on is based on the Jenkins running on docker on your local workstation, designed for Windows OS. For Linux OS, please follow the [demo](https://www.jenkins.io/doc/tutorials/build-a-java-app-with-maven/)
+這個實作是基於在本地工作站的 Docker 上執行 Jenkins，設計於 Windows 作業系統。若為 Linux 作業系統，請參考 [demo](https://www.jenkins.io/doc/tutorials/build-a-java-app-with-maven/)。
 
-**Note:** The hands-on lab is designed with Jenkins on the docker. However, the steps are applicable for the direct docker installation on your windows workstation as well.
+**注意：** 此實作實驗設計為在 Docker 上執行 Jenkins，步驟亦適用於直接在 Windows 工作站安裝的 Docker。
 
-### Installing Git, Docker and Jenkins:
-* Install git command line tool on your workstation. (Follow [this](https://suwebdev.github.io/wats-lab-faq/first-question.html#download-and-install-git) to install Git Locally·) 
-* Docker Desktop for windows is installed on the workstation. Follow the [instructions](https://docs.docker.com/docker-for-windows/install/#install-docker-desktop-on-windows) to install docker. 
-* Ensure that your Docker for Windows installation is configured to run Linux Containers rather than Windows Containers. See the Docker documentation for instructions to switch to Linux containers.
-* [Refer](https://www.jenkins.io/doc/tutorials/build-a-java-app-with-maven/#on-windows) this to run and setup the Jenkins on docker.
-* Configure Jenkins with initial steps such as create an admin user etc. Follow Setup wizard.
-* If you have installed the Jenkins on your local workstation, make sure the maven tool is installed. Follow [this](https://maven.apache.org/install.html) to installl maven.
+### 安裝 Git、Docker 與 Jenkins：
+* 在你的工作站安裝 git 指令列工具。（請遵循 [此處](https://suwebdev.github.io/wats-lab-faq/first-question.html#download-and-install-git) 以於本機安裝 Git）
+* 在 Windows 工作站安裝 Docker Desktop，依照 [此處說明](https://docs.docker.com/docker-for-windows/install/#install-docker-desktop-on-windows) 安裝 Docker。
+* 確保你的 Docker for Windows 設定為執行 Linux Container，而非 Windows Container。請參考 Docker 文件切換至 Linux container 的指示。
+* 參考此處 [Jenkins 在 docker 上的安裝設定](https://www.jenkins.io/doc/tutorials/build-a-java-app-with-maven/#on-windows)。
+* 透過設定精靈進行 Jenkins 初始設定，如建立管理者帳號等。
+* 若直接在本機安裝 Jenkins，請確定已安裝 maven 工具。請參閱 [此處](https://maven.apache.org/install.html) 進行安裝。
 
-### Forking Sample java application:
+### Fork 範例 Java 應用程式：
 
-For this hands-on, let us fork a simple java application from the GitHub [simple-java-maven-app](https://github.com/jenkins-docs/simple-java-maven-app).
-1.	Sign up for the GitHub account [Join GitHub · GitHub](https://github.com/signup?source=login). Once signed up, proceed to [login](https://github.com/login).
-2.	Open the simple-java-maven-app by clicking on this [link](https://github.com/jenkins-docs/simple-java-maven-app) 
-3.	On the top right corner, click on the ‘Fork’ to create a copy of the project to your GitHub account. (Refer [Fork A Repo](https://help.github.com/articles/fork-a-repo/))
-4.	Once forked, clone this repository to your local workstation. 
+本實作中，我們將從 GitHub 上的 [simple-java-maven-app](https://github.com/jenkins-docs/simple-java-maven-app) fork 一個簡單的 Java 應用程式。
+1.	註冊 GitHub 帳號 [加入 GitHub · GitHub](https://github.com/signup?source=login)。完成後，請登入 [登入 GitHub](https://github.com/login)。
+2.	打開 simple-java-maven-app 專案，點擊此 [連結](https://github.com/jenkins-docs/simple-java-maven-app)。
+3.	在右上角點擊「Fork」，將專案複製到你的 GitHub 帳號中。（參考 [Fork A Repo](https://help.github.com/articles/fork-a-repo/)）
+4.	Fork 完成後，將該倉庫 clone 到本地工作站。
 
-### Create Jenkins Project:
+### 建立 Jenkins 專案：
 
-1.	Login to the Jenkins portal at [http://localhost:8080](http://localhost:8080) using the admin account created earlier during Jenkins’s setup.
-2.	On your first login, the following screen will appear. Click on “**Create a Job**”.
+1.	使用先前建立的管理員帳號登入 Jenkins 頁面 [http://localhost:8080](http://localhost:8080)。
+2.	首次登入時會看到如下畫面，點選「**建立一個 Job**」。
 
 ![](./images/Jenkins1.png)
 
-*Fig 4: Jenkins - Create a Job*
+*圖 4：Jenkins - 建立 Job*
 
-3.	On the next screen, type *simple-java-pipeline* in the **Enter an Item Name** field. Select *Pipeline* from the list of items and click *OK*.
+3.	在下一畫面中，於 **輸入項目名稱** 欄位輸入 *simple-java-pipeline*，並從項目類型列表中選擇 *Pipeline*，然後點選 *OK*。
 
 ![](./images/Jenkins2.png)
 
-*Fig 5: Jenkins - Create Pipeline*
+*圖 5：Jenkins - 建立 Pipeline*
 
-4.	Click the **Pipeline** tab at the top of the page to scroll down to the *Pipeline* section.
-5.	From the **Definition** field, choose the *Pipeline script from SCM* option. This option instructs Jenkins to obtain your Pipeline from Source Control Management (SCM), which will be your locally cloned Git repository.
-6.	From the **SCM** field, choose *Git*.
-7.	In the **Repository URL** field, specify the directory path of your locally cloned repository from the [Forking Sample Java application](#forking-sample-java-application:) section above.
+4.	點選頁面頂端的 **Pipeline** 標籤，往下捲動至 *Pipeline* 區段。
+5.	於 **Definition** 欄位選擇 *Pipeline script from SCM*，此選項表示 Jenkins 將從原始碼管理 (SCM) 取得 Pipeline 腳本，此處為你本機 clone 的 Git 倉庫。
+6.	於 **SCM** 欄位選擇 *Git*。
+7.	在 **Repository URL** 欄位中輸入你先前 [Fork 範例 Java 應用程式](#forking-sample-java-application:) 區段中所 clone 至本機的專案目錄路徑。
 
-Screen looks like below after entering the details.
+畫面如下所示：
 
 ![](./images/Jenkins3.png)
 
-*Fig 6: Jenkins - Pipeline Configuration*
+*圖 6：Jenkins - Pipeline 設定*
 
-### Create Build pipeline using the Jenkinsfile:
+### 用 Jenkinsfile 建立建置管線：
 
-**Jenkinsfile** is a script file containing the pipeline configuration and the stages and other instructions to Jenkins to create a pipeline from the file. This file will be saved at the root of the code repository.
-1.	Using your favorite text editor or IDE, create and save a new text file with the name *Jenkinsfile* at the root of your local *simple-java-maven-app* Git repository.
-2.	Copy the following declarative pipeline code and paste it into the empty *Jenkinsfile*. 
+**Jenkinsfile** 是一個包含管線設定與階段等指令的腳本檔案，可讓 Jenkins 從該檔案建立管線。此檔案會儲存在程式碼倉庫的根目錄。
+1.	使用你偏好的文字編輯器或 IDE，在本機 *simple-java-maven-app* Git 倉庫根目錄建立並儲存名為 *Jenkinsfile* 的新檔案。
+2.	將以下敘述式管線代碼複製並貼入空白的 *Jenkinsfile* 中。
 
 ```
 pipeline {
@@ -75,7 +75,7 @@ pipeline {
     }
 }
 ```
-**Note:** If you are running Jenkins on your local workstation without the docker, please change the agent to **any** as shown below so that it runs on the localhost. Please ensure that the maven tool is installed on your local workstation.
+**注意：** 若你在本機工作站直接執行 Jenkins（非 Docker 方式），請將 agent 改為 **any**，以於本機執行。請確認本機已安裝 maven 工具。
 
 ```
 pipeline {
@@ -91,37 +91,37 @@ pipeline {
 }
 ```
 
-In the above Jenkinsfile: 
-* We specified an agent where the pipeline should run. 'docker’ in the agent section indicates to run a new docker container with the specified image.
-* In the stages section, we can define multiple steps as different stages. Here, we have a stage called ‘Build’, with the maven command for building the java application.
+在上述 Jenkinsfile 中：
+* 指定了 agent，表示管線在哪裡執行。agent 的 docker 部分表示在指定的 docker 映像中啟動新 container 來執行。
+* 在 stages 區域可定義多個階段。此處有一個階段為 ‘Build’，裡面執行 Maven 建置 Java 應用程式的指令。
 
-3.	Save your Jenkinsfile and commit and push to your forked repository. Run the following commands from the command prompt.
+3.	儲存 Jenkinsfile 之後，提交並推送至 fork 過的倉庫。於命令提示字元執行：
 ```
-cd <your local simple-java-maven-app repo cloned folder>
+cd <你的 simple-java-maven-app 本機 clone 目錄>
 git add .
 git commit -m "Add initial Jenkinsfile"
 git push origin master
 ```
 
-4.	Go to Jenkins portal on your browser and click on the **Dashboard**. Open the [simple-java-pipeline](http://localhost:8080/job/simple-java-pipeline/) and from the left-menu, click on **Build Now**.
+4.	於瀏覽器開啟 Jenkins 入口網站並點選 **Dashboard**，開啟 [simple-java-pipeline](http://localhost:8080/job/simple-java-pipeline/)，在左側選單點擊 **立即建置（Build Now）**。
 
 ![](./images/Jenkins4.png)
 
-*Fig 7: Jenkins - Building the Pipeline*
+*圖 7：Jenkins - 建置管線中*
 
-5.	Notice the build running under the **Build History** menu. Click on the *build number* and it shows the stages.
+5.	於 **建置歷史（Build History）** 中可以看到正在建置的紀錄，點選對應的建置編號可查看各建置階段。
 
 ![](./images/Jenkins5.png)
 
-*Fig 8: Jenkins - View Running Builds*
+*圖 8：Jenkins - 檢視執行中建置*
 
-6.	We have successfully created a build pipeline with single stage and ran it. We can check the logs by clicking on the **Console Output** menu.
+6.	成功建立並執行包含單一階段的建置管線。可點選 **Console Output** 查看詳細執行日誌。
 
-### Additional stages in the build pipeline:
+### 在建置管線中加入額外階段：
 
-In the previous section, we have created the pipeline with a single stage. Typically, your CI pipeline contains multiple stages such as Build, Test and other optional stages such Code scanning etc. In this section, let us add a Test stage to the build pipeline and run.
+前一節建立的管線只有單一階段，一般 CI 管線會包含多個階段如建置、測試與其他選用階段（如程式碼掃描等）。本節將在建置管線中加入測試階段並執行。
 
-1.	Go back to your text editor/IDE and open Jenkinsfile and the Test stage shown below.
+1.	回到文本編輯器/IDE 開啟 Jenkinsfile，新增如下的 Test 階段：
 
 ```
 stage('Test') {
@@ -136,7 +136,7 @@ stage('Test') {
         }
 ```
 
-The Jenkinsfile looks like below after adding the Test stage.
+新增 Test 階段後的 Jenkinsfile 範例如下：
 
 ```
 pipeline {
@@ -166,10 +166,10 @@ pipeline {
 }
 ```
 
-* Here the stage ‘Test’ is added which runs the maven command test.
-* The **post -> always** section ensures that this step is executed always after the steps are completed. The test report is available through Jenkins’s interface.
+* 此處新增了名為 ‘Test’ 的階段，執行 Maven 測試指令。
+* **post -> always** 區段保證該步驟在執行完前面的指令後一定會被執行，其將測試報告透過 Jenkins 介面提供。
 
-**Note:** If you are running Jenkins on your local workstation without the docker, please change the agent to **any** so that it runs on the localhost. Please ensure that the maven tool is installed on your local workstation.
+**注意：** 若你在本機直接執行 Jenkins（非 Docker），請將 agent 改為 **any**，確保本機已安裝 maven。
 
 ```
 pipeline {
@@ -180,19 +180,19 @@ pipeline {
     }
 }
 ```
-2.	Save your Jenkinsfile and commit and push to your forked repository. Run the following commands from the command prompt.
+2.	儲存 Jenkinsfile，提交並推送至 fork 倉庫，在命令提示字元執行：
 
 ```
-cd <your local simple-java-maven-app repo cloned folder>
+cd <你的 simple-java-maven-app 本機 clone 目錄>
 git add .
 git commit -m "Test stage is added to Jenkinsfile"
 git push origin master
 ```
-3.	Go to Jenkins portal on your browser and click on the **Dashboard**. Open the *simple-java-pipeline* and from the left-menu, click on Build Now.
-4.	Notice the Build and Test stages are showing in the Build screen. 
+3.	瀏覽器中前往 Jenkins 入口網站點選 **Dashboard**，開啟 *simple-java-pipeline*，左側選單按下「立即建置」。
+4.	可在建置頁面中看到建置與測試兩階段皆被執行。
 
 ![](./images/Jenkins6.png)
 
-*Fig 9: Jenkins - Viewing the Running Builds with Test stage Included*
+*圖 9：Jenkins - 建置中顯示含測試階段*
 
-We have now successfully created CI pipeline with two stages: Build and Test stages.
+我們現已成功建立包含兩個階段——建置與測試的 CI 管線。

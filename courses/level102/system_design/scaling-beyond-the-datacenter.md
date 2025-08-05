@@ -1,33 +1,29 @@
-## Caching static assets
+## 快取靜態資源
 
-Extending the existing caching solution a bit, we arrive at Content Delivery Networks(CDNs). CDNs are the caching layer that is closest to the user. A significant chunk of resources served in a webpage, may not be changing on an hourly or even a daily basis. In those cases, we would want to cache these at the CDN level, reducing our load. CDNs not only help reduce the load on our servers by removing the burden of serving static / bandwidth intensive resources, they also let us be present closer to our users, by way of points of presence(POPs). CDNs also let us do geo-load balancing, in case we have multiple data centres around
-the world, and would want to serve from the closest data center (DC) possible.
+稍微擴展現有的快取解決方案，我們會接觸到內容傳遞網路（Content Delivery Networks，CDNs）。CDN 是離使用者最近的快取層。網頁中提供的大量資源，可能並不會每小時甚至每天變動。在這種情況下，我們會希望在 CDN 層級快取這些資源，以減輕我們的負載。CDN 不僅透過移除靜態／頻寬密集資源的伺服器負擔來減少伺服器的負載，也透過多個節點（Points of Presence，POPs）讓我們更接近使用者。CDN 還能協助實現地理負載平衡，當我們在全球有多個資料中心時，可以由最近的資料中心（Data Center，DC）提供服務。
 
-**Taking it a step further**
+**更進一步**
 
-With the addition of caching and distributing our application into simpler services, we have solved the problem of scaling to 50000 users. However, our users may be geographically distributed locations and may not be at the same distance from our data centre or our cloud region. Consistency in user experience is important, else we are excluding users who are far away from our location, potentially eliminating a significant chunk of potential users. However, it is not impractical to have data centers all over the world, or even in more than a couple of locations in the world. This is where CDNs and POPs come into picture.
+隨著快取和將應用拆分成更簡單服務的加入，我們已解決了擴展到 5 萬使用者的問題。然而，使用者可能分布於全球各地，且距離資料中心或雲端區域的遠近不同。使用者體驗的一致性非常重要，否則我們可能會排除距離遠的使用者，潛在流失大量潛在用戶。但在全球設立資料中心，甚至只設立兩個以上位置並不實際。這時 CDN 與 POP 就派上用場了。
 
-## Points of Presence
+## 接入點（Points of Presence）
 
-CDN POPs are geographically distributed data centers aimed at being close to users. POPs reduce the round trip time by delivering content from a location that is nearest to the user. POPs typically may not have all the content, but have caching servers that cache the static assets, and fetch the rest of the content from the [origin server](https://www.cloudflare.com/en-in/learning/cdn/glossary/origin-server/) where the application actually resides. Their main function is to reduce round trip time by bringing the content closer to the website’s visitor. POPs can also route traffic to one of the multiple origin DCs possible. This way, POPs can be leveraged to add resiliency as well as load-balancing.
+CDN POP 是地理上分散的資料中心，目標是靠近使用者。POPs 透過從距離使用者最近的節點提供內容，降低往返時間。POPs 通常不會保存全部內容，但會設置快取伺服器快取靜態資產，並從實際存放應用的 [原始伺服器](https://www.cloudflare.com/en-in/learning/cdn/glossary/origin-server/) 取得其餘內容。POPs 的主要功能是透過將內容帶到網站訪客附近來降低往返時間。POPs 也可以將流量導向多個可能的原始資料中心之一。這樣，POPs 可以用來增加韌性和負載平衡。
 
+隨著我們的圖片分享應用日益受到歡迎，假設已突破10萬同時線上使用者，我們也因應流量增加建立了另一座資料中心。現在我們需要可靠地將服務導向這兩座資料中心，同時保留當兩個資料中心其中一處出現問題時，可以回退至單一資料中心的能力。這時就會用到「黏性路由」（Sticky Routing）。
 
-Now, with our image sharing application becoming more popular by the day, let us assume that we have hit 100,000 concurrent users. And we have built another data center, predicting this increase in traffic. Now we need to be able to route the service to both of these data centers in a reliable manner, while also retaining the ability to fall back to a single data center in case there is an issue with one of the two DCs. This is where sticky routing comes into play.
+## 黏性路由（Sticky Routing）
 
-## Sticky Routing
+當使用者送出請求時，在多資料中心環境下，我們可能希望某使用者的請求從特定資料中心或資料中心內特定伺服器回應，也可能希望同一 POP 的所有請求皆由同一資料中心服務。黏性路由可實現此目標。它可能是將所有使用者固定在某個資料中心，或是將特定使用者固定到特定伺服器。這通常在 POP 端完成，讓使用者一抵達我們的伺服器，即可將他們路由到最近的資料中心。
 
-When an user sends a request, there are cases in which we might want to serve a specific user’s requests from a DC if we have multiple DCs, or a specific server inside a DC. We may also wish to serve all requests from a specific POP by a single data center. Sticky routing helps us do exactly that. It might be simply pinning all users to a specific DC or pinning specific users to specific servers. This is typically done from the POP, so that as soon as the user enters reaches our servers, we can route them to the nearest DC possible.
+## 地理 DNS（Geo DNS）
 
-## Geo DNS
+當使用者開啟應用程式時，可透過 [GeoDNS](https://jameshfisher.com/2017/02/08/how-does-geodns-work/) 將使用者導向多個在全球分散的 POP 之一。GeoDNS 根據使用者 DNS 請求的地理位置提供不同的 IP 位址（IP 位址本身也是地理分散的）。GeoDNS 是將使用者分派至不同地點的第一步，雖然不百分之百準確，且通常基於 IP 位址分配資訊來推測使用者位置，但對超過90%的用戶來說已表現良好。接著，我們可以使用黏性路由服務，將每位使用者指派給特定資料中心，並設定 Cookie。當使用者下次拜訪時，POP 可讀取 Cookie，以決定該使用者的流量該導向哪個資料中心。
 
-When a user opens the application, the user can be directed to one of the multiple
-globally distributed POPs. This can be done using [GeoDNS](https://jameshfisher.com/2017/02/08/how-does-geodns-work/), which simply put, gives out a different IP address(which are distributed geographically), depending on the location of the user making the DNS request. GeoDNS is the first step in distributing users to different locations - it is not 100% accurate, and typically makes use of IP address allotment information for guessing the location of the user. However, it works well enough for \>90% of the users. After this, we can have a sticky routing service that assigns each user to a specific DC, which we can use to assign a DC to this user, and set a cookie. When the user next visits, the cookie can be read at the POP to decide which data center the user’s traffic must be directed to.
+擁有多個資料中心並充分利用黏性路由，不僅提升擴展能力，也增加服務韌性，但同時帶來額外的複雜度。
 
-Having multiple DCs and leveraging sticky routing has not only scaling benefits, but also adds to the resiliency of the service, albeit at the cost of additional complexity.
+再舉個例子：若使用者上傳新的頭像圖片，若多個資料中心或 POP 無法即時同步，並非所有節點都會擁有最新圖片。在這種情況，將使用者綁定至特定資料中心或區域，直到更新傳播完成為止，會是合理的做法。黏性路由讓我們有能力做到這點。
 
-Let us consider another use case in which an user uploads a new profile picture for themselves. If we have multiple data centres or POPs which are not synced in real time - not all of them might have the newer picture. In such a case, it would make sense to tie that user to a specific DC/region until the update has propagated to all regions. Sticky routing would enable us to do this.
-
-
-## References
+## 參考資料
 1. [CDNs](https://www.cloudflare.com/en-in/learning/cdn/what-is-a-cdn/)
-2. LinkedIn's TrafficShift [blog](https://engineering.linkedin.com/blog/2017/05/trafficshift--load-testing-at-scale) talks about sticky routing
+2. LinkedIn 的 TrafficShift [部落格](https://engineering.linkedin.com/blog/2017/05/trafficshift--load-testing-at-scale) 談黏性路由

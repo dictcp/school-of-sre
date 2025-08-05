@@ -1,26 +1,25 @@
-### Why should you use this?
+### 為什麼你應該使用它？
 
-General purpose, row level locking, ACID support, transactions, crash recovery and multi-version concurrency control, etc.
-
-
-### Architecture
-
-![alt_text](images/innodb_architecture.png "InnoDB components")
+通用目的、行級鎖定、ACID 支援、交易、崩潰恢復及多版本併發控制等。
 
 
-### Key components:
+### 架構
 
-*   Memory:
-    *   Buffer pool: LRU cache of frequently used data (table and index) to be processed directly from memory, which speeds up processing. Important for tuning performance.
-    *   Change buffer: Caches changes to secondary index pages when those pages are not in the buffer pool and merges it when they are fetched. Merging may take a long time and impact live queries. It also takes up part of the buffer pool. Avoids the extra I/O to read secondary indexes in.
-    *   Adaptive hash index: Supplements InnoDB’s B-Tree indexes with fast hash lookup tables like a cache. Slight performance penalty for misses, also adds maintenance overhead of updating it. Hash collisions cause AHI rebuilding for large DBs.
-    *   Log buffer: Holds log data before flush to disk.
+![alt_text](images/innodb_architecture.png "InnoDB 組件")
 
-        Size of each above memory is configurable, and impacts performance a lot. Requires careful analysis of workload, available resources, benchmarking and tuning for optimal performance.
 
-*   Disk:
-    *   Tables: Stores data within rows and columns.
-    *   Indexes: Helps find rows with specific column values quickly, avoids full table scans.
-    *   Redo Logs: all transactions are written to them, and after a crash, the recovery process corrects data written by incomplete transactions and replays any pending ones.
-    *   Undo Logs: Records associated with a single transaction that contains information about how to undo the latest change by a transaction.
+### 主要組件：
 
+*   記憶體：
+    *   緩衝池（Buffer pool）：用於緩存常用資料（資料表和索引）的 LRU 快取，讓資料可直接從記憶體處理，提高處理速度，是性能調優的重要部分。
+    *   變更緩衝（Change buffer）：當二級索引頁面不在緩衝池中時，緩存對該頁面的變更，頁面讀取時將進行合併。合併過程可能很長且會影響線上查詢，也佔用部分緩衝池空間。有效避免了讀取二級索引時的額外 I/O。
+    *   自適應哈希索引（Adaptive hash index）：以快速哈希查找表作為快取，補充 InnoDB 的 B-Tree 索引。未命中時有輕微的性能懲罰，且維護更新需額外開銷。哈希碰撞會導致大型資料庫的 AHI 重建。
+    *   日誌緩衝（Log buffer）：用於在寫入磁盤前暫存日誌資料。
+
+        上述每部分記憶體大小皆可配置，對性能影響極大。需要仔細分析工作負載、可用資源、進行基準測試及調優，以達到最佳性能。
+
+*   磁碟：
+    *   資料表：以行和列形式存儲資料。
+    *   索引：迅速定位具有特定欄位值的列，避免全表掃描。
+    *   重做日誌（Redo Logs）：所有交易皆寫入此日誌，崩潰後恢復程序會修正未完成交易所寫的資料並重放待處理交易。
+    *   回滾日誌（Undo Logs）：記錄單筆交易相關訊息，用於撤銷該交易的最新更改。

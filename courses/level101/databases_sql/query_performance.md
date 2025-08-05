@@ -1,57 +1,57 @@
-### Query Performance Improvement
-Query Performance is a very crucial aspect of relational databases. If not tuned correctly, the select queries can become slow and painful for the application, and for the MySQL server as well. The important task is to identify the slow queries and try to improve their performance by either rewriting them or creating proper indexes on the tables involved in it.
+### 查詢效能提升
+查詢效能是關聯式資料庫中非常重要的一環。如果未正確調整，SELECT 查詢可能會變得緩慢且令應用程式及 MySQL 伺服器感到吃力。重要的任務是識別出執行緩慢的查詢，並嘗試重新編寫查詢或在涉入的資料表上建立適當的索引來提升查詢效能。
 
-#### The Slow Query Log
-The slow query log contains SQL statements that take a longer time to execute than set in the config parameter `long_query_time`. These queries are the candidates for optimization. There are some good utilities to summarize the slow query logs like, `mysqldumpslow` (provided by MySQL itself), `pt-query-digest` (provided by Percona), etc. Following are the config parameters that are used to enable and effectively catch slow queries
+#### 慢查詢日誌
+慢查詢日誌包含執行時間超過設定參數 `long_query_time` 的 SQL 語句。這些查詢是優化的候選對象。有一些不錯的工具可用於統整慢查詢日誌，例如 MySQL 自帶的 `mysqldumpslow`、Percona 提供的 `pt-query-digest` 等。以下是啟用並有效捕捉慢查詢的設定參數：
 
-| Variable | Explanation | Example value |
+| 變數 | 說明 | 範例值 |
 | --- | --- | --- |
-| slow_query_log | Enables or disables slow query logs | ON |
-| slow_query_log_file | The location of the slow query log | /var/lib/mysql/mysql-slow.log |
-| long_query_time | Threshold time. The query that takes longer than this time is logged in slow query log | 5 |
-| log_queries_not_using_indexes | When enabled with the slow query log, the queries which do not make use of any index are also logged in the slow query log even though they take less time than long_query_time. | ON |
+| slow_query_log | 啟用或停用慢查詢日誌 | ON |
+| slow_query_log_file | 慢查詢日誌的位置 | /var/lib/mysql/mysql-slow.log |
+| long_query_time | 閾值時間，執行時間超過此設定則會被記錄至慢查詢日誌 | 5 |
+| log_queries_not_using_indexes | 啟用慢查詢日誌同時，此參數會將未使用任何索引且執行時間低於 `long_query_time` 的查詢也記錄到慢查詢日誌 | ON |
 
-So, for this section, we will be enabling `slow_query_log`, `long_query_time` will be kept to **0.3 (300 ms)**, and `log_queries_not_using` index will be enabled as well.
+在本章節中，我們會啟用 `slow_query_log`，將 `long_query_time` 設為 **0.3（300 毫秒）**，並同時啟用 `log_queries_not_using_indexes`。
 
-Below are the queries that we will execute on the `employees` database.
+以下是針對 `employees` 資料庫執行的查詢：
 
 1. 
     ```
     SELECT * FROM employees WHERE last_name = 'Koblick'
     ```
-1. 
+2. 
     ```
     SELECT * FROM salaries WHERE salary >= 100000
     ```
-1. 
+3. 
     ```
     SELECT * FROM titles WHERE title = 'Manager'
     ```
-1. 
+4. 
     ```
     SELECT * FROM employees WHERE year(hire_date) = 1995
     ```
-1. 
+5. 
     ```
     SELECT year(e.hire_date), max(s.salary) FROM employees e JOIN salaries s ON e.emp_no=s.emp_no GROUP BY year(e.hire_date)
     ```
 
-Now, queries **1**, **3** and **4** executed under 300ms but if we check the slow query logs, we will find these queries logged as they are not using any of the index. Queries **2** and **5** are taking longer than 300ms and also not using any index.
+現在查詢 **1**、**3** 和 **4** 執行時間都在 300ms 內，但如果檢查慢查詢日誌，會發現這些查詢被紀錄因為它們未使用任何索引。查詢 **2** 和 **5** 則執行時間超過 300ms，且同樣未使用任何索引。
 
-Use the following command to get the summary of the slow query log:
+可使用以下指令查看慢查詢日誌的摘要：
 
 ```shell
 mysqldumpslow /var/lib/mysql/mysql-slow.log
 ```
 
-![slow query log analysis](images/mysqldumpslow_out.png "slow query log analysis")
+![慢查詢日誌分析](images/mysqldumpslow_out.png "慢查詢日誌分析")
 
-There are some more queries in the snapshot that were along with the queries mentioned. `mysqldumpslow` replaces actual values that were used by _N_ (in case of numbers) and _S_ (in case of strings). That can be overridden by `-a` option, however, that will increase the output lines if different values are used in similar queries.
+圖中還包含其他與上述查詢同時紀錄的查詢。`mysqldumpslow` 會將實際值以 _N_（數字）與 _S_（字串）取代，這行為可透過 `-a` 選項取消，但如果相似查詢使用不同值，輸出行數將大幅增加。
 
-#### The EXPLAIN Plan
-The `EXPLAIN` command is used with any query that we want to analyze. It describes the query execution plan, how MySQL sees and executes the query. `EXPLAIN` works with `SELECT`, `INSERT`, `UPDATE` and `DELETE` statements. It tells about different aspects of the query like, how tables are joined, indexes used or not, etc. The important thing here is to understand the basic `EXPLAIN` plan output of a query to determine its performance. 
+#### EXPLAIN 執行計劃
+`EXPLAIN` 指令用於分析想要檢視的查詢。它描述了查詢的執行計劃，顯示 MySQL 如何解讀及執行該查詢。`EXPLAIN` 適用於 `SELECT`、`INSERT`、`UPDATE` 和 `DELETE` 語句。它會告訴你查詢中的表如何被 JOIN、索引是否被使用等訊息。理解 `EXPLAIN` 執行計劃的基本輸出，是判斷查詢效能的重要關鍵。
 
-Let's take the following query as an example,
+以下以範例查詢做說明：
 
 ```shell
 mysql> EXPLAIN SELECT * FROM salaries WHERE salary = 100000;
@@ -63,41 +63,41 @@ mysql> EXPLAIN SELECT * FROM salaries WHERE salary = 100000;
 1 row in set, 1 warning (0.00 sec)
 ```
 
-The key aspects to understand in the above output are:
+主要欄位說明：
 
-- **Partitions** - the number of partitions considered while executing the query. It is only valid if the table is partitioned.
-- **Possible_keys** - the list of indexes that were considered during creation of the execution plan.
-- **Key** - the index that will be used while executing the query.
-- **Rows** - the number of rows examined during the execution.
-- **Filtered** - the percentage of rows that were filtered out of the rows examined. The maximum and most optimized result will have 100 in this field. 
-- **Extra** - this tells some extra information on how MySQL evaluates, whether the query is using only `WHERE` clause to match target rows, any index or temporary table, etc.
+- **partitions** - 執行查詢時考慮的分割區數量。只有在表為分割區表時有效。
+- **possible_keys** - 查詢執行計劃時考慮可用的索引列表。
+- **key** - 查詢實際執行時使用的索引。
+- **rows** - 執行時預估被掃描的資料列數。
+- **filtered** - 篩選出的資料列百分比，數值越高越理想（100 表示最優化）。
+- **Extra** - 額外資料，描述 MySQL 的執行細節，如是否使用索引、臨時表、只用 WHERE 篩選等。
 
-So, for the above query, we can determine that there are no partitions, there are no candidate indexes to be used and so no index is used at all, over 2M rows are examined and only 10% of them are included in the result, and lastly, only a `WHERE` clause is used to match the target rows.
+上述查詢說明沒有分割區、無可用索引且實際沒使用索引，導致超過兩百萬資料列被掃描，但僅有 10% 資料列符合條件，且只有使用 WHERE 過濾。
 
-#### Creating an Index
-Indexes are used to speed up selecting relevant rows for a given column value. Without an index, MySQL starts with the first row and goes through the entire table to find matching rows. If the table has too many rows, the operation becomes costly. With indexes, MySQL determines the position to start looking for the data without reading the full table.
+#### 建立索引
+索引用以加快挑選符合特定欄位值的資料列。沒有索引時，MySQL 必須從第一列開始掃描整張表；表資料量過大時，掃描會變得非常耗時。有了索引後，MySQL 可直接定位資料起點，避免全表掃描。
 
-A primary key is also an index which is also the fastest and is stored along with the table data. Secondary indexes are stored outside of the table data and are used to further enhance the performance of SQL statements. Indexes are mostly stored as B-Trees, with some exceptions like spatial indexes use R-Trees and memory tables use hash indexes.
+主鍵同時也是索引，速度最快，且與資料表資料存放在一起。次索引則存在資料表外部，用以提升 SQL 陳述式效能。索引多半以 B-Tree 結構儲存，例外如空間索引 (spatial indexes) 用 R-Tree，而記憶體表用 hash 索引。
 
-There are 2 ways to create indexes:
+建索引有兩種方式：
 
-- While creating a table - if we know beforehand the columns that will drive the most number of `WHERE` clauses in `SELECT` queries, then we can put an index over them while creating a table.
-- Altering a Table - To improve the performance of a troubling query, we create an index on a table which already has data in it using `ALTER` or `CREATE INDEX` command. This operation does not block the table but might take some time to complete depending on the size of the table.
+- 建表時：若事先知曉常用於 `WHERE` 子句欄位，可在建立資料表時同步建立索引。
+- 修改表格：針對已含資料的表，使用 `ALTER` 或 `CREATE INDEX` 指令建立索引。此操作不會阻塞表，但過程長短視資料量而定。
 
-Let’s look at the query that we discussed in the previous section. It’s clear that scanning over 2M records is not a good idea when only 10% of those records are actually in the resultset. 
+以下示範前述查詢中薪資欄位過濾的例子，遍歷 200 萬筆資料非常低效。
 
-Hence, we create an index on the salary column of the salaries table.
+因此，我們在 `salaries` 表的 `salary` 欄位建立索引：
 
 ```SQL
 CREATE INDEX idx_salary ON salaries(salary)
 ```
-OR
+或
 
 ```SQL
 ALTER TABLE salaries ADD INDEX idx_salary(salary)
 ```
 
-And the same explain plan now looks like this:
+重新查看 EXPLAIN 表現：
 
 ```shell
 mysql> EXPLAIN SELECT * FROM salaries WHERE salary = 100000;
@@ -109,9 +109,9 @@ mysql> EXPLAIN SELECT * FROM salaries WHERE salary = 100000;
 1 row in set, 1 warning (0.00 sec)
 ```
 
-Now the index used is `idx_salary`, the one we recently created. The index actually helped examine only 13 records and all of them are in the resultset. Also, the query execution time is also reduced from over 700ms to almost negligible. 
+現在使用了剛建的 `idx_salary` 索引，掃描資料筆數由兩百多萬降至 13 筆，且全部符合條件。查詢執行時間也由數百毫秒降至幾乎忽略不計。
 
-Let’s look at another example. Here, we are searching for a specific combination of `first_name` and `last_name`. But, we might also search based on `last_name` only.
+另一範例，搜尋特定的 `first_name` 與 `last_name` 組合，但偶爾也會只用 `last_name` 搜尋：
 
 ```shell
 mysql> EXPLAIN SELECT * FROM employees WHERE last_name = 'Dredge' AND first_name = 'Yinghua';
@@ -123,11 +123,13 @@ mysql> EXPLAIN SELECT * FROM employees WHERE last_name = 'Dredge' AND first_name
 1 row in set, 1 warning (0.00 sec)
 ```
 
-Now only 1% record out of almost 300K is the resultset. Although the query time is particularly quick as we have only 300K records, this will be a pain if the number of records are over millions. In this case, we create an index on `last_name` and `first_name`, not separately, but a composite index including both the columns. 
+查詢結果中約 1% 記錄符合條件，雖然只有約 30 萬筆資料，速度尚可，但若資料成千上萬甚至百萬筆時就會很慢。此時，我們會在 `last_name` 與 `first_name` 建立複合索引（Composite Index），非單獨建立兩個索引：
 
 ```SQL
 CREATE INDEX idx_last_first ON employees(last_name, first_name)
 ```
+
+再次執行 EXPLAIN：
 
 ```shell
 mysql> EXPLAIN SELECT * FROM employees WHERE last_name = 'Dredge' AND first_name = 'Yinghua';
@@ -139,7 +141,9 @@ mysql> EXPLAIN SELECT * FROM employees WHERE last_name = 'Dredge' AND first_name
 1 row in set, 1 warning (0.00 sec)
 ```
 
-We chose to put `last_name` before `first_name` while creating the index as the optimizer starts from the leftmost prefix of the index while evaluating the query. For example, if we have a 3-column index like `idx(c1, c2, c3)`, then the search capability of the index follows - (c1), (c1, c2) or (c1, c2, c3) i.e. if your `WHERE` clause has only `first_name`, this index won’t work.
+建立複合索引時將 `last_name` 擺在 `first_name` 之前，是因為優化器在搜尋時會從索引的最左邊開始匹配。例如若有三欄索引 `idx(c1, c2, c3)`，查詢條件可支援 (c1)、(c1, c2) 或 (c1, c2, c3)，但僅有 `first_name` 時，該索引將無法被使用。
+
+查詢只用 `first_name` 的情況：
 
 ```shell
 mysql> EXPLAIN SELECT * FROM employees WHERE first_name = 'Yinghua';
@@ -151,7 +155,7 @@ mysql> EXPLAIN SELECT * FROM employees WHERE first_name = 'Yinghua';
 1 row in set, 1 warning (0.00 sec)
 ```
 
-But, if you have only the `last_name` in the `WHERE` clause, it will work as expected.
+查詢只用 `last_name` 的情況：
 
 ```shell
 mysql> EXPLAIN SELECT * FROM employees WHERE last_name = 'Dredge';
@@ -163,7 +167,7 @@ mysql> EXPLAIN SELECT * FROM employees WHERE last_name = 'Dredge';
 1 row in set, 1 warning (0.00 sec)
 ```
 
-For another example, use the following queries:
+另一範例，先複製 `employees` 與 `salaries` 表，並移除複製表 `salaries_2` 的主鍵，以方便研究 JOIN 查詢：
 
 ```SQL
 CREATE TABLE employees_2 LIKE employees;
@@ -171,16 +175,14 @@ CREATE TABLE salaries_2 LIKE salaries;
 ALTER TABLE salaries_2 DROP PRIMARY KEY;
 ```
 
-We made copies of `employees` and `salaries` tables without the Primary Key of `salaries` table to understand an example of `SELECT` with `JOIN`.
-
-When you have queries like the below, it becomes tricky to identify the pain point of the query.
+對以下 JOIN 查詢，執行時間約 4.5 秒：
 
 ```shell
 mysql> SELECT e.first_name, e.last_name, s.salary, e.hire_date FROM employees_2 e JOIN salaries_2 s ON e.emp_no=s.emp_no WHERE e.last_name='Dredge';
 1860 rows in set (4.44 sec)
 ```
 
-This query is taking about 4.5 seconds to complete with 1860 rows in the resultset. Let’s look at the Explain plan. There will be 2 records in the Explain plan as 2 tables are used in the query.
+查看 EXPLAIN：
 
 ```shell
 mysql> EXPLAIN SELECT e.first_name, e.last_name, s.salary, e.hire_date FROM employees_2 e JOIN salaries_2 s ON e.emp_no=s.emp_no WHERE e.last_name='Dredge';
@@ -193,13 +195,15 @@ mysql> EXPLAIN SELECT e.first_name, e.last_name, s.salary, e.hire_date FROM empl
 2 rows in set, 1 warning (0.00 sec)
 ```
 
-These are in order of evaluation, i.e. `salaries_2` will be evaluated first and then `employees_2` will be joined to it. As it looks like, it scans almost all the rows of `salaries_2` table and tries to match the `employees_2` rows as per the `JOIN` condition. Though `WHERE` clause is used in fetching the final resultset, but the index corresponding to the `WHERE` clause is not used for the `employees_2` table. 
+解析：先掃描 `salaries_2` 全表，接著依 JOIN 條件尋找 `employees_2` 匹配資料。雖使用 WHERE 篩選 `employees_2.last_name`，但未使用對應索引。
 
-If the join is done on two indexes which have the same data-types, it will always be faster. So, let’s create an index on the `emp_no` column of `salaries_2` table and analyze the query again.
+若 JOIN 的欄位有相同資料型態，並且兩邊都有索引，會大幅加快查詢。故在 `salaries_2.emp_no` 欄位加索引：
 
 ```SQL
 CREATE INDEX idx_empno ON salaries_2(emp_no)
 ```
+
+重新看 EXPLAIN：
 
 ```shell
 mysql> EXPLAIN SELECT e.first_name, e.last_name, s.salary, e.hire_date FROM employees_2 e JOIN salaries_2 s ON e.emp_no=s.emp_no WHERE e.last_name='Dredge';
@@ -212,7 +216,9 @@ mysql> EXPLAIN SELECT e.first_name, e.last_name, s.salary, e.hire_date FROM empl
 2 rows in set, 1 warning (0.00 sec)
 ```
 
-Now, not only did the index help the optimizer to examine only a few rows in both tables, it reversed the order of the tables in evaluation. The `employees_2` table is evaluated first and rows are selected as per the index respective to the `WHERE` clause. Then, the records are joined to `salaries_2` table as per the index used due to the `JOIN` condition. The execution time of the query came down **from 4.5s to 0.02s**.
+現在索引使兩張表查詢範圍大幅減少，且評估順序被反轉：優化器先使用 `idx_last_first` 篩選 `employees_2` 最符合條件的 200 筆，再依 `idx_empno` 對應聯結 `salaries_2` 少量 9 筆資料。執行時間從 4.5 秒驟降至 0.02 秒。
+
+實際查詢結果：
 
 ```shell
 mysql> SELECT e.first_name, e.last_name, s.salary, e.hire_date FROM employees_2 e JOIN salaries_2 s ON e.emp_no=s.emp_no WHERE e.last_name='Dredge'\G

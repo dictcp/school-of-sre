@@ -1,10 +1,9 @@
-## What next from here?
+## 下一步？
 
-There are a lot of git commands and features which we have not explored here. But with the base built-up, be sure to explore concepts like
+這裡還有許多 git 指令與功能我們尚未探索。但在建立了基礎後，請務必進一步了解以下概念：
 
-- Cherrypick
-- Squash
-- Amend
-- Stash
-- Reset
-
+- Cherrypick（挑選提交）
+- Squash（合併提交）
+- Amend（修改提交）
+- Stash（暫存變更）
+- Reset（重設）

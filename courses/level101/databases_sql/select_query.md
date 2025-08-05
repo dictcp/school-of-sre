@@ -1,6 +1,6 @@
-### SELECT Query
-The most commonly used command while working with MySQL is `SELECT`. It is used to fetch the resultset from one or more tables. 
-The general form of a typical select query looks like:
+### SELECT 查詢
+在使用 MySQL 時最常用的指令是 `SELECT`。它用來從一個或多個資料表中擷取結果集。  
+典型的 Select 查詢的一般格式看起來像這樣：
 
 ```
 SELECT expr
@@ -11,17 +11,17 @@ FROM table1
 [LIMIT #]
 ```
 
-The above general form contains some commonly used clauses of a `SELECT` query:
+上述一般格式包含了一些 `SELECT` 查詢中常用的子句：
 
-- **expr** - comma-separated column list or * (for all columns)
-- **WHERE** - a condition is provided, if true, directs the query to select only those records.
-- **GROUP BY** - groups the entire resultset based on the column list provided. An aggregate function is recommended to be present in the select expression of the query. **HAVING** supports grouping by putting a condition on the selected or any other aggregate function.
-- **ORDER BY** - sorts the resultset based on the column list in ascending or descending order.
-- **LIMIT** - commonly used to limit the number of records.
+- **expr** - 以逗號分隔的欄位清單，或使用 *（表示所有欄位）
+- **WHERE** - 提供條件，若為真，則指示查詢只選取符合條件的紀錄。
+- **GROUP BY** - 根據指定的欄位列表將整個結果集分組。建議在查詢的選擇表達式中使用聚合函數。**HAVING** 用於分組後，對選定欄位或任何其它聚合函數施加條件。
+- **ORDER BY** - 根據欄位列表進行結果排序，升冪或降冪。
+- **LIMIT** - 常用於限制回傳的紀錄數量。
 
-Let’s have a look at some examples for a better understanding of the above. The dataset used for the examples below is available [here](https://dev.mysql.com/doc/employee/en/employees-installation.html) and is free to use.
+以下讓我們透過一些範例更好地理解上述內容。以下範例所使用的資料集可在[這裡](https://dev.mysql.com/doc/employee/en/employees-installation.html)免費下載使用。
 
-**Select all records**
+**選取全部紀錄**
 
 ```shell
 mysql> SELECT * FROM employees LIMIT 5;
@@ -37,7 +37,7 @@ mysql> SELECT * FROM employees LIMIT 5;
 5 rows in set (0.00 sec)
 ```
 
-**Select specific fields for all records**
+**選取所有紀錄的特定欄位**
 
 ```shell
 mysql> SELECT first_name, last_name, gender FROM employees LIMIT 5;
@@ -53,7 +53,7 @@ mysql> SELECT first_name, last_name, gender FROM employees LIMIT 5;
 5 rows in set (0.00 sec)
 ```
 
-**Select all records Where hire_date >= January 1, 1990**
+**選取 hire_date >= 1990年1月1日 的所有紀錄**
 
 ```shell
 mysql> SELECT * FROM employees WHERE hire_date >= '1990-01-01' LIMIT 5;
@@ -69,7 +69,7 @@ mysql> SELECT * FROM employees WHERE hire_date >= '1990-01-01' LIMIT 5;
 5 rows in set (0.01 sec)
 ```
 
-**Select first_name and last_name from all records Where birth_date >= 1960 AND gender = ‘F’**
+**選取出生年份 >= 1960 且性別為 'F' 的所有紀錄的 first_name 與 last_name**
 
 ```shell
 mysql> SELECT first_name, last_name FROM employees WHERE year(birth_date) >= 1960 AND gender='F' LIMIT 5;
@@ -85,7 +85,7 @@ mysql> SELECT first_name, last_name FROM employees WHERE year(birth_date) >= 196
 5 rows in set (0.00 sec)
 ```
 
-**Display the total number of records**
+**顯示紀錄總數**
 
 ```shell
 mysql> SELECT COUNT(*) FROM employees;
@@ -97,7 +97,7 @@ mysql> SELECT COUNT(*) FROM employees;
 1 row in set (0.05 sec)
 ```
 
-**Display gender-wise count of all records**
+**顯示各性別的紀錄數量**
 
 ```shell
 mysql> SELECT gender, COUNT(*) FROM employees GROUP BY gender;
@@ -110,7 +110,7 @@ mysql> SELECT gender, COUNT(*) FROM employees GROUP BY gender;
 2 rows in set (0.14 sec)
 ```
 
-**Display the year of hire_date and number of employees hired that year, also only those years where more than 20k employees were hired**
+**按 hire_date 年份分組，並顯示該年僱用人數，且只顯示僱用超過 2 萬人的年份**
 
 ```shell
 mysql> SELECT year(hire_date), COUNT(*) FROM employees GROUP BY year(hire_date) HAVING COUNT(*) > 20000;
@@ -129,7 +129,7 @@ mysql> SELECT year(hire_date), COUNT(*) FROM employees GROUP BY year(hire_date) 
 8 rows in set (0.14 sec)
 ```
 
-**Display all records ordered by their hire_date in descending order. If hire_date is the same, then in order of their birth_date ascending order**
+**依 hire_date 由大到小排序，hire_date 相同則依 birth_date 由小到大排序，顯示所有紀錄**
 
 ```shell
 mysql> SELECT * FROM employees ORDER BY hire_date DESC, birth_date ASC LIMIT 5;
@@ -145,27 +145,28 @@ mysql> SELECT * FROM employees ORDER BY hire_date DESC, birth_date ASC LIMIT 5;
 5 rows in set (0.12 sec)
 ```
 
-### SELECT - JOINS
-`JOIN` statement is used to produce a combined resultset from two or more tables based on certain conditions. It can be also used with `UPDATE` and `DELETE` statements, but we will be focussing on the select query.
+### SELECT - 聯接 (JOINS)
+`JOIN` 語句用於根據特定條件，從兩個或多個資料表產生合併結果集。它也可以用於 `UPDATE` 與 `DELETE` 語句，但此處我們主要以 Select 查詢為主。
 
-Following is a basic general form for joins:
+以下是 Join 的基本通用格式：
 
 ```
-SELECT table1.col1, table2.col1, ... (any combination)
+SELECT table1.col1, table2.col1, ... (任意組合)
 FROM
 table1 <join_type> table2
-ON (or USING depends on join_type) table1.column_for_joining = table2.column_for_joining
+ON (或 USING，視 join_type 而定) table1.column_for_joining = table2.column_for_joining
 WHERE …
 ```
 
-Any number of columns can be selected, but it is recommended to select only those which are relevant to increase the readability of the resultset. All other clauses like `WHERE`, `GROUP BY` are not mandatory.
-Let’s discuss the types of JOINs supported by MySQL Syntax.
+可以選取任意數量的欄位，但建議只選擇相關欄位以提高結果集的可讀性。其它子句如 `WHERE`、`GROUP BY` 則非必須。
 
-**Inner Join**
+接著談談 MySQL 支援的 JOIN 類型。
 
-This joins table A with table B on a condition. Only the records where the condition is True are selected in the resultset.
+**內部連接（Inner Join）**
 
-Display some details of employees along with their salary:
+將表 A 與表 B 根據條件連接。只會選取條件為真的紀錄。
+
+顯示員工部分資料及其薪資：
 
 ```shell
 mysql> SELECT e.emp_no,e.first_name,e.last_name,s.salary FROM employees e JOIN salaries s ON e.emp_no=s.emp_no LIMIT 5;
@@ -181,7 +182,7 @@ mysql> SELECT e.emp_no,e.first_name,e.last_name,s.salary FROM employees e JOIN s
 5 rows in set (0.00 sec)
 ```
 
-Similar result can be achieved by:
+也可以用：
 
 ```shell
 mysql> SELECT e.emp_no,e.first_name,e.last_name,s.salary FROM employees e JOIN salaries s USING (emp_no) LIMIT 5;
@@ -197,7 +198,7 @@ mysql> SELECT e.emp_no,e.first_name,e.last_name,s.salary FROM employees e JOIN s
 5 rows in set (0.00 sec)
 ```
 
-And also by:
+也可以用：
 
 ```shell
 mysql> SELECT e.emp_no,e.first_name,e.last_name,s.salary FROM employees e NATURAL JOIN salaries s LIMIT 5;
@@ -213,14 +214,14 @@ mysql> SELECT e.emp_no,e.first_name,e.last_name,s.salary FROM employees e NATURA
 5 rows in set (0.00 sec)
 ```
 
-**Outer Join**
+**外部連接（Outer Join）**
 
-Majorly of two types:
+主要有兩種：
 
-- **LEFT** - joining complete table A with table B on a condition. All the records from table A are selected, but from table B, only those records are selected where the condition is True.
-- **RIGHT** - Exact opposite of the `LEFT JOIN`.
+- **LEFT** - 以表 A 為主，選取表 A 的全部紀錄，而表 B 只會選取符合連接條件的紀錄。
+- **RIGHT** - 與 `LEFT JOIN` 相反。
 
-Let us assume the below tables for understanding `LEFT JOIN` better.
+假設以下兩個範例表格，以利理解 `LEFT JOIN`：
 
 ```shell
 mysql> SELECT * FROM dummy1;
@@ -241,7 +242,7 @@ mysql> SELECT * FROM dummy2;
 +----------+------------+
 ```
 
-A simple `SELECT JOIN` will look like the one below:
+一般的 `SELECT JOIN` 如下：
 
 ```shell
 mysql> SELECT * FROM dummy1 d1 LEFT JOIN dummy2 d2 ON d1.same_col=d2.same_col;
@@ -255,7 +256,7 @@ mysql> SELECT * FROM dummy1 d1 LEFT JOIN dummy2 d2 ON d1.same_col=d2.same_col;
 3 rows in set (0.00 sec)
 ```
 
-Which can also be written as:
+可以寫成：
 
 ```shell
 mysql> SELECT * FROM dummy1 d1 LEFT JOIN dummy2 d2 USING(same_col);
@@ -269,7 +270,7 @@ mysql> SELECT * FROM dummy1 d1 LEFT JOIN dummy2 d2 USING(same_col);
 3 rows in set (0.00 sec)
 ```
 
-And also as:
+也可以寫成：
 
 ```shell
 mysql> SELECT * FROM dummy1 d1 NATURAL LEFT JOIN dummy2 d2;
@@ -283,11 +284,11 @@ mysql> SELECT * FROM dummy1 d1 NATURAL LEFT JOIN dummy2 d2;
 3 rows in set (0.00 sec)
 ```
 
-**Cross Join**
+**交叉連接（Cross Join）**
 
-This does a cross product of table A and table B without any condition. It doesn’t have a lot of applications in the real world.
+不帶條件，對表 A 與表 B 做笛卡爾積，現實應用中較少用到。
 
-A Simple `CROSS JOIN` looks like this:
+簡單的 `CROSS JOIN` 如下：
 
 ```shell
 mysql> SELECT * FROM dummy1 CROSS JOIN dummy2;
@@ -304,7 +305,7 @@ mysql> SELECT * FROM dummy1 CROSS JOIN dummy2;
 6 rows in set (0.01 sec)
 ```
 
-One use case that can come in handy is when you have to fill in some missing entries. For example, all the entries from `dummy1` must be inserted into a similar table `dummy3`, with each record must have 3 entries with statuses 1, 5 and 7.
+一個實用的例子是當你要填補缺少的項目。例如將 `dummy1` 資料全部插入另一個表 `dummy3`，每筆紀錄需有三個狀態（1、5、7）的項目。
 
 ```shell
 mysql> DESC dummy3;
@@ -318,7 +319,7 @@ mysql> DESC dummy3;
 3 rows in set (0.02 sec)
 ```
 
-Either you create an `INSERT` query script with as many entries as in `dummy1` or use `CROSS JOIN` to produce the required resultset.
+你可以自行寫很多筆 INSERT，或用 `CROSS JOIN` 產生所需的結果集。
 
 ```shell
 mysql> SELECT * FROM dummy1 
@@ -341,11 +342,11 @@ ORDER BY same_col;
 9 rows in set (0.00 sec)
 ```
 
-The **T2** section in the above query is called a *sub-query*. We will discuss the same in the next section.
+以上查詢中的 **T2** 稱為 *子查詢*，下一節將會解說。
 
-**Natural Join**
+**自然連接（Natural Join）**
 
-This implicitly selects the common column from table A and table B and performs an inner join.
+自動選取表 A 與表 B 的共同欄位，並執行內部連接。
 
 ```shell
 mysql> SELECT e.emp_no,e.first_name,e.last_name,s.salary FROM employees e NATURAL JOIN salaries s LIMIT 5;
@@ -361,11 +362,11 @@ mysql> SELECT e.emp_no,e.first_name,e.last_name,s.salary FROM employees e NATURA
 5 rows in set (0.00 sec)
 ```
 
-Notice how `NATURAL JOIN` and using takes care that the common column is displayed only once if you are not explicitly selecting columns for the query.
+注意到 `NATURAL JOIN` 與使用 `USING`，會自動在結果集只顯示共同欄位一次（若未明確指定欄位）。
 
-**Some More Examples**
+**更多範例**
 
-Display `emp_no`, `salary`, `title` and `dept` of the employees where salary > 80000.
+顯示薪資超過 80000 員工的 emp_no、salary、title 及所屬部門 dept：
 
 ```shell
 mysql> SELECT e.emp_no, s.salary, t.title, d.dept_no 
@@ -388,7 +389,7 @@ LIMIT 5;
 5 rows in set (0.00 sec)
 ```
 
-Display title-wise count of employees in each department ordered by `dept_no`:
+按部門與職稱統計員工數量，並依部門編號排序：
 
 ```shell
 mysql> SELECT d.dept_no, t.title, COUNT(*) 
@@ -414,13 +415,14 @@ LIMIT 10;
 10 rows in set (1.32 sec)
 ```
 
-#### SELECT - Subquery
-A subquery is generally a smaller resultset that can be used to power a `SELECT` query in many ways. It can be used in a `WHERE` condition, can be used in place of `JOIN` mostly where a `JOIN` could be an overkill. 
-These subqueries are also termed as derived tables. They must have a table alias in the `SELECT` query.
+#### SELECT - 子查詢 (Subquery)
+子查詢通常是較小的結果集，可用於驅動外層 `SELECT` 的多種操作。  
+可用於 `WHERE` 條件中，或用以替代 JOIN，尤其是在 JOIN 過於複雜時。  
+這些子查詢亦稱為衍生表（derived tables），必須在 SELECT 查詢中帶有資料表別名。
 
-Let’s look at some examples of subqueries.
+以下來看一些子查詢範例。
 
-Here, we got the department name from the `departments` table by a subquery which used `dept_no` from `dept_emp` table.
+以下範例透過子查詢從 `departments` 表取得部門名稱，子查詢裡使用 `dept_emp` 表的 `dept_no`：
 
 ```shell
 mysql> SELECT e.emp_no, 
@@ -439,7 +441,7 @@ LIMIT 5;
 5 rows in set (0.01 sec)
 ```
 
-Here, we used the `AVG` query above (which got the avg salary) as a subquery to list the employees whose latest salary is more than the average. 
+接著用前面查詢到的薪資平均值作為子查詢，列出員工中的最新薪資高於平均薪資者：
 
 ```shell
 mysql> SELECT AVG(salary) FROM salaries;

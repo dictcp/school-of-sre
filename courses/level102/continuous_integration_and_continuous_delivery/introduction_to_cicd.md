@@ -1,15 +1,16 @@
-Continuous Integration and Continuous Delivery, also known as CI/CD, is a set of processes that helps in faster integration of software code changes and deployment to the end user in a reliable manner. The more frequent integrations and deployments helps reduce the software development lifecycle. 
-There are three practices in CI/CD:
+持續整合與持續交付（Continuous Integration and Continuous Delivery，簡稱 CI/CD）是一套流程，有助於更快速地整合軟體程式碼變更並以可靠的方式部署到最終使用者端。更頻繁的整合與部署有助於縮短軟體開發生命週期。  
+在 CI/CD 中有三個實踐：
 
-* Continuous Integration
-* Continuous Delivery
-* Continuous Deployment
-Let’s look in detail at each of these in the coming sections.
+* 持續整合
+* 持續交付
+* 持續部署
 
-## The Benefits of CI/CD
+下面我們將在後續章節中詳細說明每一項。
 
-1.	Significant reduction in integration problems.
-2.	Teams can develop cohesive software more rapidly.
-3.	Improved Collaboration between developers and operation teams can reduce the production integration issues.
-4.	Faster delivery of new features with less friction
-5.	Better debugging the production issues and fixing them in the next release/patch.
+## CI/CD 的好處
+
+1. 大幅降低整合問題。
+2. 團隊能更快速地開發出有凝聚力的軟體。
+3. 開發人員與營運團隊間的合作改善，可以減少生產環境中的整合問題。
+4. 新功能能更快交付且摩擦更小。
+5. 能更好地偵錯生產問題，並在下次版本/修補程式中解決。

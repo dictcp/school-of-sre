@@ -1,40 +1,21 @@
 ##
 
-# Best practices for monitoring
+# 監控的最佳實踐
 
-When setting up monitoring for a service, keep the following best
-practices in mind.
+在建立服務監控時，請記住以下最佳實踐。
 
--   **Use the right metric type**&mdash;Most of the libraries available
-     today offer various metric types. Choose the appropriate metric
-     type for monitoring your system. Following are the types of
-     metrics and their purposes.
+-   **使用正確的指標類型**&mdash;目前大多數可用的函式庫都提供多種指標類型。請選擇適合監控系統的指標類型。以下是指標類型及其用途。
 
-    -   **Gauge**&mdash;*Gauge* is a constant type of metric. After the
-         metric is initialized, the metric value does not change unless
-         you intentionally update it.
+    -   **Gauge（量測器）**&mdash;*Gauge* 是一種常數型指標。指標初始化後，除非您刻意更新，指標值不會改變。
 
-    -   **Timer**&mdash;*Timer* measures the time taken to complete a
-         task.
+    -   **Timer（計時器）**&mdash;*Timer* 用於測量完成任務所需的時間。
 
-    -   **Counter**&mdash;*Counter* counts the number of occurrences of a
-         particular event.
+    -   **Counter（計數器）**&mdash;*Counter* 用於計數特定事件發生的次數。
 
- For more information about these metric types, see [Data
- Types](https://statsd.readthedocs.io/en/v0.5.0/types.html).
+ 有關這些指標類型的更多資訊，請參閱[資料類型](https://statsd.readthedocs.io/en/v0.5.0/types.html)。
 
--   **Avoid over-monitoring**&mdash;Monitoring can be a significant
-     engineering endeavor. Therefore, be sure not to spend too
-     much time and resources on monitoring services, yet make sure all
-     important metrics are captured.
+-   **避免過度監控**&mdash;監控可能是一項龐大的工程工作。因此，請確保不會花費過多時間和資源在監控服務上，同時確保所有重要的指標被捕捉。
 
--   **Prevent alert fatigue**&mdash;Set alerts for metrics that are
-     important and actionable. If you receive too many non-critical
-     alerts, you might start ignoring alert notifications over time. As
-     a result, critical alerts might get overlooked.
+-   **防止警報疲勞**&mdash;設定警報時，請針對重要且可採取行動的指標。如果收到過多非關鍵的警報，隨著時間推移您可能會開始忽略警報通知，導致錯過關鍵警報。
 
--   **Have a runbook for alerts**&mdash;For every alert, make sure you have
-     a document explaining what actions and checks need to be performed
-     when the alert fires. This enables any engineer on the team to
-     handle the alert and take necessary actions, without any help from
-     others.
+-   **建立警報運作手冊**&mdash;針對每個警報，請確保有一份文件說明警報觸發時需要執行的行動和檢查。這讓團隊中的任何工程師都能自行處理警報並採取必要行動，而無需他人協助。

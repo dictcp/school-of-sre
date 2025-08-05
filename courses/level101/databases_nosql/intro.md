@@ -1,212 +1,209 @@
-# NoSQL Concepts
+# NoSQL 概念
 
-## Prerequisites
-- [Relational Databases](https://linkedin.github.io/school-of-sre/level101/databases_sql/intro/)
+## 預備知識
+- [關聯式資料庫](https://linkedin.github.io/school-of-sre/level101/databases_sql/intro/)
 
-## What to expect from this course
+## 課程預期
 
-At the end of training, you will have an understanding of what a NoSQL database is, what kind of advantages or disadvantages it has over traditional RDBMS, learn about different types of NoSQL databases and understand some of the underlying concepts & trade-offs w.r.t to NoSQL.
+完成此培訓後，您將了解什麼是 NoSQL 資料庫，NoSQL 相較於傳統關聯式資料庫的優缺點，學習不同類型的 NoSQL 資料庫，並理解 NoSQL 背後的一些基本概念與權衡。
 
+## 課程不涵蓋內容
 
-## What is not covered under this course
+本課程不會深入探討任何特定的 NoSQL 資料庫。
 
-We will not be deep diving into any specific NoSQL database. 
+## 課程內容
 
+*   [NoSQL 簡介](https://linkedin.github.io/school-of-sre/level101/databases_nosql/intro/#introduction)
+*   [CAP 理論](https://linkedin.github.io/school-of-sre/level101/databases_nosql/key_concepts/#cap-theorem)
+*   [資料版本控制](https://linkedin.github.io/school-of-sre/level101/databases_nosql/key_concepts/#versioning-of-data-in-distributed-systems)
+*   [分區 (Partitioning)](https://linkedin.github.io/school-of-sre/level101/databases_nosql/key_concepts/#partitioning)
+*   [雜湊 (Hashing)](https://linkedin.github.io/school-of-sre/level101/databases_nosql/key_concepts/#hashing)
+*   [法定人數 (Quorum)](https://linkedin.github.io/school-of-sre/level101/databases_nosql/key_concepts/#quorum)
 
-## Course Contents
+## 介紹
 
+當人們提到「NoSQL 資料庫」，通常指非關聯式資料庫。有些人認為 NoSQL 代表「non SQL（非 SQL）」而有些人則說它代表「not only SQL（不僅是 SQL）」。無論如何，多數人同意 NoSQL 資料庫是以非關聯式表格外的格式來存儲資料的資料庫。
 
+一個常見誤解是 NoSQL 或非關聯式資料庫不擅長存儲關聯資料，但實際上 NoSQL 資料庫可以存儲關聯資料—只是存法不同於關聯式資料庫。事實上，與 SQL 資料庫相比，許多人覺得在 NoSQL 資料庫中建模關聯資料更「容易」，因為相關資料不必拆分到多個表格中。
 
-*   [Introduction to NoSQL](https://linkedin.github.io/school-of-sre/level101/databases_nosql/intro/#introduction)
-*   [CAP Theorem](https://linkedin.github.io/school-of-sre/level101/databases_nosql/key_concepts/#cap-theorem)
-*   [Data versioning](https://linkedin.github.io/school-of-sre/level101/databases_nosql/key_concepts/#versioning-of-data-in-distributed-systems)
-*   [Partitioning](https://linkedin.github.io/school-of-sre/level101/databases_nosql/key_concepts/#partitioning)
-*   [Hashing](https://linkedin.github.io/school-of-sre/level101/databases_nosql/key_concepts/#hashing)
-*   [Quorum](https://linkedin.github.io/school-of-sre/level101/databases_nosql/key_concepts/#quorum)
+此類資料庫自 1960 年代末即已存在，但「NoSQL」此名稱直到 21 世紀初才被提出。NASA 曾使用 NoSQL 資料庫來追蹤阿波羅任務的設備庫存。隨著 2000 年代末存儲成本大幅下降，NoSQL 資料庫開始崛起。過去為了避免資料重複，常需要創建複雜難管的資料模型，如今則不需要了。軟體開發中主要成本漸從存儲轉向開發者，NoSQL 資料庫因而優化了開發者效率。隨著敏捷開發方法的興起，NoSQL 資料庫專注於可擴展性、高速性能，同時允許頻繁的應用程式變更並簡化程式設計。
 
+### NoSQL 資料庫類型
 
-## Introduction
+隨著不同公司需求的多樣化，NoSQL 資料庫發展出了多種類型，但可大致分為以下 4 種，有些資料庫類型間會有重疊：
 
-When people use the term “NoSQL database”, they typically use it to refer to any non-relational database. Some say the term “NoSQL” stands for “non SQL” while others say it stands for “not only SQL.” Either way, most agree that NoSQL databases are databases that store data in a format other than relational tables.
+1. **文件型資料庫 (Document databases)：**  
+    以類似 [JSON](https://www.json.org/json-en.html)（JavaScript 物件表示法）的文件存儲資料。每個文件包含欄位和值的鍵值對，值常見類型包括字串、數字、布林陣列或物件，其結構通常與程式碼中的物件對應。優點是直覺的数据模型與靈活的架構。由於支持多種欄位值類型及強大查詢語言，文件型資料庫適合多種用例，可用作通用資料庫，且可水平擴展以支持大量資料。例子：MongoDB、Couchbase。
 
-A common misconception is that NoSQL databases or non-relational databases don’t store relationship data well. NoSQL databases can store relationship data—they just store it differently than relational databases do. In fact, when compared with SQL databases, many find modeling relationship data in NoSQL databases to be _easier_, because related data doesn’t have to be split between tables.
+2. **鍵值資料庫 (Key-Value databases)：**  
+    簡單的資料庫類型，每筆資料包含鍵和值。值通常只能藉由鍵查詢，查詢鍵值對的方式簡單。適合大量資料存儲但不需複雜查詢的使用場景。常見用途包括存儲用戶偏好設定或快取。例子：[Redis](https://redis.io/)、[DynamoDB](https://aws.amazon.com/dynamodb/)、[Voldemort](https://www.project-voldemort.com/voldemort/) / [Venice](https://engineering.linkedin.com/blog/2017/04/building-venice--a-production-software-case-study)（LinkedIn）。
 
-Such databases have existed since the late 1960s, but the name "NoSQL" was only coined in the early 21st century. NASA used a NoSQL database to track inventory for the Apollo mission. NoSQL databases emerged in the late 2000s as the cost of storage dramatically decreased. Gone were the days of needing to create a complex, difficult-to-manage data model simply for the purposes of reducing data duplication. Developers (rather than storage) were becoming the primary cost of software development, so NoSQL databases optimized for developer productivity. With the rise of Agile development methodology, NoSQL databases were developed with a focus on scaling, fast performance and at the same time allowed for frequent application changes and made programming easier.
+3. **寬欄位儲存 (Wide-Column stores)：**  
+    以資料表、列與動態欄位存儲資料。相較關聯式資料庫，寬欄位儲存提供高度彈性，因為每列不必包含相同欄位。許多人視其為二維鍵值資料庫。適合儲存大量資料並能預測查詢模式的需求。常用於物聯網資料與使用者資料。代表資料庫有 [Cassandra](https://cassandra.apache.org/) 與 [HBase](https://hbase.apache.org/)。
 
+4. **圖形資料庫 (Graph Databases)：**  
+    以節點與邊來存儲資料。節點通常用於存放人、地點或事物資訊，邊則存描述節點間關聯。圖形資料庫底層存儲方式各異，部分依賴關聯引擎並在表格中「儲存」圖形資料（此為邏輯抽象層），其他則使用鍵值庫或文件導向資料庫，天然屬於 NoSQL 結構。圖形資料庫擅長於需要遍歷關聯以尋找模式的應用，如社交網絡、詐欺偵測和推薦引擎。例子：[Neo4j](https://neo4j.com/)
 
-### Types of NoSQL databases:
-
-Over time due to the way these NoSQL databases were developed to suit requirements at different companies, we ended up with quite a few types of them. However, they can be broadly classified into 4 types. Some of the databases can overlap between different types. They are:
-
-1. **Document databases:** They store data in documents similar to [JSON](https://www.json.org/json-en.html) (JavaScript Object Notation) objects. Each document contains pairs of fields and values. The values can typically be a variety of types including things like strings, numbers, booleans, arrays, or objects, and their structures typically align with objects developers are working with in code. The advantages include intuitive data model & flexible schemas. Because of their variety of field value types and powerful query languages, document databases are great for a wide variety of use cases and can be used as a general purpose database. They can horizontally scale-out to accomodate large data volumes. Ex: MongoDB, Couchbase
-
-2. **Key-Value databases:** These are a simpler type of databases where each item contains keys and values. A value can typically only be retrieved by referencing its key, so learning how to query for a specific key-value pair is typically simple. Key-value databases are great for use cases where you need to store large amounts of data but you don’t need to perform complex queries to retrieve it. Common use cases include storing user preferences or caching. Ex: [Redis](https://redis.io/), [DynamoDB](https://aws.amazon.com/dynamodb/), [Voldemort](https://www.project-voldemort.com/voldemort/)/[Venice](https://engineering.linkedin.com/blog/2017/04/building-venice--a-production-software-case-study) (Linkedin).
-
-3. **Wide-Column stores:** They store data in tables, rows, and dynamic columns. Wide-column stores provide a lot of flexibility over relational databases because each row is not required to have the same columns. Many consider wide-column stores to be two-dimensional key-value databases. Wide-column stores are great for when you need to store large amounts of data and you can predict what your query patterns will be. Wide-column stores are commonly used for storing Internet of Things data and user profile data. [Cassandra](https://cassandra.apache.org/) and [HBase](https://hbase.apache.org/) are two of the most popular wide-column stores.
-4. **Graph Databases:** These databases store data in nodes and edges. Nodes typically store information about people, places, and things while edges store information about the relationships between the nodes. The underlying storage mechanism of graph databases can vary. Some depend on a relational engine and “store” the graph data in a table (although a table is a logical element, therefore this approach imposes another level of abstraction between the graph database, the graph database management system and the physical devices where the data is actually stored). Others use a key-value store or document-oriented database for storage, making them inherently NoSQL structures. Graph databases excel in use cases where you need to traverse relationships to look for patterns such as social networks, fraud detection, and recommendation engines. Ex: [Neo4j](https://neo4j.com/) 
-
-### **Comparison** 
-
-<table>
-  <tr>
-   <td>
-   </td>
-   <td>Performance
-   </td>
-   <td>Scalability
-   </td>
-   <td>Flexibility
-   </td>
-   <td>Complexity
-   </td>
-   <td>Functionality
-   </td>
-  </tr>
-  <tr>
-   <td>Key Value
-   </td>
-   <td>high
-   </td>
-   <td>high
-   </td>
-   <td>high
-   </td>
-   <td>none
-   </td>
-   <td>Variable
-   </td>
-  </tr>
-  <tr>
-   <td>Document stores
-   </td>
-   <td>high
-   </td>
-   <td>Variable (high)
-   </td>
-   <td>high
-   </td>
-   <td>low
-   </td>
-   <td>Variable (low)
-   </td>
-  </tr>
-  <tr>
-   <td>Column DB
-   </td>
-   <td>high
-   </td>
-   <td>high
-   </td>
-   <td>moderate
-   </td>
-   <td>low
-   </td>
-   <td>minimal
-   </td>
-  </tr>
-  <tr>
-   <td>Graph
-   </td>
-   <td>Variable
-   </td>
-   <td>Variable
-   </td>
-   <td>high
-   </td>
-   <td>high
-   </td>
-   <td>Graph theory
-   </td>
-  </tr>
-</table>
-
-
-
-### Differences between SQL and NoSQL
-
-The table below summarizes the main differences between SQL and NoSQL databases.
+### **比較**
 
 <table>
   <tr>
    <td>
    </td>
-   <td>SQL Databases
+   <td>效能
    </td>
-   <td>NoSQL Databases
+   <td>可擴展性
    </td>
-  </tr>
-  <tr>
-   <td>Data Storage Model
+   <td>彈性
    </td>
-   <td>Tables with fixed rows and columns
+   <td>複雜度
    </td>
-   <td>Document: JSON documents, Key-value: key-value pairs, Wide-column: tables with rows and dynamic columns, Graph: nodes and edges
+   <td>功能性
    </td>
   </tr>
   <tr>
-   <td>Primary Purpose
+   <td>鍵值型
    </td>
-   <td>General purpose
+   <td>高
    </td>
-   <td>Document: general purpose, Key-value: large amounts of data with simple lookup queries, Wide-column: large amounts of data with predictable query patterns, Graph: analyzing and traversing relationships between connected data
+   <td>高
    </td>
-  </tr>
-  <tr>
-   <td>Schemas
+   <td>高
    </td>
-   <td>Rigid
+   <td>無
    </td>
-   <td>Flexible
+   <td>可變
    </td>
   </tr>
   <tr>
-   <td>Scaling
+   <td>文件型
    </td>
-   <td>Vertical (scale-up with a larger server)
+   <td>高
    </td>
-   <td>Horizontal (scale-out across commodity servers)
+   <td>可變（高）
    </td>
-  </tr>
-  <tr>
-   <td>Multi-Record <a href="https://en.wikipedia.org/wiki/ACID">ACID </a>Transactions
+   <td>高
    </td>
-   <td>Supported
+   <td>低
    </td>
-   <td>Most do not support multi-record ACID transactions. However, some like MongoDB do.
+   <td>可變（低）
    </td>
   </tr>
   <tr>
-   <td>Joins
+   <td>寬欄位
    </td>
-   <td>Typically required
+   <td>高
    </td>
-   <td>Typically not required
+   <td>高
+   </td>
+   <td>中等
+   </td>
+   <td>低
+   </td>
+   <td>最少
    </td>
   </tr>
   <tr>
-   <td>Data to Object Mapping
+   <td>圖形
    </td>
-   <td>Requires ORM (object-relational mapping)
+   <td>可變
    </td>
-   <td>Many do not require ORMs. Document DB documents map directly to data structures in most popular programming languages.
+   <td>可變
+   </td>
+   <td>高
+   </td>
+   <td>高
+   </td>
+   <td>圖論
    </td>
   </tr>
 </table>
 
-### Advantages
+### SQL 與 NoSQL 差異比較
 
-*   **Flexible Data Models**
+下表彙整了 SQL 與 NoSQL 資料庫的主要差異。
 
-    Most NoSQL systems feature flexible schemas. A flexible schema means you can easily modify your database schema to add or remove fields to support for evolving application requirements. This facilitates with continuous application development of new features without database operation overhead.
+<table>
+  <tr>
+   <td>
+   </td>
+   <td>SQL 資料庫
+   </td>
+   <td>NoSQL 資料庫
+   </td>
+  </tr>
+  <tr>
+   <td>資料存儲模型
+   </td>
+   <td>固定列與欄的表格
+   </td>
+   <td>文件：JSON 文件，鍵值：鍵值對，寬欄位：具動態欄位的表格，圖形：節點與邊
+   </td>
+  </tr>
+  <tr>
+   <td>主要用途
+   </td>
+   <td>通用目的
+   </td>
+   <td>文件：通用目的，鍵值：大量簡單查詢資料，寬欄位：大量且可預測查詢資料，圖形：分析遍歷資料關聯
+   </td>
+  </tr>
+  <tr>
+   <td>架構規範
+   </td>
+   <td>嚴格
+   </td>
+   <td>彈性
+   </td>
+  </tr>
+  <tr>
+   <td>擴展方式
+   </td>
+   <td>垂直擴展（使用更強大的伺服器）
+   </td>
+   <td>水平擴展（跨平價伺服器擴展）
+   </td>
+  </tr>
+  <tr>
+   <td>多筆資料 <a href="https://en.wikipedia.org/wiki/ACID">ACID </a>交易
+   </td>
+   <td>支持
+   </td>
+   <td>多數不支持多筆 ACID 交易，部分如 MongoDB 支持
+   </td>
+  </tr>
+  <tr>
+   <td>聯結 (Joins)
+   </td>
+   <td>通常需要
+   </td>
+   <td>通常不需要
+   </td>
+  </tr>
+  <tr>
+   <td>資料與物件映射
+   </td>
+   <td>需要 ORM (物件關聯映射)
+   </td>
+   <td>多數不需 ORM，文件型資料庫文件可直接映射至主流程式語言中的資料結構
+   </td>
+  </tr>
+</table>
 
-*   **Horizontal Scaling**
+### 優點
 
-    Most NoSQL systems allow you to scale horizontally, which means you can add in cheaper & commodity hardware, whenever you want to scale a system. On the other hand, SQL systems generally scale Vertically (a more powerful server). NoSQL systems can also host huge datasets when compared to traditional SQL systems.
+*   **靈活的資料模型**
 
-*   **Fast Queries**
+    多數 NoSQL 系統擁有彈性架構，允許您輕鬆修改資料庫結構以新增或刪除欄位，支援應用程式不斷演進的需求。促進持續開發新功能而不需繁重的資料庫操作工作。
 
-    NoSQL can generally be a lot faster than traditional SQL systems due to data denormalization and horizontal scaling. Most NoSQL systems also tend to store similar data together facilitating faster query responses. 
+*   **水平擴展**
 
-*   **Developer productivity**
+    多數 NoSQL 系統支持水平擴展，即可隨時加入較便宜且通用的硬體以擴充系統。反觀 SQL 系統多數採垂直擴展（升級更強伺服器）。與傳統 SQL 系統相比，NoSQL 系統可處理更大量的資料。
 
-    NoSQL systems tend to map data based on the programming data structures. As a result, developers need to perform fewer data transformations leading to increased productivity & fewer bugs.
+*   **快速查詢**
+
+    由於資料非正規化與支持水平擴展，NoSQL 通常比傳統 SQL 更快。多數 NoSQL 系統還傾向將相似資料聚集，有助於加速查詢回應。
+
+*   **提升開發者生產力**
+
+    NoSQL 系統的資料映射通常根據程式設計中的資料結構，使開發者所需的資料轉換較少，進而提高生產力並減少錯誤。

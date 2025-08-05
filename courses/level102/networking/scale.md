@@ -1,149 +1,65 @@
-> *Deploying large scale applications, require a better understanding of
-infrastructure capabilities, in terms of resource availability, failure
-domains, scaling options like using anycast, layer 4/7 load balancer,
-DNS based load balancing.*
+> *部署大規模應用程式，需要更深入了解基礎設施的能力，包含資源可用性、故障域、以及擴展選項，如使用任播（anycast）、第4層/第7層負載平衡器、基於 DNS 的負載平衡。*
 
-Building large scale applications is a complex activity, which should
-cover many aspects in design, development and as well as
-operationalisation. This section will talk about the considerations to
-look for while deploying them.
+建立大規模應用程式是一項複雜的工作，必須涵蓋設計、開發以及運營化的多個層面。本章節將討論部署大規模應用時需要考量的重點。
 
-### Failure domains
+### 故障域
 
-In any infrastructure, failures due to hardware or software issues are
-common. Though these may be a pain from a service availability
-perspective, these failures do happen and a pragmatic goal would be to,
-try to keep these failures to the minimum. Hence while deploying any
-service, failures/non-availability of some of the nodes to be factored
-in.
+在任何基礎設施中，由於硬體或軟體問題引起的故障都是常見的。雖然這些故障會影響服務可用性，但它們確實會發生，實際的目標是盡量將這些故障降到最低。因此，在部署任何服務時，必須考慮某些節點的故障或不可用情況。
 
-#### Server failures
+#### 伺服器故障
 
-A server could fail, due to power or NIC or software bug. And at times
-it may not be a complete failure but could be an error in the NIC, which
-causes some packet loss. This is a very common scenario and will impact
-the stateful services more. While designing such services, it is
-important to accommodate some level of tolerance to such failures.
+伺服器可能因為電源、網路介面卡（NIC）或軟體錯誤而故障。有時候故障並不完全，可能只是 NIC 發生錯誤，導致部分封包遺失。這是非常常見的情況，對有狀態（stateful）服務的影響更大。因此在設計此類服務時，需要容忍一定程度的故障。
 
-#### ToR failures
+#### ToR（Top of Rack）故障
 
-This is one of the common scenarios, where the leaf switch connecting
-the servers goes down, along with it taking down the entire cabinet.
-There could be more than one server of the same service that can go down
-in this case. It requires planning to decide how much server loss can be
-handled without overloading other servers. Based on this, the service
-can be distributed across many cabinets. These calculations may vary,
-depending upon the resiliency in the ToR design, which will be covered
-in [ToR connectivity](https://linkedin.github.io/school-of-sre/level102/networking/infrastructure-features/#dual-tor) section.
+這是常見的情況之一，指將伺服器連接到葉層交換機（leaf switch）的 ToR 發生故障，導致整個機櫃也無法運作。可能有多台同服務的伺服器因此停擺。需要規劃能承受多少伺服器損失而不會使其他伺服器過載。根據此規劃，服務可以分布在多個機櫃中。這些評估會依 ToR 設計的韌性而異，相關內容參見 [ToR 連接](https://linkedin.github.io/school-of-sre/level102/networking/infrastructure-features/#dual-tor) 章節。
 
-#### Site failures
+#### 站點故障
 
-Here site failure is a generic term, which could mean, a particular
-service is down in a site, maybe due to new version rollout, or failures
-of devices like firewall, load balancer, if the service depends on them,
-or loss of connectivity to remote sites (which might have limited
-options for resiliency) or issues with critical services like DNS, etc.
-Though these events may not be common, they can have a significant
-impact.
+此處的站點故障為通用術語，可能指某個站點的特定服務中斷，例如因新版部署故障、服務依賴的防火牆、負載平衡器等設備故障，或與遠端站點（可能韌性較差）連線中斷，或關鍵服務如 DNS 出現問題。這類事件雖不常見，但影響不可小覷。
 
-In summary, handling these failure scenarios has to be thought about
-while designing the application itself. That will provide the tolerance
-required within the application to recover from unexpected failures.
-This will help not only for failures, even for planned maintenance work,
-as it will be easier to take part of the infrastructure, out of service.
+總結來說，設計應用程式時必須考慮這些故障場景，讓應用本身具備足夠的容錯能力，能從預期外的故障中恢復。這不僅有助於故障處理，對於計畫內的維護工作（如部分設備暫時下線）也非常有幫助。
 
-### Resource availability
+### 資源可用性
 
-The other aspect to consider while deploying applications at scale is
-the availability of the required infrastructure and the features the
-service is dependent upon. For example, for the resiliency of a cabinet,
-if one decides to distribute the service to 5 cabinets, but the service
-needs a load balancer (to distribute incoming connections to different
-servers), it may become challenging if load balancers are not supported
-in all cabinets. Or there could be a case that there are not enough
-cabinets available (that meet the minimum required specification for
-service to be set up). The best approach in these cases is to identify
-the requirements and gaps and then work with the Infrastructure team to
-best solve them.
+部署大規模應用時另一重要面向是基礎設施的可用性及服務依賴的功能。例如，若為提高機櫃韌性決定將服務分散到五個機櫃，但若服務需要負載平衡器（用來分散進入連線到不同伺服器），且並非所有機櫃皆支持負載平衡器，會造成挑戰。或者可能沒有足夠符合最低規格的機櫃可用。遇到這類情況，最好的方式是確認需求與差距，並與基礎設施團隊一同解決。
 
-#### Scaling options
+#### 擴展選項
 
-While distributing the application to different cabinets, the incoming
-traffic to these services has to be distributed across these servers. To
-achieve this, the following may be considered
+當應用分布到多個機櫃時，必須將流入的流量分配到這些伺服器。可考慮以下方式：
 
-##### Anycast
+##### 任播（Anycast）
 
-This is one of the quickest ways to roll out traffic distribution across
-multiple cabinets. In this, each server, part of the cluster (where the
-service is set up), advertises a loopback address (/32 IPv4 or /128 IPv6
-address), to the DC switch fabric (most commonly BGP is used for this
-purpose). The service has to be set up to be listening to this loopback
-address. When the clients try to connect to the service, get resolved to
-this virtual address and forward their queries. The DC switch fabric
-distributes each flow into different available next hops (eventually to
-all the servers in that service cluster).
+這是迅速實現跨多機櫃流量分配的方式。每個服務叢集裡的伺服器都會向資料中心交換機網路廣告一個環迴地址（IPv4 /32 或 IPv6 /128 地址），通常使用 BGP 協定。服務設定監聽此環迴地址。客戶端嘗試連接服務時，會解析到此虛擬地址並轉送請求。資料中心交換機網路會將每個流量導向不同可用的下一跳（最終分布到該服務叢集的所有伺服器）。
 
-Note: The DC switch computes a hash, based on the IP packet header, this
-could include any combination of source and destination addresses,
-source and destination port, mac address and IP protocol number. Based
-on this hash value, a particular next-hop is picked up. Since all the
-packets in a traffic flow, carry the same values for these headers, all
-the packets in that flow will be mapped to the same path.
+注意：資料中心交換機會基於 IP 封包表頭計算雜湊值，可能包含來源與目的地址、來源與目的埠號、MAC 地址及 IP 協定編號等混合。根據此雜湊值決定下一跳。由於同一流的所有封包表頭值相同，因此該流內的所有封包都會走同一路徑。
 
-![Diagram Description automatically generated with medium
-confidence](./media/Anycast.png)
+![自動生成的圖表說明，可信度中等](./media/Anycast.png)
 
-*Fig 1: Anycast setup*
+*圖 1：任播架構示意*
 
-To achieve a proportionate distribution of flows across these servers,
-it is important to maintain uniformity in each of the cabinets and pods.
-But remember, the distribution happens only based on flows, and if there
-are any elephant (large) flows, some servers might receive a higher
-volume of traffic.
+為達成流量在伺服器間的均勻分布，必須保證各機櫃和叢集配置的統一性。不過任播是基於流（flow）分配，若存在大型流量（elephant flows），部分伺服器可能會承受較高流量。
 
-If there are any server or ToR failures, the advertisement of loopback
-address to the switches will stop, and thereby the new packets will be
-forwarded to the remaining available servers.
+若某伺服器或 ToR 故障，該環迴地址的廣告會停止，新的封包則會導向其他仍可用的伺服器。
 
-##### Load balancer
+##### 負載平衡器
 
-Another common approach is to use a load balancer. A Virtual IP is set
-up in the load balancers, to which the client connects while trying to
-access the service. The load balancer, in turn, redirects these
-connections to, one of the actual servers, where the service is running.
-In order to, verify the server is in the serviceable state, the load
-balancer does periodic health checks, and if it fails, the LB stops
-redirecting the connection to these servers.
+另一常用方式是負載平衡器。透過負載平衡器設置一個虛擬 IP（VIP），客戶端連接此 VIP 存取服務。負載平衡器將連線重定向到實際執行服務的伺服器之一。負載平衡器會定期檢查伺服器健康狀態，若伺服器檢查不通過，負載平衡器會停止將流量分配給該伺服器。
 
-The load balancer can be deployed in single-arm mode, where the traffic
-to the VIP is redirected by the LB, and the return traffic from the
-server to the client is sent directly. The other option is the two-arm
-mode, where the return traffic is also passed through the LB.
+負載平衡器可部署在單臂模式（single-arm mode），流量入 VIP 後由負載平衡器轉送，而伺服器回應的流量則直接發送給客戶端；另一種為雙臂模式（two-arm mode），則流量的雙向都會通過負載平衡器。
 
-![Graphical user interface, application Description automatically
-generated](./media/LB 2-Arm.png)
+![自動生成的圖形用戶介面說明](./media/LB%202-Arm.png)
 
-Fig 2: Single-arm mode
+圖 2：單臂模式
 
-![Graphical user interface, application Description automatically
-generated](./media/LB 1-Arm.png)
+![自動生成的圖形用戶介面說明](./media/LB%201-Arm.png)
 
-Fig 3: Two-arm mode
+圖 3：雙臂模式
 
-One of the cons of this approach is, at a higher scale, the load
-balancer can become the bottleneck, to support higher traffic volumes or
-concurrent connections per second.
+此法缺點之一為，在大規模環境下，負載平衡器可能成為瓶頸，限制高流量量或高併發連線數。
 
-##### DNS based load balancing
+##### 基於 DNS 的負載平衡
 
-This is similar to the above approach, with the only difference is
-instead of an appliance, the load balancing is done at the DNS. The
-clients get different IP's to connect when they query for the DNS
-records of the service. The DNS server has to do a health check, to know which
-servers are in a good state.
+此法類似上述負載平衡器方案，不同點在於負載平衡是由 DNS 執行。當客戶端查詢服務的 DNS 記錄時，DNS 會回傳不同伺服器的 IP 位址以分散流量。DNS 伺服器須執行健康檢查，以判斷哪些伺服器處於正常狀態。
 
-This approach alleviates the bottleneck of the load balancer solution.
-But require shorter TTL for the DNS records, so that problematic servers
-can be taken out of rotation quickly, which means, there will be far
-more DNS queries.
+此方法可減輕負載平衡器的瓶頸問題，但需要較短的 DNS 記錄 TTL，以便快速將故障伺服器排除出輪替，這也意味著 DNS 查詢量會大幅增加。

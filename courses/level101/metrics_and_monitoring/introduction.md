@@ -1,281 +1,182 @@
 ##
 
-# Prerequisites
+# 先決條件
 
--   [Linux  Basics](https://linkedin.github.io/school-of-sre/level101/linux_basics/intro/)
+-   [Linux 基礎](https://linkedin.github.io/school-of-sre/level101/linux_basics/intro/)
 
--   [Python and the Web](https://linkedin.github.io/school-of-sre/level101/python_web/intro/)
+-   [Python 與網路](https://linkedin.github.io/school-of-sre/level101/python_web/intro/)
 
--   [Systems Design](https://linkedin.github.io/school-of-sre/level101/systems_design/intro/)
+-   [系統設計](https://linkedin.github.io/school-of-sre/level101/systems_design/intro/)
 
--   [Linux Networking Fundamentals](https://linkedin.github.io/school-of-sre/level101/linux_networking/intro/)
-
-
-## What to expect from this course
-
-Monitoring is an integral part of any system. As an SRE, you need to
-have a basic understanding of monitoring a service infrastructure. By
-the end of this course, you will gain a better understanding of the
-following topics:
-
--   What is monitoring?
-
-    -   What needs to be measured
-
-    -   How the metrics gathered can be used to improve business decisions and overall reliability
-
-    -   Proactive monitoring with alerts
-
-    -   Log processing and its importance
-
--   What is observability?
-
-    -   Distributed tracing
-
-    -   Logs
-
-    -   Metrics
-
-## What is not covered in this course
-
--   Guide to setting up a monitoring infrastructure
-
--   Deep dive into different monitoring technologies and benchmarking or comparison of any tools
+-   [Linux 網路基礎](https://linkedin.github.io/school-of-sre/level101/linux_networking/intro/)
 
 
-## Course content
+## 本課程預期學習成果
 
--   [Introduction](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/introduction/#introduction)
+監控是任何系統中不可或缺的一部分。作為 SRE，您需要
+具備服務基礎架構監控的基本理解。通過
+本課程結束，您將更好地理解以下主題：
 
-    -   [Four golden signals of monitoring](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/introduction/#four-golden-signals-of-monitoring)
+-   什麼是監控？
 
-    -   [Why is monitoring important?](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/introduction/#why-is-monitoring-important)
+    -   什麼需要被衡量
 
--   [Command-line tools](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/command-line_tools/)
+    -   如何使用收集到的指標來改善商業決策與整體可靠度
 
--   [Third-party monitoring](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/third-party_monitoring/)
+    -   利用警報的主動監控
 
--   [Proactive monitoring using alerts](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/alerts/)
+    -   日誌處理及其重要性
 
--   [Best practices for monitoring](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/best_practices/)
+-   什麼是可觀察性？
 
--   [Observability](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/observability/)
+    -   分散式追蹤
 
-    -   [Logs](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/observability/#logs)
-    -   [Tracing](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/bservability/#tracing)
+    -   日誌
 
-[Conclusion](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/conclusion/)
+    -   指標
+
+## 本課程未涵蓋內容
+
+-   監控基礎架構建立指南
+
+-   深入探討不同監控技術及工具的基準測試或比較
+
+
+## 課程內容
+
+-   [介紹](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/introduction/#introduction)
+
+    -   [監控的四大黃金訊號](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/introduction/#four-golden-signals-of-monitoring)
+
+    -   [監控為何重要？](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/introduction/#why-is-monitoring-important)
+
+-   [指令列工具](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/command-line_tools/)
+
+-   [第三方監控](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/third-party_monitoring/)
+
+-   [利用警報進行主動監控](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/alerts/)
+
+-   [監控最佳實踐](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/best_practices/)
+
+-   [可觀察性](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/observability/)
+
+    -   [日誌](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/observability/#logs)
+    -   [追蹤](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/bservability/#tracing)
+
+[結論](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/conclusion/)
 
 
 ##
 
-# Introduction
+# 介紹
 
-Monitoring is a process of collecting real-time performance metrics from
-a system, analyzing the data to derive meaningful information, and
-displaying the data to the users. In simple terms, you measure various
-metrics regularly to understand the state of the system, including but
-not limited to, user requests, latency, and error rate. *What gets
-measured, gets fixed*&mdash;if you can measure something, you can reason
-about it, understand it, discuss it, and act upon it with confidence.
+監控是從系統中收集即時性能指標、
+分析資料以獲取有意義資訊、並將資料展示給使用者的過程。
+簡單來說，您定期測量各種指標以了解系統狀況，包括但不限於使用者請求、延遲和錯誤率。*測量即是改進*&mdash;如果您能衡量某項事物，就能理性分析它、理解它、討論它，並自信地採取行動。
 
 
-## Four golden signals of monitoring
+## 監控的四大黃金訊號
 
-When setting up monitoring for a system, you need to decide what to
-measure. The four golden signals of monitoring provide a good
-understanding of service performance and lay a foundation for monitoring
-a system. These four golden signals are
+當為系統設置監控時，您需要決定要衡量什麼指標。四大黃金訊號提供對服務效能的良好理解，並為系統監控奠定基礎。這四大黃金訊號包含：
 
--   Traffic
+-   流量
 
--   Latency
+-   延遲
 
--   Error
+-   錯誤
 
--   Saturation
+-   飽和度
 
-These metrics help you to understand the system performance and
-bottlenecks, and to create a better end-user experience. As discussed in
-the [Google SRE
-book](https://sre.google/sre-book/monitoring-distributed-systems/),
-if you can measure only four metrics of your service, focus on these
-four. Let's look at each of the four golden signals.
+這些指標有助於了解系統效能和瓶頸，並打造更佳的最終用戶體驗。如同
+[Google SRE
+書籍](https://sre.google/sre-book/monitoring-distributed-systems/) 中所述，
+如果你只能測量服務的四個指標，就專注於這四個。以下是對四大黃金訊號的詳細說明：
 
--   **Traffic**&mdash;*Traffic* gives a better understanding of the service
-     demand. Often referred to as *service QPS* (queries per second),
-     traffic is a measure of requests served by the service. This
-     signal helps you to decide when a service needs to be scaled up to
-     handle increasing customer demand and scaled down to be
-     cost-effective.
+-   **流量**&mdash;*流量* 能幫助更好地理解服務需求。通常稱為*服務 QPS*（每秒查詢數），
+     流量衡量服務所處理的請求數量。這個訊號能協助您判斷何時應將服務擴充以應對增長的客戶需求，或縮減以降低成本。
 
--   **Latency**&mdash;*Latency* is the measure of time taken by the service
-     to process the incoming request and send the response. Measuring
-     service latency helps in the early detection of slow degradation
-     of the service. Distinguishing between the latency of successful
-     requests and the latency of failed requests is important. For
-     example, an [HTTP 5XX
-     error](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses)
-     triggered due to loss of connection to a database or other
-     critical backend might be served very quickly. However, because an
-     HTTP 500 error indicates a failed request, factoring 500s into
-     overall latency might result in misleading calculations.
+-   **延遲**&mdash;*延遲* 衡量服務處理進來請求並回應所花費的時間。測量延遲可幫助及早發現服務效能逐漸下降的狀況。
+     分辨成功請求和失敗請求的延遲差異很重要。例如，由於與資料庫或其他重要後端連線中斷引發的 [HTTP 5XX 錯誤](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses)
+     可能會很快被回應。然而，因 HTTP 500 表示請求失敗，將 500 錯誤納入整體延遲計算，可能會造成誤導。
 
--   **Error (rate)**&mdash;*Error* is the measure of failed client
-     requests. These failures can be easily identified based on the
-     response codes ([HTTP 5XX
-     error](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses)).
-     There might be cases where the response is considered erroneous
-     due to wrong result data or due to policy violations. For example,
-     you might get an [HTTP
-     200](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200)
-     response, but the body has incomplete data, or response time is
-     breaching the agreed-upon
-     [SLA](https://en.wikipedia.org/wiki/Service-level_agreement)s.
-     Therefore, you need to have other mechanisms (code logic or
-     [instrumentation](https://en.wikipedia.org/wiki/Instrumentation_(computer_programming)))
-     in place to capture errors in addition to the response codes.
+-   **錯誤率**&mdash;*錯誤率* 衡量用戶端失敗請求數。這些失敗通常可從回應碼判斷（如 [HTTP 5XX 錯誤](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status#server_error_responses)），
+     但也可能因錯誤結果資料或政策違規而被視為錯誤。例如，
+     您可能收到 [HTTP 200](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/200) 回應，
+     但回應內容為不完整資料，或是回應時間超出約定的
+     [SLA](https://zh.wikipedia.org/wiki/服務水準協議)。因此，除了回應碼之外，您還需要透過其他機制（程式碼邏輯或[嵌入式監控](https://zh.wikipedia.org/wiki/Instrumentation_(computer_programming))）來捕捉錯誤狀況。
 
--   **Saturation**&mdash;*Saturation* is a measure of the resource
-     utilization by a service. This signal tells you the state of
-     service resources and how full they are. These resources include
-     memory, compute, network I/O, and so on. Service performance
-     slowly degrades even before resource utilization is at 100
-     percent. Therefore, having a utilization target is important. An
-     increase in latency is a good indicator of saturation; measuring
-     the [99th
-     percentile](https://medium.com/@ankur_anand/an-in-depth-introduction-to-99-percentile-for-programmers-22e83a00caf)
-     of latency can help in the early detection of saturation.
+-   **飽和度**&mdash;*飽和度* 衡量服務資源的利用率。此訊號告知服務資源的狀態以及使用程度。資源包含記憶體、運算能力、網路 I/O 等。服務效能往往在資源利用達 100% 前即逐漸退化，因此設定利用率目標很重要。延遲增加即是飽和度提升的良好指標；測量延遲的 [99 百分位數](https://medium.com/@ankur_anand/an-in-depth-introduction-to-99-percentile-for-programmers-22e83a00caf)
+     有助於及早偵測飽和狀況。
 
-Depending on the type of service, you can measure these signals in
-different ways. For example, you might measure queries per second served
-for a web server. In contrast, for a database server, transactions
-performed and database sessions created give you an idea about the
-traffic handled by the database server. With the help of additional code
-logic (monitoring libraries and instrumentation), you can measure these
-signals periodically and store them for future analysis. Although these
-metrics give you an idea about the performance at the service end, you
-need to also ensure that the same user experience is delivered at the
-client end. Therefore, you might need to monitor the service from
-outside the service infrastructure, which is discussed under third-party
-monitoring.
+視服務類型不同，您可用不同方式衡量這些訊號。例如，您可以為 Web 伺服器測量每秒處理的查詢數；而對資料庫伺服器，則可藉由交易數與建立的資料庫連線數了解流量情況。透過額外的程式碼邏輯（監控套件與嵌入式監控），您可以定期測量這些訊號並加以儲存以供後續分析。雖然這些指標反映服務端效能，您仍需確保使用者端也得到良好的使用體驗，因此可能須從服務基礎架構之外監控，這在第三方監控中有所說明。
 
-## Why is monitoring important?
+## 監控為何重要？
 
-Monitoring plays a key role in the success of a service. As discussed
-earlier, monitoring provides performance insights for understanding
-service health. With access to historical data collected over time, you
-can build intelligent applications to address specific needs. Some of
-the key use cases follow:
+監控在服務成功中扮演關鍵角色。如前所述，監控提供效能洞察，協助了解服務健康狀態。利用長期累積的歷史資料，您可以打造智能化應用，滿足特定需求。主要用例如下：
 
--   **Reduction in time to resolve issues**&mdash;With a good monitoring
-     infrastructure in place, you can identify issues quickly and
-     resolve them, which reduces the impact caused by the issues.
+-   **縮短問題解決時間**&mdash;透過良好的監控基礎架構，您可以快速定位並解決問題，減少問題帶來的影響。
 
--   **Business decisions**&mdash;Data collected over a period of time can
-     help you make business decisions such as determining the product
-     release cycle, which features to invest in, and geographical areas
-     to focus on. Decisions based on long-term data can improve the
-     overall product experience.
+-   **商業決策**&mdash;長期收集的資料可幫助您作出商業決策，如產品發佈週期、投入開發的功能、以及聚焦的地區，藉由數據驅動決策提升整體產品體驗。
 
--   **Resource planning**&mdash;By analyzing historical data, you can
-     forecast service compute-resource demands, and you can properly
-     allocate resources. This allows financially effective decisions,
-     with no compromise in end-user experience.
+-   **資源規劃**&mdash;藉由分析歷史資料，您可以預測服務所需的計算資源，並適當分配，達成財務效益最大化且不犧牲使用者體驗。
 
-Before we dive deeper into monitoring, let's understand some basic
-terminologies.
+在深入探討監控前，先了解一些基本術語：
 
--   **Metric**&mdash;A metric is a quantitative measure of a particular
-     system attribute&mdash;for example, memory or CPU
+-   **指標 (Metric)**&mdash;系統特定屬性的量化度量，例如記憶體或 CPU 使用率
 
--   **Node or host**&mdash;A physical server, virtual machine, or container
-     where an application is running
+-   **節點或主機 (Node or host)**&mdash;執行應用程式的物理伺服器、虛擬機器或容器
 
--   **QPS**&mdash;*Queries Per Second*, a measure of traffic served by the
-     service per second
+-   **QPS**&mdash;*Queries Per Second*，服務每秒處理的查詢數
 
--   **Latency**&mdash;The time interval between user action and the
-     response from the server&mdash;for example, time spent after sending a
-     query to a database before the first response bit is received
+-   **延遲 (Latency)**&mdash;使用者操作與伺服器回應間的時間差，如送出資料庫查詢到收到第一個回應位元組的時間
 
--   **Error** **rate**&mdash;Number of errors observed over a particular
-     time period (usually a second)
+-   **錯誤率 (Error rate)**&mdash;在特定時間內（通常為一秒）觀察到的錯誤數
 
--   **Graph**&mdash;In monitoring, a graph is a representation of one or
-     more values of metrics collected over time
+-   **圖表 (Graph)**&mdash;監控中用以呈現隨時間收集的一個或多個指標數值
 
--   **Dashboard**&mdash;A dashboard is a collection of graphs that provide
-     an overview of system health
+-   **儀表板 (Dashboard)**&mdash;一組圖表的集合，用以概觀系統健康狀態
 
--   **Incident**&mdash;An incident is an event that disrupts the normal
-     operations of a system
+-   **事件 (Incident)**&mdash;干擾系統正常運作的事件
 
--   **MTTD**&mdash;*Mean Time To Detect* is the time interval between the
-     beginning of a service failure and the detection of such failure
+-   **平均偵測時間 (MTTD, Mean Time To Detect)**&mdash;服務失效起始至偵測該失效的時間
 
--   **MTTR**&mdash;Mean Time To Resolve is the time spent to fix a service
-     failure and bring the service back to its normal state
+-   **平均修復時間 (MTTR, Mean Time To Resolve)**&mdash;修復服務失效並恢復正常的時間
 
-Before we discuss monitoring an application, let us look at the
-monitoring infrastructure. Following is an illustration of a basic
-monitoring system.
+在討論應用程式監控前，我們先來看看監控基礎架構。下圖示意一個基本的監控系統。
 
-![Illustration of a monitoring infrastructure](images/image1.jpg) 
-<p align="center"> Figure 1: Illustration of a monitoring infrastructure </p>
+![監控基礎架構示意圖](images/image1.jpg) 
+<p align="center"> 圖 1：監控基礎架構示意圖 </p>
 
-Figure 1 shows a monitoring infrastructure mechanism for aggregating
-metrics on the system, and collecting and storing the data for display.
-In addition, a monitoring infrastructure includes alert subsystems for
-notifying concerned parties during any abnormal behavior. Let's look at
-each of these infrastructure components:
+圖 1 描述了一個監控基礎架構的機制，用於彙整系統指標、收集及儲存資料供顯示使用。
+此外，監控系統通常包含警報子系統，在異常狀況時通知相關人員。以下說明各個基礎架構元件：
 
--   **Host metrics agent**&mdash;A *host metrics agent* is a process
-     running on the host that collects performance statistics for host
-     subsystems such as memory, CPU, and network. These metrics are
-     regularly relayed to a metrics collector for storage and
-     visualization. Some examples are
-     [collectd](https://collectd.org/),
-     [telegraf](https://www.influxdata.com/time-series-platform/telegraf/),
-     and [metricbeat](https://www.elastic.co/beats/metricbeat).
+-   **主機指標代理 (Host metrics agent)**&mdash;*主機指標代理* 是在主機上運行的進程，
+     負責收集主機子系統（如記憶體、CPU、網路）的性能統計數據。
+     這些指標會定期傳送給指標收集者儲存及視覺化。
+     例子有 [collectd](https://collectd.org/)、[telegraf](https://www.influxdata.com/time-series-platform/telegraf/)、和 [metricbeat](https://www.elastic.co/beats/metricbeat)。
 
--   **Metric aggregator**&mdash;A *metric aggregator* is a process running
-     on the host. Applications running on the host collect service
-     metrics using
-     [instrumentation](https://en.wikipedia.org/wiki/Instrumentation_(computer_programming)).
-     Collected metrics are sent either to the aggregator process or
-     directly to the metrics collector over API, if available. Received
-     metrics are aggregated periodically and relayed to the metrics
-     collector in batches. An example is
-     [StatsD](https://github.com/statsd/statsd).
+-   **指標彙整器 (Metric aggregator)**&mdash;*指標彙整器* 是運行於主機上的進程。
+     主機上的應用程式透過
+     [嵌入式監控](https://en.wikipedia.org/wiki/Instrumentation_(computer_programming)) 收集服務指標。
+     收集到的指標會送交彙整器或直接透過 API 發送到指標收集者。
+     彙整器定期將指標彙整後批次送出給指標收集者。
+     例子為 [StatsD](https://github.com/statsd/statsd)。
 
--   **Metrics collector**&mdash;A *metrics collector* process collects all
-     the metrics from the metric aggregators running on multiple hosts.
-     The collector takes care of decoding and stores this data on the
-     database. Metric collection and storage might be taken care of by
-     one single service such as
-     [InfluxDB](https://www.influxdata.com/), which we discuss
-     next. An example is [carbon
-     daemons](https://graphite.readthedocs.io/en/latest/carbon-daemons.html).
+-   **指標收集器 (Metrics collector)**&mdash;*指標收集器* 負責收集來自多台主機上指標彙整器的所有指標，
+     並進行解碼及存儲。
+     指標收集與存儲可由單一服務完成，例如 [InfluxDB](https://www.influxdata.com/)。
+     例子有 [carbon daemons](https://graphite.readthedocs.io/en/latest/carbon-daemons.html)。
 
--   **Storage**&mdash;A time-series database stores all of these metrics.
-     Examples are [OpenTSDB](http://opentsdb.net/),
-     [Whisper](https://graphite.readthedocs.io/en/stable/whisper.html),
-     and [InfluxDB](https://www.influxdata.com/).
+-   **儲存 (Storage)**&mdash;時間序列資料庫用於存放所有指標。
+     例如 [OpenTSDB](http://opentsdb.net/)、[Whisper](https://graphite.readthedocs.io/en/stable/whisper.html)、和 [InfluxDB](https://www.influxdata.com/)。
 
--   **Metrics server**&mdash;A *metrics server* can be as basic as a web
-     server that graphically renders metric data. In addition, the
-     metrics server provides aggregation functionalities and APIs for
-     fetching metric data programmatically. Some examples are
-     [Grafana](https://github.com/grafana/grafana) and
-     [Graphite-Web](https://github.com/graphite-project/graphite-web).
+-   **指標伺服器 (Metrics server)**&mdash;*指標伺服器* 可以是將指標資料以圖形方式呈現的基本網頁伺服器。
+     另外也提供彙整功能與程式化存取指標資料的 API。
+     例子有 [Grafana](https://github.com/grafana/grafana) 和 [Graphite-Web](https://github.com/graphite-project/graphite-web)。
 
--   **Alert manager**&mdash;The *alert manager* regularly polls metric data
-     available and, if there are any anomalies detected, notifies you.
-     Each alert has a set of rules for identifying such anomalies.
-     Today many metrics servers such as
-     [Grafana](https://github.com/grafana/grafana) support alert
-     management. We discuss alerting [in detail
-     later](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/alerts/). Examples are
-     [Grafana](https://github.com/grafana/grafana) and
-     [Icinga](https://icinga.com/).
+-   **警報管理器 (Alert manager)**&mdash;*警報管理器* 會定期監控指標資料，
+     一旦偵測出異常就會通知相關人員。
+     每個警報都有一組規則用以識別異常狀況。
+     今天許多指標伺服器如 [Grafana](https://github.com/grafana/grafana) 皆支持警報管理。
+     我們將在[後文詳細討論警報](https://linkedin.github.io/school-of-sre/level101/metrics_and_monitoring/alerts/)。
+     例子有 [Grafana](https://github.com/grafana/grafana) 和 [Icinga](https://icinga.com/)。

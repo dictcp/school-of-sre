@@ -1,95 +1,91 @@
-*   Relational DBs are used for data storage. Even a file can be used to store data, but relational DBs are designed with specific goals:
-    *   Efficiency
-    *   Ease of access and management
-    *   Organized
-    *   Handle relations between data (represented as tables)
-*   Transaction: a unit of work that can comprise multiple statements, executed together
-*   ACID properties
+* 關聯式資料庫（Relational DB）用於數據存儲。即使檔案也可以用來存儲資料，但關聯式資料庫是為了特定目標而設計：
+    * 效率
+    * 易於存取與管理
+    * 組織化
+    * 處理資料間的關聯（以表格方式呈現）
+* 交易（Transaction）：一個工作單元，可以包含多個語句，一起執行
+* ACID 屬性
 
-    Set of properties that guarantee data integrity of DB transactions
+    一組保證資料庫交易數據完整性的屬性
 
-    *   Atomicity: Each transaction is atomic (succeeds or fails completely)
-    *   Consistency: Transactions only result in valid state (which includes rules, constraints, triggers etc.)
-    *   Isolation: Each transaction is executed independently of others safely within a concurrent system
-    *   Durability: Completed transactions will not be lost due to any later failures
+    * 原子性（Atomicity）：每個交易是原子的（完全成功或完全失敗）
+    * 一致性（Consistency）：交易只會導致有效的狀態（包含規則、約束、觸發器等）
+    * 隔離性（Isolation）：每個交易在並行系統中彼此獨立且安全地執行
+    * 持久性（Durability）：完成的交易不會因任何後續故障而遺失
 
-	Let’s take some examples to illustrate the above properties.
+    讓我們藉由一些範例說明上述屬性。
 
-    *   Account A has a balance of ₹200 & B has ₹400. Account A is transferring ₹100 to Account B. This transaction has a deduction from sender and an addition into the recipient’s balance. If the first operation passes successfully while the second fails, A’s balance would be ₹100 while B would be having ₹400 instead of ₹500. **Atomicity** in a DB ensures this partially failed transaction is rolled back.
-    *   If the second operation above fails, it leaves the DB inconsistent (sum of balance of accounts before and after the operation is not the same). **Consistency** ensures that this does not happen.
-    *   There are three operations, one to calculate interest for A’s account,  another to add that to A’s account, then transfer ₹100 from B to A. Without **isolation** guarantees, concurrent execution of these 3 operations may lead to a different outcome every time.
-    *   What happens if the system crashes before the transactions are written to disk? **Durability** ensures that the changes are applied correctly during recovery.
-*   Relational data
-    *   Tables represent relations
-    *   Columns (fields) represent attributes
-    *   Rows are individual records
-    *   Schema describes the structure of DB
-*   SQL
+    * 帳戶 A 餘額為 ₹200，帳戶 B 為 ₹400。A 轉帳 ₹100 給 B。此交易包括從發送方扣款與接收方入帳。如果第一筆操作成功，第二筆失敗，A 則會剩 ₹100，但 B 還是維持 ₹400 而非 ₹500。資料庫的 **原子性** 確保部分失敗的交易會回滾。
+    * 若第二個操作失敗，會造成資料庫不一致（交易前後帳戶餘額總和不相同）。**一致性** 確保不會發生這種情況。
+    * 有三個操作：一個計算 A 帳戶利息、另一個將利息加入 A 帳戶、最後一個從 B 轉帳 ₹100 給 A。若無 **隔離性** 保證，三個操作同時執行可能每次結果不同。
+    * 若系統在交易完成寫入磁碟前當機，**持久性** 確保在恢復過程中正確應用變更。
+* 關聯式資料
+    * 表格代表關聯
+    * 欄位（欄）代表屬性
+    * 列表示個別記錄
+    * 架構描述資料庫結構
+* SQL
 
-    A query language to interact with and manage data.
+    一種用於存取與管理數據的查詢語言。
 
-    [CRUD operations](https://stackify.com/what-are-crud-operations/)&mdash;create, read, update, delete queries
+    [CRUD 操作](https://stackify.com/what-are-crud-operations/) — 創建（create）、讀取（read）、更新（update）、刪除（delete）查詢
 
-    Management operations&mdash;create DBs/tables/indexes, backup, import/export, users, access controls, etc
+    管理操作 — 建立資料庫/表格/索引、備份、匯入/匯出、使用者、存取控制等
 
-    *Exercise*: Classify the below queries into the four types&mdash;DDL (definition), DML (manipulation), DCL (control) and TCL (transactions) and explain in detail.
+    *練習*: 將以下語句分類為四種型態 — DDL（定義）、DML（操作）、DCL（控制）和 TCL（交易），並詳細說明。
 
         insert, create, drop, delete, update, commit, rollback, truncate, alter, grant, revoke
 
-    You can practise these in the [lab section](https://linkedin.github.io/school-of-sre/level101/databases_sql/lab/).
+    你可以在[實驗室區域](https://linkedin.github.io/school-of-sre/level101/databases_sql/lab/)練習這些語句。
 
-*   Constraints
+* 約束條件（Constraints）
 
-    Rules for data that can be stored. Query fails if you violate any of these defined on a table.
+    定義可存入資料的規則。若違反對表所定義的約束，查詢會失敗。
 
-	*Primary key*: One or more columns that contain UNIQUE values, and cannot contain NULL values. A table can have only ONE primary key. An index on it is created by default.
+	*主鍵*：一個或多個欄位包含唯一值，不得為 NULL。每個表只能有一個主鍵。系統會自動為主鍵建立索引。
 
-    *Foreign key*: Links two tables together. Its value(s) match a primary key in a different table
+    *外鍵*：連結兩個表，值必須與另一表的主鍵相符。
 
-	*Not null*: Does not allow null values
+	*非空*（Not null）：不允許為 NULL 值。
 
-	*Unique*: Value of column must be unique across all rows
+	*唯一*（Unique）：欄位值必須在所有列中唯一。
 
-	*Default*: Provides a default value for a column if none is specified during insert
+	*預設值*（Default）：若插入資料時未指定，會自動提供預設值。
 
-    *Check*: Allows only particular values (like Balance >= 0)
+    *檢查*（Check）：只允許特定值（例如餘額必須大於等於 0）
 
+* [索引](https://datageek.blog/en/2018/06/05/rdbms-basics-indexes-and-clustered-indexes/)
 
-*   [Indexes](https://datageek.blog/en/2018/06/05/rdbms-basics-indexes-and-clustered-indexes/)
+	大多數索引使用 B+ 樹結構。
 
-	Most indexes use B+ tree structure.
+	為何使用索引：加速查詢（特別是在大型表格中只抓取少數列的情況、最小/最大值查詢，透過排除不必要的列等）
 
-	Why use them: Speeds up queries (in large tables that fetch only a few rows, min/max queries, by eliminating rows from consideration, etc)
+	*索引類型*：唯一索引、主鍵索引、全文索引、次要索引
 
-	*Types of indexes*: unique, primary key, fulltext, secondary
+	大量寫入負載、主要為全表掃描或存取大量列的操作不適合索引。
 
-	Write-heavy loads, mostly full table scans or accessing large number of rows, etc. do not benefit from indexes
+* [連接（Joins）](https://www.sqlservertutorial.net/sql-server-basics/sql-server-joins/)
 
+	允許從多個表根據共通欄位取出關聯資料。功能強大但也資源耗費大，且使資料庫擴展困難。大量使用 Join 是導致大規模查詢緩慢的主要原因，解決方法幾乎總是尋找能減少 Join 的策略。
 
-*   [Joins](https://www.sqlservertutorial.net/sql-server-basics/sql-server-joins/)
+* [存取控制](https://dev.mysql.com/doc/refman/8.0/en/access-control.html)
 
-	Allows you to fetch related data from multiple tables, linking them together with some common field. Powerful but also resource-intensive and makes scaling databases difficult. This is the cause of many slow performing queries when run at scale, and the solution is almost always to find ways to reduce the joins.
+	資料庫設有具管理權限的帳號及一般客戶帳號，精細控管這些帳號可執行的操作（如前述 DDL、DML 等）。
 
+	資料庫先驗證使用者身份（認證），再查詢內部表判斷該使用者是否有權執行請求（授權）。
 
-*   [Access control](https://dev.mysql.com/doc/refman/8.0/en/access-control.html)
+	其他控制包括活動審核，可檢視使用者執行過的操作歷史，以及資源限制，定義允許的查詢數、連線數等。
 
-	DBs have privileged accounts for admin tasks, and regular accounts for clients. There are fine-grained controls on what actions (DDL, DML, etc. discussed earlier) are allowed for these accounts.
+### 常見資料庫
 
-	DB first verifies the user credentials (authentication), and then examines whether this user is permitted to perform the request (authorization) by looking up these information in some internal tables.
+商用、閉源：Oracle、Microsoft SQL Server、IBM DB2
 
-	Other controls include activity auditing that allows examining the history of actions done by a user, and resource limits which define the number of queries, connections, etc. allowed.
+開源並有付費支援選項：MySQL、MariaDB、PostgreSQL
 
+個人和小型公司一向偏好開源資料庫，因為商用軟體成本龐大。
 
-### Popular databases
+近年來，許多大型組織也逐漸轉向開源替代方案，因為具備彈性且節省成本。
 
-Commercial, closed source: Oracle, Microsoft SQL Server, IBM DB2
+不再擔心缺乏支援，因為開發者與第三方提供商有付費支援服務。
 
-Open source with optional paid support: MySQL, MariaDB, PostgreSQL
-
-Individuals and small companies have always preferred open source DBs because of the huge cost associated with commercial software.
-
-In recent times, even large organizations have moved away from commercial software to open source alternatives because of the flexibility and cost savings associated with it.
-
-Lack of support is no longer a concern because of the paid support available from the developer and third parties.
-
-MySQL is the most widely used open source DB, and it is widely supported by hosting providers, making it easy for anyone to use. It is part of the popular Linux-Apache-MySQL-PHP ([LAMP](https://en.wikipedia.org/wiki/LAMP_(software_bundle))) stack that became popular in the 2000s. We have many more choices for a programming language, but the rest of that stack is still widely used.
+MySQL 是最廣泛使用的開源資料庫，且得到眾多託管服務商支持，讓任何人都容易使用。它是流行的 Linux-Apache-MySQL-PHP （[LAMP](https://en.wikipedia.org/wiki/LAMP_(software_bundle))）框架的一部分，該框架在2000年代盛行。雖然現代有更多程式語言選擇，但 LAMP 框架其他部分依然廣泛運用。
