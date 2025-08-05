@@ -1,5 +1,5 @@
-site_url: https://linkedin.github.io/school-of-sre/
-site_name: School Of SRE
+site_url: https://dictcp.github.io/school-of-sre/
+site_name: School Of SRE 中文版
 docs_dir: courses
 theme:
   name: material
@@ -11,132 +11,132 @@ theme:
 extra_css:
     - stylesheets/custom.css
 nav:
-- Home: index.md
-- Level 101:
-    - Fundamentals Series:
-        - Linux Basics:
-            - Introduction: level101/linux_basics/intro.md
-            - Command Line Basics: level101/linux_basics/command_line_basics.md
-            - Server Administration: level101/linux_basics/linux_server_administration.md
-            - Conclusion: level101/linux_basics/conclusion.md
+- 首頁: index.md
+- 101 級:
+    - 基礎系列:
+        - Linux 基礎:
+            - 介紹: level101/linux_basics/intro.md
+            - 命令行基礎: level101/linux_basics/command_line_basics.md
+            - 伺服器管理: level101/linux_basics/linux_server_administration.md
+            - 結論: level101/linux_basics/conclusion.md
         - Git:
-            - Git Basics: level101/git/git-basics.md
-            - Working With Branches: level101/git/branches.md
-            - Github and Hooks: level101/git/github-hooks.md
-            - Conclusion: level101/git/conclusion.md
-        - Linux Networking:
-            - Introduction: level101/linux_networking/intro.md
+            - Git 基礎: level101/git/git-basics.md
+            - 分支管理: level101/git/branches.md
+            - Github 與 Hooks: level101/git/github-hooks.md
+            - 結論: level101/git/conclusion.md
+        - Linux 網絡:
+            - 介紹: level101/linux_networking/intro.md
             - DNS: level101/linux_networking/dns.md
             - UDP: level101/linux_networking/udp.md
             - HTTP: level101/linux_networking/http.md
             - TCP: level101/linux_networking/tcp.md
-            - Routing: level101/linux_networking/ipr.md
-            - Conclusion: level101/linux_networking/conclusion.md
-    - Python and Web:
-        - Introduction: level101/python_web/intro.md
-        - Some Python Concepts: level101/python_web/python-concepts.md
-        - Python, Web and Flask: level101/python_web/python-web-flask.md
-        - The URL Shortening App: level101/python_web/url-shorten-app.md
-        - Conclusion: level101/python_web/sre-conclusion.md
-    - Data:
-        - Relational Databases:
-            - Introduction: level101/databases_sql/intro.md
-            - Key Concepts: level101/databases_sql/concepts.md
+            - 路由: level101/linux_networking/ipr.md
+            - 結論: level101/linux_networking/conclusion.md
+    - Python 與 Web:
+        - 介紹: level101/python_web/intro.md
+        - 一些 Python 概念: level101/python_web/python-concepts.md
+        - Python、Web 與 Flask: level101/python_web/python-web-flask.md
+        - URL 縮短應用: level101/python_web/url-shorten-app.md
+        - 結論: level101/python_web/sre-conclusion.md
+    - 數據:
+        - 關聯式資料庫:
+            - 介紹: level101/databases_sql/intro.md
+            - 關鍵概念: level101/databases_sql/concepts.md
             - MySQL: level101/databases_sql/mysql.md
             - InnoDB: level101/databases_sql/innodb.md
-            - Backup and Recovery: level101/databases_sql/backup_recovery.md
-            - MySQL Replication: level101/databases_sql/replication.md
-            - Operational Concepts: level101/databases_sql/operations.md
-            - Select Query: level101/databases_sql/select_query.md
-            - Query Performance: level101/databases_sql/query_performance.md
-            - Lab: level101/databases_sql/lab.md
-            - Conclusion: level101/databases_sql/conclusion.md
+            - 備份與恢復: level101/databases_sql/backup_recovery.md
+            - MySQL 複製: level101/databases_sql/replication.md
+            - 操作概念: level101/databases_sql/operations.md
+            - 查詢語句: level101/databases_sql/select_query.md
+            - 查詢效能: level101/databases_sql/query_performance.md
+            - 實驗: level101/databases_sql/lab.md
+            - 結論: level101/databases_sql/conclusion.md
         - NoSQL:
-            - Introduction: level101/databases_nosql/intro.md
-            - Key Concepts: level101/databases_nosql/key_concepts.md
-            - Conclusion:  level101/databases_nosql/further_reading.md
-        - Message Queue:
-            - Introduction: level101/messagequeue/intro.md
-            - Key Concepts: level101/messagequeue/key_concepts.md
-            - Conclusion:  level101/messagequeue/further_reading.md
-        - Big Data:
-            - Introduction: level101/big_data/intro.md
-            - Evolution and Architecture of Hadoop: level101/big_data/evolution.md
-            - Conclusion: level101/big_data/tasks.md
-    - Systems Design:
-        - Introduction: level101/systems_design/intro.md
-        - Scalability: level101/systems_design/scalability.md
-        - Availability: level101/systems_design/availability.md
-        - Fault Tolerance: level101/systems_design/fault-tolerance.md
-        - Conclusion: level101/systems_design/conclusion.md
-    - Metrics and Monitoring:
-        - Introduction: level101/metrics_and_monitoring/introduction.md
-        - Command-line Tools: level101/metrics_and_monitoring/command-line_tools.md
-        - Third-party Monitoring: level101/metrics_and_monitoring/third-party_monitoring.md
-        - Proactive Monitoring with Alerts: level101/metrics_and_monitoring/alerts.md
-        - Best Practices for Monitoring: level101/metrics_and_monitoring/best_practices.md
-        - Observability: level101/metrics_and_monitoring/observability.md
-        - Conclusion: level101/metrics_and_monitoring/conclusion.md
-    - Security:
-        - Introduction: level101/security/intro.md
-        - Fundamentals of Security: level101/security/fundamentals.md
-        - Network Security: level101/security/network_security.md
-        - Threat, Attacks & Defences: level101/security/threats_attacks_defences.md
-        - Writing Secure code: level101/security/writing_secure_code.md
-        - Conclusion: level101/security/conclusion.md
-- Level 102:
-  - Linux Intermediate:
-      - Introduction: level102/linux_intermediate/introduction.md
-      - Package Management: level102/linux_intermediate/package_management.md
-      - Storage Media: level102/linux_intermediate/storage_media.md
-      - Archiving and Backup: level102/linux_intermediate/archiving_backup.md
-      - Introduction to Vim: level102/linux_intermediate/introvim.md
-      - Bash Scripting: level102/linux_intermediate/bashscripting.md
-      - Conclusion: level102/linux_intermediate/conclusion.md
-  - Linux Advanced:
-    - Containerization And Orchestration:
-      - Introduction: level102/containerization_and_orchestration/intro.md
-      - Introduction To Containers: level102/containerization_and_orchestration/intro_to_containers.md
-      - Containerization With Docker: level102/containerization_and_orchestration/containerization_with_docker.md
-      - Orchestration With Kubernetes: level102/containerization_and_orchestration/orchestration_with_kubernetes.md
-      - Conclusion: level102/containerization_and_orchestration/conclusion.md
-    - System Calls and Signals:
-      - Introduction: level102/system_calls_and_signals/intro.md
-      - Signals: level102/system_calls_and_signals/signals.md
-      - System Calls: level102/system_calls_and_signals/system_calls.md
-      - Conclusion: level102/system_calls_and_signals/conclusion.md
-  - Networking:
-      - Introduction: level102/networking/introduction.md
-      - Security: level102/networking/security.md
-      - Scale: level102/networking/scale.md
-      - RTT: level102/networking/rtt.md
-      - Infrastructure Services: level102/networking/infrastructure-features.md
-      - Conclusion: level102/networking/conclusion.md
-  - System Design:
-      - Introduction: level102/system_design/intro.md
-      - Large System Design: level102/system_design/large-system-design.md
-      - Scaling: level102/system_design/scaling.md
-      - Scaling Beyond the Data Center: level102/system_design/scaling-beyond-the-datacenter.md
-      - Resiliency: level102/system_design/resiliency.md
-      - Conclusion: level102/system_design/conclusion.md
-  - System Troubleshooting and Performance Improvements:
-        - Introduction: level102/system_troubleshooting_and_performance/introduction.md
-        - Troubleshooting: level102/system_troubleshooting_and_performance/troubleshooting.md
-        - Important Tools: level102/system_troubleshooting_and_performance/important-tools.md
-        - Performance Improvements: level102/system_troubleshooting_and_performance/performance-improvements.md
-        - Troubleshooting Example: level102/system_troubleshooting_and_performance/troubleshooting-example.md
-        - Conclusion: level102/system_troubleshooting_and_performance/conclusion.md
-  - Continuous Integration and Continuous Delivery:
-        - Introduction: level102/continuous_integration_and_continuous_delivery/introduction.md
-        - What is CI/CD?: level102/continuous_integration_and_continuous_delivery/introduction_to_cicd.md
-        - Brief History: level102/continuous_integration_and_continuous_delivery/cicd_brief_history.md
-        - Continuous Integration: level102/continuous_integration_and_continuous_delivery/continuous_integration_build_pipeline.md
-        - Continuous Delivery and Deployment: level102/continuous_integration_and_continuous_delivery/continuous_delivery_release_pipeline.md
-        - CI/CD Pipeline - Hands-on: level102/continuous_integration_and_continuous_delivery/jenkins_cicd_pipeline_hands_on_lab.md
-        - Conclusion: level102/continuous_integration_and_continuous_delivery/conclusion.md
-- Contribute: CONTRIBUTING.md
-- Code of Conduct: CODE_OF_CONDUCT.md
-- SRE Community: sre_community.md
+            - 介紹: level101/databases_nosql/intro.md
+            - 關鍵概念: level101/databases_nosql/key_concepts.md
+            - 結論:  level101/databases_nosql/further_reading.md
+        - 訊息佇列:
+            - 介紹: level101/messagequeue/intro.md
+            - 關鍵概念: level101/messagequeue/key_concepts.md
+            - 結論:  level101/messagequeue/further_reading.md
+        - 大數據:
+            - 介紹: level101/big_data/intro.md
+            - Hadoop 的演進與架構: level101/big_data/evolution.md
+            - 結論: level101/big_data/tasks.md
+    - 系統設計:
+        - 介紹: level101/systems_design/intro.md
+        - 可擴展性: level101/systems_design/scalability.md
+        - 可用性: level101/systems_design/availability.md
+        - 容錯: level101/systems_design/fault-tolerance.md
+        - 結論: level101/systems_design/conclusion.md
+    - 指標與監控:
+        - 介紹: level101/metrics_and_monitoring/introduction.md
+        - 命令行工具: level101/metrics_and_monitoring/command-line_tools.md
+        - 第三方監控: level101/metrics_and_monitoring/third-party_monitoring.md
+        - 主動監控與警報: level101/metrics_and_monitoring/alerts.md
+        - 監控最佳實踐: level101/metrics_and_monitoring/best_practices.md
+        - 可觀察性: level101/metrics_and_monitoring/observability.md
+        - 結論: level101/metrics_and_monitoring/conclusion.md
+    - 安全:
+        - 介紹: level101/security/intro.md
+        - 安全基礎: level101/security/fundamentals.md
+        - 網絡安全: level101/security/network_security.md
+        - 威脅、攻擊與防禦: level101/security/threats_attacks_defences.md
+        - 安全編碼: level101/security/writing_secure_code.md
+        - 結論: level101/security/conclusion.md
+- 102 級:
+  - Linux 中階:
+      - 介紹: level102/linux_intermediate/introduction.md
+      - 套件管理: level102/linux_intermediate/package_management.md
+      - 儲存媒體: level102/linux_intermediate/storage_media.md
+      - 備份與歸檔: level102/linux_intermediate/archiving_backup.md
+      - Vim 介紹: level102/linux_intermediate/introvim.md
+      - Bash 腳本: level102/linux_intermediate/bashscripting.md
+      - 結論: level102/linux_intermediate/conclusion.md
+  - Linux 高階:
+    - 容器化與編排:
+      - 介紹: level102/containerization_and_orchestration/intro.md
+      - 容器介紹: level102/containerization_and_orchestration/intro_to_containers.md
+      - Docker 容器化: level102/containerization_and_orchestration/containerization_with_docker.md
+      - Kubernetes 編排: level102/containerization_and_orchestration/orchestration_with_kubernetes.md
+      - 結論: level102/containerization_and_orchestration/conclusion.md
+    - 系統呼叫與訊號:
+      - 介紹: level102/system_calls_and_signals/intro.md
+      - 訊號: level102/system_calls_and_signals/signals.md
+      - 系統呼叫: level102/system_calls_and_signals/system_calls.md
+      - 結論: level102/system_calls_and_signals/conclusion.md
+  - 網絡:
+      - 介紹: level102/networking/introduction.md
+      - 安全: level102/networking/security.md
+      - 擴展: level102/networking/scale.md
+      - 往返時間: level102/networking/rtt.md
+      - 基礎設施服務: level102/networking/infrastructure-features.md
+      - 結論: level102/networking/conclusion.md
+  - 系統設計:
+      - 介紹: level102/system_design/intro.md
+      - 大型系統設計: level102/system_design/large-system-design.md
+      - 擴展: level102/system_design/scaling.md
+      - 數據中心擴展: level102/system_design/scaling-beyond-the-datacenter.md
+      - 韌性: level102/system_design/resiliency.md
+      - 結論: level102/system_design/conclusion.md
+  - 系統故障排除與效能提升:
+        - 介紹: level102/system_troubleshooting_and_performance/introduction.md
+        - 故障排除: level102/system_troubleshooting_and_performance/troubleshooting.md
+        - 重要工具: level102/system_troubleshooting_and_performance/important-tools.md
+        - 效能提升: level102/system_troubleshooting_and_performance/performance-improvements.md
+        - 故障排除範例: level102/system_troubleshooting_and_performance/troubleshooting-example.md
+        - 結論: level102/system_troubleshooting_and_performance/conclusion.md
+  - 持續整合與持續交付:
+        - 介紹: level102/continuous_integration_and_continuous_delivery/introduction.md
+        - 什麼是 CI/CD?: level102/continuous_integration_and_continuous_delivery/introduction_to_cicd.md
+        - 簡史: level102/continuous_integration_and_continuous_delivery/cicd_brief_history.md
+        - 持續整合: level102/continuous_integration_and_continuous_delivery/continuous_integration_build_pipeline.md
+        - 持續交付與部署: level102/continuous_integration_and_continuous_delivery/continuous_delivery_release_pipeline.md
+        - CI/CD 管線實作: level102/continuous_integration_and_continuous_delivery/jenkins_cicd_pipeline_hands_on_lab.md
+        - 結論: level102/continuous_integration_and_continuous_delivery/conclusion.md
+- 貢獻: CONTRIBUTING.md
+- 行為準則: CODE_OF_CONDUCT.md
+- SRE 社群: sre_community.md
 copyright: "Copyright 2020 LinkedIn Corporation. All Rights Reserved. Licensed under the Creative Commons Attribution 4.0 International Public License"
 extra:
     social:
